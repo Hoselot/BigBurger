@@ -10,13 +10,13 @@ function MainPage() {
       <CustomNavbar/>
       <div className="flex flex-row items-center justify-between bg-white-100 w-full h-1/2 p-4">
       {/* Izquierda: Título y subtítulo */}
-      <div className="flex flex-col justify-center w-1/2 items-center">
-        <h1 className="text-2xl sm:text-6xl font-extrabold text-gray-800">Título Principal</h1>
-        <p className="text-sm sm:text-2xl text-gray-600">Este es el subtítulo</p>
+      <div className="flex flex-col justify-center  sm:w-1/2 w-1/3 items-center">
+        <h1 className="text-2xl sm:text-6xl font-extrabold text-right text-gray-800">Título Principal</h1>
+        <p className="text-sm sm:text-2xl text-right text-gray-600">Este es el subtítulo</p>
       </div>
 
       {/* Derecha: Imagen */}
-      <div className="w-1/2 h-full flex justify-center items-center">
+      <div className="sm:w-1/2 w-2/3 h-full flex justify-center items-center">
         <img
           src="https://static.vecteezy.com/system/resources/previews/029/334/329/original/burger-transparent-background-png.png"
           alt="Descripción"
