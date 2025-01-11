@@ -13,17 +13,17 @@ const CustomNavbar = () => {
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarItem>
           <Link color="foreground" href="#">
-            Features
+            Promociones
           </Link>
         </NavbarItem>
         <NavbarItem isActive>
           <Link aria-current="page" href="#">
-            Customers
+            Hamburguesas
           </Link>
         </NavbarItem>
         <NavbarItem>
           <Link color="foreground" href="#">
-            Integrations
+            Otros
           </Link>
         </NavbarItem>
       </NavbarContent>
