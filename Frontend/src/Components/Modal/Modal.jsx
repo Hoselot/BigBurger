@@ -71,14 +71,19 @@ export default function App() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
       });
-
+  
       if (response.ok) {
         const data = await response.json();
+        
+        // Extrae el token desde la clave 'jwt'
+        const token = data.jwt;
+        
         if (rememberMe) {
-          localStorage.setItem("token", data.token);
+          localStorage.setItem("token", token);
         } else {
-          sessionStorage.setItem("token", data.token);
+          sessionStorage.setItem("token", token);
         }
+  
         setIsLoggedIn(true);
         onOpenChange(false);
       } else {
@@ -88,6 +93,7 @@ export default function App() {
       console.error("Error en la autenticación:", error);
     }
   };
+  
 
   const handleLogout = () => {
     localStorage.removeItem("token");
