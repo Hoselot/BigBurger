@@ -60,10 +60,10 @@ const CustomNavbar = () => {
           {isLoggedIn ? (
             <Dropdown backdrop="blur">
             <DropdownTrigger>
-              <Button variant="bordered">Open Menu</Button>
+              <Button color="primary" variant="shadow">Menú Admin</Button>
             </DropdownTrigger>
             <DropdownMenu aria-label="Static Actions" variant="faded">
-              <DropdownItem key="new">New file</DropdownItem>
+              <DropdownItem key="new" href="/Crud">Crud</DropdownItem>
               <DropdownItem key="copy">Copy link</DropdownItem>
               <DropdownItem key="edit">Edit file</DropdownItem>
               <DropdownItem key="delete" className="text-danger" color="danger">

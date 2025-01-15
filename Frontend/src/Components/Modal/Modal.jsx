@@ -114,7 +114,7 @@ export default function App() {
       ) : (
         <>
         
-          <Button color="primary" onPress={onOpen}>
+          <Button color="primary" variant="text" onPress={onOpen}>
             Administrador
           </Button>
           <Modal isOpen={isOpen} placement="top-center" onOpenChange={onOpenChange}>
