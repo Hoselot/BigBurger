@@ -1,6 +1,6 @@
 import React from "react";
 import Logo from "../Logo/Logo"
-import BotonLogin from "../Modal/Modal"
+
 import {
   Navbar,
   NavbarBrand,
@@ -10,10 +10,11 @@ import {
   NavbarMenu,
   NavbarMenuItem,
   Link,
-  Button,
+  
 } from "@nextui-org/react";
+import {Dropdown, DropdownMenu, DropdownTrigger, DropdownItem, Button} from "@nextui-org/react";
 
-
+import { useAuth } from "../../utils/AuthContext";
 
 
 const menuItems = [
@@ -24,6 +25,7 @@ const menuItems = [
 
 
 const CustomNavbar = () => {
+  const { isLoggedIn, logout } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   return (
     <Navbar shouldHideOnScroll onMenuOpenChange={setIsMenuOpen}>
@@ -54,11 +56,27 @@ const CustomNavbar = () => {
             Otros
           </Link>
         </NavbarItem>
+        <NavbarItem>
+          {isLoggedIn ? (
+            <Dropdown backdrop="blur">
+            <DropdownTrigger>
+              <Button variant="bordered">Open Menu</Button>
+            </DropdownTrigger>
+            <DropdownMenu aria-label="Static Actions" variant="faded">
+              <DropdownItem key="new">New file</DropdownItem>
+              <DropdownItem key="copy">Copy link</DropdownItem>
+              <DropdownItem key="edit">Edit file</DropdownItem>
+              <DropdownItem key="delete" className="text-danger" color="danger">
+                Delete file
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+          ) : null}
+        </NavbarItem>
       </NavbarContent>
       <NavbarContent justify="end">
-        <NavbarItem className="lg:flex">
-          <BotonLogin/>
-        </NavbarItem>
+        
+        
         
       </NavbarContent>
       <NavbarMenu>

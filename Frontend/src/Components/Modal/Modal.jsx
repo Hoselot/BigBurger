@@ -85,6 +85,8 @@ export default function App() {
         }
   
         setIsLoggedIn(true);
+        // Forzar la recarga de la página
+      window.location.reload();
         onOpenChange(false);
       } else {
         alert("Error en las credenciales");
@@ -99,6 +101,8 @@ export default function App() {
     localStorage.removeItem("token");
     sessionStorage.removeItem("token");
     setIsLoggedIn(false);
+    // Forzar la recarga de la página
+  window.location.reload();
   };
 
   return (
@@ -109,6 +113,7 @@ export default function App() {
         </Button>
       ) : (
         <>
+        
           <Button color="primary" onPress={onOpen}>
             Administrador
           </Button>
@@ -144,8 +149,8 @@ export default function App() {
                         classNames={{
                           label: "text-small",
                         }}
-                        isSelected={rememberMe}
-                        onChange={setRememberMe}
+                        checked={rememberMe}
+                        onChange={() => setRememberMe(prevState => !prevState)}// Alternar el valor de rememberMe
                       >
                         Recordarme
                       </Checkbox>

@@ -27,7 +27,7 @@ function MainPage() {
     <div className='mx-16'>
       <IndividualProduct/>
     </div>
-    <div className='mt-16'>
+    <div>
       <Footer/>
     </div>
     
