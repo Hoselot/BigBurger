@@ -27,7 +27,7 @@ function App() {
         {/* Aquí va tu header o cualquier componente común en todas las páginas */}
         
         <Routes>
-          <Route path="/Home" element={<MainPage />} />  {/* Uso de element en lugar de component */}
+          <Route path="/" element={<MainPage />} />  {/* Uso de element en lugar de component */}
           <Route path="/Crud" element={<Crud />} />      {/* Uso de element en lugar de component */}
           
           {/* Página para rutas no encontradas */}

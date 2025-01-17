@@ -20,7 +20,7 @@ import { useAuth } from "../../utils/AuthContext";
 const menuItems = [
   "Promociones",
   "Hamburguesas",
-  "Otros"
+  "¿Cómo hacer un pedido?"
 ];
 
 
@@ -53,9 +53,13 @@ const CustomNavbar = () => {
         </NavbarItem>
         <NavbarItem>
           <Link color="foreground" href="#">
-            Otros
+          ¿Cómo hacer un pedido?
           </Link>
         </NavbarItem>
+        
+        
+      </NavbarContent>
+      <NavbarContent justify="end">
         <NavbarItem>
           {isLoggedIn ? (
             <Dropdown backdrop="blur">
@@ -73,12 +77,8 @@ const CustomNavbar = () => {
           </Dropdown>
           ) : null}
         </NavbarItem>
-      </NavbarContent>
-      <NavbarContent justify="end">
-        
-        
-        
-      </NavbarContent>
+        </NavbarContent>
+      
       <NavbarMenu>
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}`}>

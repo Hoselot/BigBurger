@@ -49,7 +49,7 @@ export default function App() {
       {list.map((item, index) => (
         /* eslint-disable no-console */
           
-            <Card className="shadow-2xl" key={index} isPressable onPress={() => console.log("item pressed")}>
+            <Card className="box-border  bg-[rgba(217,217,217,0.58)] border-2 border-white shadow-[12px_17px_51px_rgba(0,0,0,0.22)] backdrop-blur-[6px] rounded-[17px] text-center cursor-pointer transition-all duration-500 flex items-center justify-center select-none font-bold text-black hover:border-black hover:scale-105 active:scale-95 active:rotate-[1.7deg]" key={index} isPressable onPress={() => console.log("item pressed")}>
             <CardBody className="overflow-hidden p-0">
               <Image
                 alt={item.title}
