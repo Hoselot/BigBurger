@@ -25,6 +25,10 @@ public class BurgerModel {
 
     @Column(nullable = false, precision = 10, scale = 2)  // Configuración de precisión y escala
     private BigDecimal price;
+    @Column(nullable = false, precision = 10, scale = 2)  // Configuración de precisión y escala
+    private BigDecimal costo;
+    @Column(nullable = false, precision = 10, scale = 2)  // Configuración de precisión y escala
+    private BigDecimal ganancia;
 
     @Column
     private String pictureUrl;
