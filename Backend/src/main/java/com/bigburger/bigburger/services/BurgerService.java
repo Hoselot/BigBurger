@@ -90,13 +90,24 @@ public class BurgerService {
         ElementoModel elementoModel = elementoRepository.findById(idElemento).orElseThrow(() -> new ElementoNotFoundException("Elemento no encontrado"));
         BurgerModel burgerModel = burgerRepository.findById(idBurger).orElseThrow((() -> new BurgerNotFoundException("Hamburguesa no encontrada")));
         BurgerElementoModel burgerElementoModel = new BurgerElementoModel(burgerModel,elementoModel);
+        burgerModel.setCosto(burgerModel.getCosto().add(elementoModel.getPrice()));
         return burgerElementoRepository.save(burgerElementoModel);
     }
-//    public BurgerElementoModel eliminarElementoBurger(Long idBurger, Long idElemento){
-//        ElementoModel elementoModel = elementoRepository.findById(idElemento).orElseThrow(() -> new ElementoNotFoundException("Elemento no encontrado"));
-//        BurgerElementoModel burgerElementoModel = new BurgerElementoModel(idBurger,elementoModel);
-//        return burgerElementoRepository.save(burgerElementoModel);
-//    }
+    public List<BurgerElementoModel> eliminarElementoBurger(Long idBurger, Long idElemento){
+        List<BurgerElementoModel> burgerElementoList = burgerElementoRepository.findAllByBurgerModelIdAndElementoModelId(idBurger, idElemento);
+
+        if (burgerElementoList.isEmpty()) {
+            return null; // Si no hay elementos, no se hace nada y se retorna null
+        }
+
+        // Obtener el último elemento de la lista
+        BurgerElementoModel lastElement = burgerElementoList.get(burgerElementoList.size() - 1);
+        lastElement.getBurgerModel().setCosto(lastElement.getBurgerModel().getCosto().subtract(lastElement.getElementoModel().getPrice()));
+        burgerRepository.save(lastElement.getBurgerModel());
+        // Eliminar el último elemento
+        burgerElementoRepository.delete(lastElement);
+        return burgerElementoRepository.findAllByBurgerModelIdAndElementoModelId(idBurger, idElemento);
+    }
 
     public List<BurgerElementoModel> listarElementosBurger(Long idBurger) {
         return burgerElementoRepository.findAllByBurgerModelId(idBurger);

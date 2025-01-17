@@ -55,4 +55,10 @@ public class BurgerController {
         return burgerService.listarElementosBurger(idBurger);
     }
 
+    @DeleteMapping("/eliminarElementoBurger")
+    @PreAuthorize("hasAuthority('DELETE')")
+    public ResponseEntity<List<BurgerElementoModel>> eliminarElementoBurger(@RequestParam Long idBurger,@RequestParam Long idElemento){
+        return ResponseEntity.ok(burgerService.eliminarElementoBurger(idBurger,idElemento));
+    }
+
 }

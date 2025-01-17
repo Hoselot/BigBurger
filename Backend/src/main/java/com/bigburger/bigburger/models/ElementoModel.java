@@ -3,6 +3,8 @@ package com.bigburger.bigburger.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,5 +21,5 @@ public class ElementoModel {
     private String name;
 
     @Column(nullable = false, precision = 10, scale = 2)  // Configuración de precisión y escala
-    private String price;
+    private BigDecimal price;
 }
