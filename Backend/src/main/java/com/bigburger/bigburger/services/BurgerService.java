@@ -91,6 +91,9 @@ public class BurgerService {
         BurgerModel burgerModel = burgerRepository.findById(idBurger).orElseThrow((() -> new BurgerNotFoundException("Hamburguesa no encontrada")));
         BurgerElementoModel burgerElementoModel = new BurgerElementoModel(burgerModel,elementoModel);
         burgerModel.setCosto(burgerModel.getCosto().add(elementoModel.getPrice()));
+        burgerModel.setPrice(burgerModel.getCosto());
+        burgerModel.setPrice(burgerModel.getPrice().add(burgerModel.getGanancia()));
+        burgerRepository.save(burgerModel);
         return burgerElementoRepository.save(burgerElementoModel);
     }
     public List<BurgerElementoModel> eliminarElementoBurger(Long idBurger, Long idElemento){
@@ -103,6 +106,8 @@ public class BurgerService {
         // Obtener el último elemento de la lista
         BurgerElementoModel lastElement = burgerElementoList.get(burgerElementoList.size() - 1);
         lastElement.getBurgerModel().setCosto(lastElement.getBurgerModel().getCosto().subtract(lastElement.getElementoModel().getPrice()));
+        lastElement.getBurgerModel().setPrice(lastElement.getBurgerModel().getCosto());
+        lastElement.getBurgerModel().setPrice(lastElement.getBurgerModel().getPrice().add(lastElement.getBurgerModel().getGanancia()));
         burgerRepository.save(lastElement.getBurgerModel());
         // Eliminar el último elemento
         burgerElementoRepository.delete(lastElement);
@@ -111,5 +116,13 @@ public class BurgerService {
 
     public List<BurgerElementoModel> listarElementosBurger(Long idBurger) {
         return burgerElementoRepository.findAllByBurgerModelId(idBurger);
+    }
+
+    public BurgerModel asignarGananciaHamburguesa(Long idBurger, BigDecimal ganancia){
+        BurgerModel burgerModel = burgerRepository.findById(idBurger).orElseThrow((() -> new BurgerNotFoundException("Hamburguesa no encontrada")));
+        burgerModel.setGanancia(ganancia);
+        burgerModel.setPrice(burgerModel.getCosto());
+        burgerModel.setPrice(burgerModel.getPrice().add(ganancia));
+        return burgerRepository.save(burgerModel);
     }
 }

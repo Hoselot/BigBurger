@@ -34,6 +34,8 @@ public class ElementoService {
         for(BurgerElementoModel burgerElementoModel:elementoBurgers){
            BurgerModel burgerModel = burgerRepository.findById(burgerElementoModel.getBurgerModel().getId()).orElseThrow(() -> new BurgerNotFoundException("Hamburguesa no encontrada"));
            burgerModel.setCosto(burgerModel.getCosto().subtract(burgerElementoModel.getElementoModel().getPrice()));
+           burgerModel.setPrice(burgerModel.getCosto());
+           burgerModel.setPrice(burgerModel.getPrice().add(burgerModel.getGanancia()));
            burgerRepository.save(burgerModel);
         }
         burgerElementoRepository.deleteByElementoModelId(id);

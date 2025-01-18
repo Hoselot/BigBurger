@@ -60,5 +60,10 @@ public class BurgerController {
     public ResponseEntity<List<BurgerElementoModel>> eliminarElementoBurger(@RequestParam Long idBurger,@RequestParam Long idElemento){
         return ResponseEntity.ok(burgerService.eliminarElementoBurger(idBurger,idElemento));
     }
+    @PutMapping("/asignarGananciaHamburguesa")
+    @PreAuthorize("hasAuthority('UPDATE')")
+    public ResponseEntity<BurgerModel> asignarGananciaHamburguesa(@RequestParam Long idBurger, @RequestParam BigDecimal ganancia){
+        return ResponseEntity.ok(burgerService.asignarGananciaHamburguesa(idBurger,ganancia));
+    }
 
 }
