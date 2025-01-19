@@ -1,17 +1,19 @@
-
-// tailwind.config.js
-const {nextui} = require("@nextui-org/react");
+import {heroui} from "@heroui/theme"
 
 /** @type {import('tailwindcss').Config} */
+
+const withMT = require("@material-tailwind/react/utils/withMT");
 module.exports = {
   content: [
     "./index.html",
-    "./src/**/*.{js,jsx,ts,tsx}",
-    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
+    './src/layouts/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    "./node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {},
   },
   darkMode: "class",
-  plugins: [nextui()],
-};
+  plugins: [heroui()],
+}
