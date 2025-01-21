@@ -11,7 +11,7 @@ import {
 } from "@heroui/navbar";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@heroui/dropdown";
 import { Button } from "@heroui/button";
-
+import { PiHamburgerThin, PiNotepadThin,PiBreadThin, PiBoxArrowDownThin, PiMathOperationsThin } from "react-icons/pi";
 import Image from "./logo";
 import { useAuth } from "../utils/auth-context";
 
@@ -69,13 +69,20 @@ export const Navbar = () => {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu aria-label="Static Actions" variant="faded">
-                <DropdownItem key="new" href="/crud">
-                  Crud
+                <DropdownItem key="burgers" href="/crud" description="Gestión de hamburguesas" startContent={<PiHamburgerThin className="h-7 w-7 shrink-0"/>}>
+                  Hamburguesas
                 </DropdownItem>
-                <DropdownItem key="copy">Copy link</DropdownItem>
-                <DropdownItem key="edit">Edit file</DropdownItem>
-                <DropdownItem key="delete" className="text-danger" color="danger">
-                  Delete file
+                <DropdownItem key="elements" href="/crud" description="Gestión de ingredientes" startContent={<PiBreadThin className="h-7 w-7 shrink-0"/>}>
+                  Elementos
+                </DropdownItem>
+                <DropdownItem key="stock" href="/crud" description="Control de inventario" startContent={<PiBoxArrowDownThin className="h-7 w-7 shrink-0"/>}>
+                  Stock
+                </DropdownItem>
+                <DropdownItem key="pedidos" href="/crud" description="Administración de pedidos" startContent={<PiNotepadThin className="h-7 w-7 shrink-0"/>}>
+                Pedidos
+                </DropdownItem>
+                <DropdownItem key="finazas" href="/crud" description="Control financiero" startContent={<PiMathOperationsThin className="h-7 w-7 shrink-0"/>}>
+                  Finanzas
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
