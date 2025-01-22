@@ -20,9 +20,12 @@ import {
   DropdownItem
 } from "@heroui/dropdown";
 import {Button} from "@heroui/button";
-import { PiEye, PiPencilSimpleLine  } from "react-icons/pi";
-import { AiOutlineDelete } from "react-icons/ai";
+
+
 import  ModalBurguer  from "./crud-burger";
+import DeleteModal from "./delete-burger"
+import DetailModal from "./details-burger"
+import EditModal from "./edit-burger"
 export type IconSvgProps = SVGProps<SVGSVGElement> & {
   size?: number;
 };
@@ -428,23 +431,23 @@ export default function App() {
           
         );
       
-      case "actions":
+      
         case "actions":
           return (
             <div className="relative flex items-center gap-2">
               <Tooltip content="Detalles" color="success">
                 <span className="text-lg text-success cursor-pointer active:opacity-50">
-                <PiEye />
+                <DetailModal/>
                 </span>
               </Tooltip>
               <Tooltip content="Editar">
                 <span className="text-lg text-default-500 cursor-pointer active:opacity-50">
-                  <PiPencilSimpleLine  />
+                  <EditModal />
                 </span>
               </Tooltip>
               <Tooltip color="danger" content="Eliminar">
                 <span className="text-lg text-danger cursor-pointer active:opacity-50">
-                  <AiOutlineDelete/>
+                <DeleteModal/>
                 </span>
               </Tooltip>
             </div>
