@@ -1,5 +1,6 @@
 package com.bigburger.bigburger.services;
 
+import com.bigburger.bigburger.dto.BurgerDto;
 import com.bigburger.bigburger.exeptions.BurgerNotFoundException;
 import com.bigburger.bigburger.exeptions.ElementoNotFoundException;
 import com.bigburger.bigburger.models.BurgerElementoModel;
@@ -10,9 +11,12 @@ import com.bigburger.bigburger.repository.IBurgerRepository;
 import com.bigburger.bigburger.repository.IElementoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BurgerService {
@@ -23,9 +27,28 @@ public class BurgerService {
     private IElementoRepository elementoRepository;
     @Autowired
     private IBurgerElementoRepository burgerElementoRepository;
+    @Autowired
+    private ImageService imageService;
 
-    public List<BurgerModel> listarHamburguesas(){
+    public BurgerModel cambiarImagenHamburguesa(Long idBurger, MultipartFile file){
+        BurgerModel burgerModel = burgerRepository.findById(idBurger).orElseThrow((() -> new BurgerNotFoundException("Hamburguesa no encontrada")));
+        burgerModel.setPictureUrl(imageService.uploadImage(file));
+        return burgerRepository.save(burgerModel);
+    }
+
+    public List<BurgerModel> listarHamburguesasADMIN(){
         return burgerRepository.findAll();
+    }
+
+    public List<BurgerDto> listarHamburguesas() {
+        return burgerRepository.findAll().stream()
+                .map(burger -> new BurgerDto(
+                        burger.getId(),
+                        burger.getName(),
+                        burger.getDescription(),
+                        burger.getPrice()
+                ))
+                .collect(Collectors.toList());
     }
 
     public String crearHamburguesa(BurgerModel burgerModel){
