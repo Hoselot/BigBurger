@@ -14,5 +14,6 @@ public class BurgerDto {
     private Long id;
     private String name;
     private String description;
+    private String PictureUrl;
     private BigDecimal price;
 }

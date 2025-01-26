@@ -46,6 +46,7 @@ public class BurgerService {
                         burger.getId(),
                         burger.getName(),
                         burger.getDescription(),
+                        burger.getPictureUrl(),
                         burger.getPrice()
                 ))
                 .collect(Collectors.toList());
