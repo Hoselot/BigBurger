@@ -31,8 +31,8 @@ public class BurgerController {
 
     @PostMapping("/crearHamburguesa")
     @PreAuthorize("hasAuthority('CREATE')")
-    public String crearHamburguesa(@RequestBody BurgerModel burgerModel){
-        return burgerService.crearHamburguesa(burgerModel);
+    public ResponseEntity<BurgerModel> crearHamburguesa(@RequestBody BurgerModel burgerModel){
+        return ResponseEntity.ok(burgerService.crearHamburguesa(burgerModel));
     }
 
     @GetMapping("/listarHamburguesasAuth")

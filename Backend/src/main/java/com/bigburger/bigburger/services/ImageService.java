@@ -5,8 +5,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
 @Service
@@ -36,6 +39,21 @@ public class ImageService {
                 directory.mkdirs();
             }
 
+            // Calcular el hash (SHA-256) del archivo
+            String fileHash = calculateFileHash(file);
+
+            // Buscar si ya existe un archivo con el mismo hash
+            File[] existingFiles = directory.listFiles();
+            if (existingFiles != null) {
+                for (File existingFile : existingFiles) {
+                    if (fileHash.equals(calculateFileHash(existingFile))) {
+                        // Si ya existe un archivo igual, devolver su URL
+                        String existingFileUrl = baseUrl + "/uploads/" + existingFile.getName();
+                        return existingFileUrl;
+                    }
+                }
+            }
+
             // Generar un nombre único para el archivo
             String originalFilename = file.getOriginalFilename();
             String extension = originalFilename != null && originalFilename.contains(".")
@@ -51,9 +69,59 @@ public class ImageService {
             String fileUrl = baseUrl + "/uploads/" + uniqueFileName;
             return fileUrl;
 
-        } catch (IOException e) {
+        } catch (IOException | NoSuchAlgorithmException e) {
             e.printStackTrace();
             return "Error al guardar la imagen.";
         }
+    }
+
+    /**
+     * Calcula el hash SHA-256 de un archivo.
+     *
+     * @param file El archivo a calcular el hash.
+     * @return El hash en formato hexadecimal.
+     */
+    private String calculateFileHash(MultipartFile file) throws NoSuchAlgorithmException, IOException {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] bytes = file.getBytes();
+        byte[] hash = digest.digest(bytes);
+        return bytesToHex(hash);
+    }
+
+    /**
+     * Calcula el hash SHA-256 de un archivo en disco.
+     *
+     * @param file El archivo en disco a calcular el hash.
+     * @return El hash en formato hexadecimal.
+     */
+    private String calculateFileHash(File file) throws NoSuchAlgorithmException, IOException {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        try (FileInputStream fis = new FileInputStream(file)) {
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = fis.read(buffer)) != -1) {
+                digest.update(buffer, 0, bytesRead);
+            }
+        }
+        byte[] hash = digest.digest();
+        return bytesToHex(hash);
+    }
+
+    /**
+     * Convierte un arreglo de bytes en una representación hexadecimal.
+     *
+     * @param bytes El arreglo de bytes.
+     * @return La cadena en formato hexadecimal.
+     */
+    private String bytesToHex(byte[] bytes) {
+        StringBuilder hexString = new StringBuilder();
+        for (byte b : bytes) {
+            String hex = Integer.toHexString(0xff & b);
+            if (hex.length() == 1) {
+                hexString.append('0');
+            }
+            hexString.append(hex);
+        }
+        return hexString.toString();
     }
 }

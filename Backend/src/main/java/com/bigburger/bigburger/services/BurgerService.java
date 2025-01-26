@@ -51,12 +51,11 @@ public class BurgerService {
                 .collect(Collectors.toList());
     }
 
-    public String crearHamburguesa(BurgerModel burgerModel){
+    public BurgerModel crearHamburguesa(BurgerModel burgerModel){
         burgerModel.setGanancia(BigDecimal.valueOf(0));
         burgerModel.setPrice(BigDecimal.valueOf(0));
         burgerModel.setCosto(BigDecimal.valueOf(0));
-        burgerRepository.save(burgerModel);
-        return "Hamburguesa creada exitosamente";
+        return burgerRepository.save(burgerModel);
     }
 
     public String eliminarHamburguesa(Long id){
