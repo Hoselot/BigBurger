@@ -4,7 +4,9 @@ import { isTokenExpired } from "./utils/token-functions";
 import IndexPage from "@/pages/index";
 import DocsPage from "@/pages/docs";
 import PricingPage from "@/pages/pricing";
+
 import ElementPage from "@/pages/element-page";
+
 import BurgerPage from "@/pages/burger-page";
 
 function App() {

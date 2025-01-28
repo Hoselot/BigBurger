@@ -51,12 +51,11 @@ public class BurgerController {
     public String eliminarHamburguesa(@RequestParam Long id){
         return burgerService.eliminarHamburguesa(id);
     }
-//    @PutMapping("/actualizarHamburguesa")
-//    @PreAuthorize("hasAuthority('UPDATE')")
-//    public String actualizarHamburguesa(@RequestParam String nombreOriginal, @RequestParam String nombreNuevo,
-//                                        @RequestParam String descripcion, @RequestParam BigDecimal price){
-//        return burgerService.actualizarHamburguesa(nombreOriginal,nombreNuevo,descripcion,price);
-//    }
+    @PutMapping("/actualizarHamburguesa")
+    @PreAuthorize("hasAuthority('UPDATE')")
+    public ResponseEntity<BurgerModel> actualizarHamburguesa(@RequestParam Long idBurger,@RequestBody BurgerModel burgerModel){
+        return ResponseEntity.ok(burgerService.actualizarHamburguesa(idBurger,burgerModel));
+    }
 
     @PostMapping("/agregarElementoBurger")
     @PreAuthorize("hasAuthority('CREATE')")

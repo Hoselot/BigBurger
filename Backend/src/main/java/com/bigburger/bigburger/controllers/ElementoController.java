@@ -1,5 +1,6 @@
 package com.bigburger.bigburger.controllers;
 
+import com.bigburger.bigburger.models.BurgerModel;
 import com.bigburger.bigburger.models.ElementoModel;
 import com.bigburger.bigburger.services.ElementoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +33,16 @@ public class ElementoController {
     @PreAuthorize("hasAuthority('READ')")
     public List<ElementoModel> listarElementos(){
         return elementoService.listarElementos();
+    }
+
+    @PutMapping("/actualizarPrecioElemento")
+    @PreAuthorize("hasAuthority('UPDATE')")
+    public ResponseEntity<ElementoModel> actualizarPrecioElemento(@RequestParam Long idElemento, @RequestBody ElementoModel elementoModel){
+        return ResponseEntity.ok(elementoService.actualizarPrecioElemento(idElemento,elementoModel));
+    }
+    @PutMapping("/actualizarNombreElemento")
+    @PreAuthorize("hasAuthority('UPDATE')")
+    public ResponseEntity<ElementoModel> actualizarNombreElemento(@RequestParam Long idElemento, @RequestParam String nombreNuevo){
+        return ResponseEntity.ok(elementoService.actualizarNombreElemento(idElemento,nombreNuevo));
     }
 }
