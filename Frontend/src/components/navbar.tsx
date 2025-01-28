@@ -62,7 +62,7 @@ export const Navbar = () => {
       <NavbarContent justify="end">
         <NavbarItem>
           {isLoggedIn ? (
-            <Dropdown backdrop="blur">
+            <Dropdown >
               <DropdownTrigger>
                 <Button color="primary" variant="shadow">
                   Menú Admin
