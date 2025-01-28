@@ -16,8 +16,8 @@ interface NavItem {
 }
 
 const mainNav: NavItem[] = [
-  { title: "Hamburguesas", icon: PiHamburgerThin, href: "#" },
-  { title: "Elementos", icon: PiBreadThin, href: "#" },
+  { title: "Hamburguesas", icon: PiHamburgerThin, href: "BurgerPage" },
+  { title: "Elementos", icon: PiBreadThin, href: "ElementPage" },
   { title: "Stock", icon: PiBoxArrowDownThin, href: "#" },
   { title: "Pedidos", icon: PiNotepadThin, badge: "20+", href: "#" },
   { title: "Finanzas", icon: PiMathOperationsThin, href: "#" },

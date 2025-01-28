@@ -22,10 +22,10 @@ import {
 import {Button} from "@heroui/button";
 
 
-import  ModalBurguer  from "./crud-burger";
-import DeleteModal from "./delete-burger"
-import DetailModal from "./details-burger"
-import EditModal from "./edit-burger"
+import  ModalBurguer  from "./crud-element";
+import DeleteModal from "./delete-element"
+
+import EditModal from "./edit-element"
 export type IconSvgProps = SVGProps<SVGSVGElement> & {
   size?: number;
 };
@@ -34,31 +34,7 @@ export function capitalize(s: string) {
   return s ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : "";
 }
 
-export const PlusIcon = ({size = 24, width, height, ...props}: IconSvgProps) => {
-  return (
-    <svg
-      aria-hidden="true"
-      fill="none"
-      focusable="false"
-      height={size || height}
-      role="presentation"
-      viewBox="0 0 24 24"
-      width={size || width}
-      {...props}
-    >
-      <g
-        fill="none"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={1.5}
-      >
-        <path d="M6 12h12" />
-        <path d="M12 18V6" />
-      </g>
-    </svg>
-  );
-};
+
 
 export const VerticalDotsIcon = ({size = 24, width, height, ...props}: IconSvgProps) => {
   return (
@@ -138,9 +114,9 @@ export const ChevronDownIcon = ({strokeWidth = 1.5, ...otherProps}: IconSvgProps
 
 export const columns = [
   {name: "ID", uid: "id", sortable: true},
-  {name: "Imagen", uid: "image"},
+  
   {name: "Nombre", uid: "name", sortable: true},
-  {name: "Descripción", uid: "descripcion", sortable: true},
+  
   {name: "Precio", uid: "precio", sortable: true},
   
   
@@ -155,6 +131,7 @@ export const users = [
     id: 1,
     name: "Tony Reichert",
     descripcion: "una hamburguesa nasheasdasdsaaaassssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+    precio: "99",
     team: "Management",
     status: "active",
     age: "29",
@@ -435,11 +412,7 @@ export default function App() {
         case "actions":
           return (
             <div className="relative flex items-center gap-2">
-              <Tooltip content="Detalles" color="success">
-                <span className="text-lg text-success cursor-pointer active:opacity-50">
-                <DetailModal/>
-                </span>
-              </Tooltip>
+              
               <Tooltip content="Editar">
                 <span className="text-lg text-default-500 cursor-pointer active:opacity-50">
                   <EditModal />
@@ -452,18 +425,7 @@ export default function App() {
               </Tooltip>
             </div>
           );
-        case "image":
-          // Verificamos si la URL es válida antes de mostrarla
-          const imageSrc = String(cellValue); // Convierte a string si es número u otra cosa
-          return imageSrc ? (
-            <img
-              src={imageSrc}
-              alt="Imagen"
-              className="w-10 h-10 object-cover rounded-md"
-            />
-          ) : (
-            <span>No Image</span> // Puedes poner un mensaje o un ícono si no hay imagen
-          );
+        
       default:
         return cellValue;
     }
@@ -530,7 +492,7 @@ export default function App() {
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-default-400 text-small">Total de Hamburguesas: {users.length} </span>
+          <span className="text-default-400 text-small">Total de Elementos: {users.length} </span>
           <label className="flex items-center text-default-400 text-small">
             Productos por Página:
             <select

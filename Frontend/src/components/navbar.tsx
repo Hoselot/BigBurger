@@ -69,10 +69,10 @@ export const Navbar = () => {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu aria-label="Static Actions" variant="faded">
-                <DropdownItem key="burgers" href="/crud" description="Gestión de hamburguesas" startContent={<PiHamburgerThin className="h-7 w-7 shrink-0"/>}>
+                <DropdownItem key="burgers" href="/BurgerPage" description="Gestión de hamburguesas" startContent={<PiHamburgerThin className="h-7 w-7 shrink-0"/>}>
                   Hamburguesas
                 </DropdownItem>
-                <DropdownItem key="elements" href="/crud" description="Gestión de ingredientes" startContent={<PiBreadThin className="h-7 w-7 shrink-0"/>}>
+                <DropdownItem key="elements" href="/ElementPage" description="Gestión de ingredientes" startContent={<PiBreadThin className="h-7 w-7 shrink-0"/>}>
                   Elementos
                 </DropdownItem>
                 <DropdownItem key="stock" href="/crud" description="Control de inventario" startContent={<PiBoxArrowDownThin className="h-7 w-7 shrink-0"/>}>

@@ -4,8 +4,8 @@ import { isTokenExpired } from "./utils/token-functions";
 import IndexPage from "@/pages/index";
 import DocsPage from "@/pages/docs";
 import PricingPage from "@/pages/pricing";
-import BlogPage from "@/pages/blog";
-import CrudPage from "@/pages/crud";
+import ElementPage from "@/pages/element-page";
+import BurgerPage from "@/pages/burger-page";
 
 function App() {
   const navigate = useNavigate();
@@ -24,8 +24,8 @@ function App() {
       <Route element={<IndexPage />} path="/" />
       <Route element={<DocsPage />} path="/docs" />
       <Route element={<PricingPage />} path="/pricing" />
-      <Route element={<BlogPage />} path="/blog" />
-      <Route element={<CrudPage />} path="/crud" />
+      <Route element={<ElementPage />} path="/ElementPage" />
+      <Route element={<BurgerPage />} path="/BurgerPage" />
     </Routes>
   );
 }
