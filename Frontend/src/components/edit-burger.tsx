@@ -20,7 +20,7 @@ import {
       return (
           <>
             <Button isIconOnly color="default" variant="light" onPress={onOpen}><PiPencilSimpleLine/></Button>
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="3xl" backdrop="blur">
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="3xl">
               <ModalContent>
                 {(onClose) => (
                   <>

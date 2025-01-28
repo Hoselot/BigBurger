@@ -15,7 +15,7 @@ import {
       return (
           <>
             <Button isIconOnly color="success" variant="light" onPress={onOpen}><PiEye /></Button>
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange} backdrop="blur">
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange} >
               <ModalContent>
                 {(onClose) => (
                   <>

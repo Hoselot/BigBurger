@@ -15,7 +15,7 @@ export default function App() {
     return (
         <>
           <Button isIconOnly color="danger" variant="light" onPress={onOpen}><AiOutlineDelete/></Button>
-          <Modal isOpen={isOpen} onOpenChange={onOpenChange} backdrop="blur">
+          <Modal isOpen={isOpen} onOpenChange={onOpenChange} >
             <ModalContent>
               {(onClose) => (
                 <>
