@@ -5,7 +5,7 @@ import IndexPage from "@/pages/index";
 import DocsPage from "@/pages/docs";
 import PricingPage from "@/pages/pricing";
 import BlogPage from "@/pages/blog";
-import CrudPage from "@/pages/crud";
+import BurgerPage from "@/pages/burger-page";
 
 function App() {
   const navigate = useNavigate();
@@ -25,7 +25,7 @@ function App() {
       <Route element={<DocsPage />} path="/docs" />
       <Route element={<PricingPage />} path="/pricing" />
       <Route element={<BlogPage />} path="/blog" />
-      <Route element={<CrudPage />} path="/crud" />
+      <Route element={<BurgerPage />} path="/crud" />
     </Routes>
   );
 }
