@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { URLBASE } from "../utils/VariablesAndMethods"
 import {
     Modal,
     ModalContent,
@@ -26,7 +27,7 @@ import {
     
       const handleLogin = async () => {
         try {
-          const response = await fetch("http://localhost:8080/auth/login", {
+          const response = await fetch(URLBASE+"/auth/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ username, password }),

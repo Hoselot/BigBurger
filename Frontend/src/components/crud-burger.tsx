@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Input } from "@heroui/input";
+import { URLBASE } from "../utils/VariablesAndMethods"
 import {
   Modal,
   ModalContent,
@@ -51,7 +52,7 @@ export default function App() {
 
     try {
       // Crear la hamburguesa (sin imagen)
-      const response = await fetch("http://localhost:8080/burger/crearHamburguesa", {
+      const response = await fetch(URLBASE+"/burger/crearHamburguesa", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -73,7 +74,7 @@ export default function App() {
         formData.append("file", selectedFile);
 
         const imageResponse = await fetch(
-          "http://localhost:8080/burger/cambiarImagenHamburguesa",
+          URLBASE+"/burger/cambiarImagenHamburguesa",
           {
             method: "PUT",
             headers: {
