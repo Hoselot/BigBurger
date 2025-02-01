@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { URLBASE , getToken} from "../utils/VariablesAndMethods";
+import { useEffect, useState } from "react";
+import { URLBASE, getToken } from "../utils/VariablesAndMethods";
 import {
   Table,
   TableHeader,
@@ -23,7 +23,7 @@ import ModalBurguer from "./crud-burger";
 import DeleteModal from "./delete-burger";
 import DetailModal from "./details-burger";
 import EditModal from "./edit-burger";
-import { VerticalDotsIcon, SearchIcon, ChevronDownIcon } from "./table-icons";
+import { SearchIcon, ChevronDownIcon } from "./table-icons";
 
 interface Burger {
   id: number;
@@ -35,6 +35,17 @@ interface Burger {
   pictureUrl: string;
 }
 
+export const columns = [
+  { name: "ID", uid: "id", sortable: true },
+  { name: "Imagen", uid: "image" },
+  { name: "Nombre", uid: "name", sortable: true },
+  { name: "Descripción", uid: "description", sortable: true },
+  { name: "Precio", uid: "price", sortable: true },
+  { name: "Costo", uid: "costo", sortable: true },
+  { name: "Ganancia", uid: "ganancia", sortable: true },
+  { name: "Acciones", uid: "actions" },
+];
+
 export default function App() {
   const [burgers, setBurgers] = useState<Burger[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -42,11 +53,13 @@ export default function App() {
   const [filterValue, setFilterValue] = useState("");
   const [page, setPage] = useState(1);
   const rowsPerPage = 5;
+  
   const [visibleColumns, setVisibleColumns] = useState<Selection>(
-    new Set(["name", "description", "price", "costo", "ganancia", "actions"])
+    new Set(columns.map((col) => col.uid))
   );
-
-
+  const isColumnVisible = (uid: string) => {
+    return visibleColumns === "all" || (visibleColumns instanceof Set && visibleColumns.has(uid));
+  };
 
   useEffect(() => {
     const fetchBurgers = async () => {
@@ -56,11 +69,14 @@ export default function App() {
           alert("No estás autenticado. Por favor, inicia sesión.");
           return;
         }
-        const response = await fetch(URLBASE + "/burger/listarHamburguesasAuth", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await fetch(
+          URLBASE + "/burger/listarHamburguesasAuth",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Error al obtener las hamburguesas");
@@ -116,8 +132,8 @@ export default function App() {
               selectionMode="multiple"
               onSelectionChange={setVisibleColumns}
             >
-              {["name", "description", "price", "costo", "ganancia", "actions"].map((column) => (
-                <DropdownItem key={column}>{column}</DropdownItem>
+              {columns.map((column) => (
+                <DropdownItem key={column.uid}>{column.name}</DropdownItem>
               ))}
             </DropdownMenu>
           </Dropdown>
@@ -126,48 +142,41 @@ export default function App() {
       </div>
       <Table>
         <TableHeader>
-          <TableColumn>ID</TableColumn>
-          <TableColumn>Imagen</TableColumn>
-          <TableColumn>Nombre</TableColumn>
-          <TableColumn>Descripción</TableColumn>
-          <TableColumn>Precio</TableColumn>
-          <TableColumn>Costo</TableColumn>
-          <TableColumn>Ganancia</TableColumn>
-          <TableColumn>Acciones</TableColumn>
+          {columns
+            .filter((col) => isColumnVisible(col.uid))
+            .map((col) => (
+              <TableColumn key={col.uid}>{col.name}</TableColumn>
+            ))}
         </TableHeader>
         <TableBody>
-  {paginatedBurgers.map((burger) => (
-    <TableRow key={burger.id}>
-      <TableCell>{burger.id}</TableCell>
-      <TableCell>
-        <img src={burger.pictureUrl} alt={burger.name} width="50" />
-      </TableCell>
-      <TableCell>{burger.name}</TableCell>
-      <TableCell>{burger.description}</TableCell>
-      <TableCell>${burger.price.toFixed(2)}</TableCell>
-      <TableCell>${burger.costo.toFixed(2)}</TableCell>
-      <TableCell>${burger.ganancia.toFixed(2)}</TableCell>
-      <TableCell>
-        <Tooltip content="Detalles" color="success">
-          <div>
-            <DetailModal />
-          </div>
-        </Tooltip>
-        <Tooltip content="Editar">
-          <div>
-            <EditModal />
-          </div>
-        </Tooltip>
-        <Tooltip color="danger" content="Eliminar">
-          <div>
-            <DeleteModal burgerId={burger.id} />
-          </div>
-        </Tooltip>
-      </TableCell>
-    </TableRow>
-  ))}
-</TableBody>
-
+          {paginatedBurgers.map((burger) => (
+            <TableRow key={burger.id}>
+              {columns
+                .filter((col) => isColumnVisible(col.uid))
+                .map((col) => (
+                  <TableCell key={col.uid}>
+                    {col.uid === "image" ? (
+                      <img src={burger.pictureUrl} alt={burger.name} width="50" />
+                    ) : col.uid === "actions" ? (
+                      <>
+                        <Tooltip content="Detalles" color="success">
+                          <DetailModal />
+                        </Tooltip>
+                        <Tooltip content="Editar">
+                          <EditModal />
+                        </Tooltip>
+                        <Tooltip color="danger" content="Eliminar">
+                          <DeleteModal burgerId={burger.id} />
+                        </Tooltip>
+                      </>
+                    ) : (
+                      burger[col.uid as keyof Burger]
+                    )}
+                  </TableCell>
+                ))}
+            </TableRow>
+          ))}
+        </TableBody>
       </Table>
       <Pagination
         isCompact
