@@ -8,6 +8,7 @@ import PricingPage from "@/pages/pricing";
 import ElementPage from "@/pages/element-page";
 
 import BurgerPage from "@/pages/burger-page";
+import LocationPicker from './components/LocationPicker';
 
 function App() {
   const navigate = useNavigate();
@@ -28,6 +29,7 @@ function App() {
       <Route element={<PricingPage />} path="/pricing" />
       <Route element={<ElementPage />} path="/ElementPage" />
       <Route element={<BurgerPage />} path="/BurgerPage" />
+      <Route element={<LocationPicker />} path="/LocationPicker" />
     </Routes>
   );
 }

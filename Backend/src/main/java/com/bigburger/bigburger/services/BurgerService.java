@@ -56,6 +56,7 @@ public class BurgerService {
         burgerModel.setGanancia(BigDecimal.valueOf(0));
         burgerModel.setPrice(BigDecimal.valueOf(0));
         burgerModel.setCosto(BigDecimal.valueOf(0));
+        burgerModel.setPrivada(false);
         return burgerRepository.save(burgerModel);
     }
 
