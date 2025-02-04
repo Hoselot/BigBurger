@@ -55,7 +55,8 @@ export default function App() {
   const rowsPerPage = 5;
   
   const [visibleColumns, setVisibleColumns] = useState<Selection>(
-    new Set(columns.map((col) => col.uid))
+    // new Set(columns.map((col) => col.uid))
+    new Set(["name", "price", "actions"])
   );
   const isColumnVisible = (uid: string) => {
     return visibleColumns === "all" || (visibleColumns instanceof Set && visibleColumns.has(uid));
@@ -158,9 +159,9 @@ export default function App() {
                     {col.uid === "image" ? (
                       <img src={burger.pictureUrl} alt={burger.name} width="50" />
                     ) : col.uid === "actions" ? (
-                      <>
+                      <div className="flex">
                         <Tooltip content="Detalles" color="success">
-                          <DetailModal />
+                          <DetailModal burger={burger}/>
                         </Tooltip>
                         <Tooltip content="Editar">
                           <EditModal />
@@ -168,7 +169,7 @@ export default function App() {
                         <Tooltip color="danger" content="Eliminar">
                           <DeleteModal burgerId={burger.id} />
                         </Tooltip>
-                      </>
+                      </div>
                     ) : (
                       burger[col.uid as keyof Burger]
                     )}

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Input } from "@heroui/input";
-import { URLBASE } from "../utils/VariablesAndMethods"
+import { URLBASE } from "../utils/VariablesAndMethods";
+import { Toaster, toast } from "sonner";
 import {
   Modal,
   ModalContent,
@@ -46,13 +47,13 @@ export default function App() {
   const handleCreateBurger = async () => {
     const token = getToken();
     if (!token) {
-      alert("No estás autenticado. Por favor, inicia sesión.");
+      toast.error("No estás autenticado. Por favor, inicia sesión.");
       return;
     }
 
     try {
       // Crear la hamburguesa (sin imagen)
-      const response = await fetch(URLBASE+"/burger/crearHamburguesa", {
+      const response = await fetch(URLBASE + "/burger/crearHamburguesa", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -74,7 +75,7 @@ export default function App() {
         formData.append("file", selectedFile);
 
         const imageResponse = await fetch(
-          URLBASE+"/burger/cambiarImagenHamburguesa",
+          URLBASE + "/burger/cambiarImagenHamburguesa",
           {
             method: "PUT",
             headers: {
@@ -88,13 +89,15 @@ export default function App() {
           throw new Error("Error al subir la imagen de la hamburguesa");
         }
 
-        alert("Hamburguesa creada exitosamente con su imagen!");
+        toast.success("Hamburguesa creada exitosamente con su imagen!");
+        setTimeout(() => window.location.reload(), 1500);
       } else {
-        alert("Hamburguesa creada sin imagen.");
+        toast.success("Hamburguesa creada exitosamente!");
+        setTimeout(() => window.location.reload(), 1500);
       }
     } catch (error) {
       console.error(error);
-      alert("Hubo un error al crear la hamburguesa.");
+      toast.error("Hubo un error al crear la hamburguesa.");
     }
   };
 
@@ -110,6 +113,9 @@ export default function App() {
 
   return (
     <>
+      {/* Toaster global para las alertas */}
+      <Toaster position="top-center" />
+
       <Button
         color="primary"
         endContent={<PiPlusBold className="h-5 w-5" />}
@@ -117,6 +123,7 @@ export default function App() {
       >
         Crear Hamburguesa
       </Button>
+
       <Modal
         isOpen={isOpen}
         onOpenChange={(isOpen) => {
@@ -125,7 +132,6 @@ export default function App() {
           }
           onOpenChange(isOpen);
         }}
-        
       >
         <ModalContent>
           {(onClose) => (

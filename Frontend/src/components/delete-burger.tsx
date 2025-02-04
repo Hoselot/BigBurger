@@ -10,7 +10,7 @@ import { Button } from "@heroui/button";
 import { AiOutlineDelete } from "react-icons/ai";
 import { useState } from "react";
 import { URLBASE , getToken} from "../utils/VariablesAndMethods";
-
+import { Toaster, toast } from "sonner";
 export default function App({ burgerId }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [loading, setLoading] = useState(false);
@@ -29,9 +29,14 @@ export default function App({ burgerId }) {
       if (response.ok) {
         // Aquí puedes manejar lo que sucede cuando la eliminación es exitosa
         console.log("Hamburguesa eliminada");
+        toast.success("Hamburguesa eliminada exitosamente");
+        setTimeout(() => window.location.reload(), 1500);
+
       } else {
         // Manejo de error
+
         console.error("Hubo un problema al eliminar la hamburguesa");
+        toast.error("Hubo un problema al eliminar la hamburguesa");
       }
     } catch (error) {
       console.error("Error al realizar la solicitud:", error);
@@ -43,6 +48,8 @@ export default function App({ burgerId }) {
 
   return (
     <>
+      <Toaster position="top-center" />
+     
       <Button
         isIconOnly
         color="danger"
