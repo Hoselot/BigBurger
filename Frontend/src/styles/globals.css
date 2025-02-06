@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Fuentes del logo */
+.Logo-font {
+  font-family: "The Nautigal", serif;
+  font-weight: 600;
+  font-style: normal;
+  font-size:xx-large;
+}

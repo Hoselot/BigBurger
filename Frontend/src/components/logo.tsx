@@ -1,14 +1,15 @@
 import {Image} from "@heroui/image";
-
+import Logo from "../assets/Logo2.png";
+import "../styles/globals.css";
 export default function App() {
   return (
-    <div className="flex items-center justify-center gap-3">
+    <div className="flex items-center justify-center gap-1">
         <Image
-        alt="HeroUI hero Image"
-        src="https://www.pinclipart.com/picdir/big/531-5317319_burger-cartoon-png-clipart.png"
-        width={50}
+        alt="BigBurger"
+        src={Logo}
+        width={150}
         />
-        <p>LOGO</p>
+         <p className="Logo-font">Big Burger</p>
     </div>
    
     

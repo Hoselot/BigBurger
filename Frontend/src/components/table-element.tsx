@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { URLBASE , getToken} from "../utils/VariablesAndMethods";
 import {
   Table,
@@ -21,8 +21,8 @@ import {
 } from "@heroui/dropdown";
 import ModalElemento from "./crud-element";
 import DeleteModal from "./delete-element";
-import EditModal from "./edit-burger";
-import { VerticalDotsIcon, SearchIcon, ChevronDownIcon } from "./table-icons";
+import EditModal from "./edit-element";
+import {SearchIcon, ChevronDownIcon } from "./table-icons";
 
 interface Elemento {
   id: number;
@@ -30,6 +30,13 @@ interface Elemento {
   price: number;
   pictureUrl: string;
 }
+
+export const columns = [
+  { name: "ID", uid: "id", sortable: true },
+  { name: "Nombre", uid: "name", sortable: true },
+  { name: "Precio", uid: "price", sortable: true },
+  { name: "Acciones", uid: "actions" },
+];
 
 export default function App() {
   const [elementos, setElementos] = useState<Elemento[]>([]);
@@ -39,8 +46,12 @@ export default function App() {
   const [page, setPage] = useState(1);
   const rowsPerPage = 5;
   const [visibleColumns, setVisibleColumns] = useState<Selection>(
-    new Set(["name","price","actions"])
+    // new Set(columns.map((col) => col.uid))
+    new Set(["name", "price", "actions"])
   );
+  const isColumnVisible = (uid: string) => {
+    return visibleColumns === "all" || (visibleColumns instanceof Set && visibleColumns.has(uid));
+  };
 
 
 
@@ -112,9 +123,9 @@ export default function App() {
               selectionMode="multiple"
               onSelectionChange={setVisibleColumns}
             >
-              {["name", "price", "actions"].map((column) => (
-                <DropdownItem key={column}>{column}</DropdownItem>
-              ))}
+              {columns.map((col) => (
+  <DropdownItem key={col.uid}>{col.name}</DropdownItem>
+))}
             </DropdownMenu>
           </Dropdown>
           <ModalElemento />
@@ -122,32 +133,38 @@ export default function App() {
       </div>
       <Table>
         <TableHeader>
-          <TableColumn>ID</TableColumn>
-          <TableColumn>Nombre</TableColumn>
-          <TableColumn>Precio</TableColumn>
-          <TableColumn>Acciones</TableColumn>
-        </TableHeader>
-        <TableBody>
-  {paginatedElementos.map((elemento) => (
-    <TableRow key={elemento.id}>
-      <TableCell>{elemento.id}</TableCell>
-      <TableCell>{elemento.name}</TableCell>
-      <TableCell>${elemento.price.toFixed(2)}</TableCell>
-      <TableCell>
-        <Tooltip content="Editar">
-          <div>
-            <EditModal />
-          </div>
-        </Tooltip>
-        <Tooltip color="danger" content="Eliminar">
-          <div>
-            <DeleteModal elementoId={elemento.id} />
-          </div>
-        </Tooltip>
-      </TableCell>
-    </TableRow>
-  ))}
-</TableBody>
+                  {columns
+                    .filter((col) => isColumnVisible(col.uid))
+                    .map((col) => (
+                      <TableColumn key={col.uid}>{col.name}</TableColumn>
+                    ))}
+                </TableHeader>
+                <TableBody>
+                {paginatedElementos.map((elemento) => (
+                            <TableRow key={elemento.id}>
+                              {columns
+                                .filter((col) => isColumnVisible(col.uid))
+                                .map((col) => (
+                                  <TableCell key={col.uid}>
+                                    { col.uid === "actions" ? (
+                                      <div className="flex">
+                                        
+                                        <Tooltip content="Editar">
+                                          <EditModal />
+                                        </Tooltip>
+                                        <Tooltip color="danger" content="Eliminar">
+                                        <DeleteModal elementoId={elemento.id} />
+                                        </Tooltip>
+                                      </div>
+                                    ) : (
+                                      elemento[col.uid as keyof Elemento]
+                                    )}
+                                  </TableCell>
+                                ))}
+                            </TableRow>
+                          ))}
+                        </TableBody>
+        
 
       </Table>
       <Pagination

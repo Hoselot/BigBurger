@@ -27,14 +27,14 @@ export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState<boolean>(false); // Tipo boolean para el estado del menú
   
   return (
-    <HeroUINavbar maxWidth="xl" position="sticky" shouldHideOnScroll onMenuOpenChange={setIsMenuOpen}>
+    <HeroUINavbar maxWidth="xl" position="sticky" shouldHideOnScroll onMenuOpenChange={setIsMenuOpen} className='p-3'>
       <NavbarContent>
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           className="sm:hidden"
         />
         <NavbarBrand >
-        <Link href="/">
+        <Link href="/" color="foreground">
           <Image />
         </Link>
           

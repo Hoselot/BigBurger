@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Input } from "@heroui/input";
 import { URLBASE, getToken } from "../utils/VariablesAndMethods";
+import { Toaster, toast } from "sonner";
 import {
   Modal,
   ModalContent,
@@ -51,10 +52,12 @@ export default function CrudElemento() {
         throw new Error("Error al crear el elemento");
       }
 
-      alert("Elemento creado exitosamente!");
+      toast.success("Elemento creado exitosamente!");
+      setTimeout(() => window.location.reload(), 1500);
     } catch (error) {
       console.error(error);
-      alert("Hubo un error al crear el elemento.");
+      toast.error("Error al crear un nuevo elemento");
+      
     }
   };
 
@@ -64,6 +67,8 @@ export default function CrudElemento() {
 
   return (
     <>
+    <Toaster position="top-center" />
+
       <Button
         color="primary"
         endContent={<PiPlusBold className="h-5 w-5" />}

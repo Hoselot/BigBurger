@@ -36,7 +36,7 @@ export function Sidebar({ collapsed, setCollapsed }: { collapsed: boolean; setCo
         <div className={cn('flex items-center gap-2', collapsed ? 'justify-center' : 'justify-between')}>
           {!collapsed && (
             <div>
-              <Link href="/">
+              <Link href="/" color="foreground">
                 <Image />
               </Link>
             </div>

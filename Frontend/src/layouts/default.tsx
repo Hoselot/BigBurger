@@ -1,7 +1,7 @@
 import { Link } from "@heroui/link";
 
 import { Navbar } from "@/components/navbar";
-import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa';
+import { FaInstagram } from 'react-icons/fa';
 import BotonLogin from "../components/modal";
 import Image from "../components/logo";
 export default function DefaultLayout({
@@ -60,22 +60,7 @@ export default function DefaultLayout({
             <div className="space-y-4">
               <h3 className="text-xl font-bold text-gray-900">Redes Sociales</h3>
               <div className="flex justify-center md:justify-start space-x-4">
-                <a
-                  href="https://facebook.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-700 hover:text-gray-900"
-                >
-                  <FaFacebook size={24} />
-                </a>
-                <a
-                  href="https://twitter.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-700 hover:text-gray-900"
-                >
-                  <FaTwitter size={24} />
-                </a>
+               
                 <a
                   href="https://instagram.com"
                   target="_blank"
@@ -84,14 +69,7 @@ export default function DefaultLayout({
                 >
                   <FaInstagram size={24} />
                 </a>
-                <a
-                  href="https://linkedin.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-700 hover:text-gray-900"
-                >
-                  <FaLinkedin size={24} />
-                </a>
+                
               </div>
             </div>
           </div>
