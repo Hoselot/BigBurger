@@ -22,8 +22,9 @@ import {
 import ModalElemento from "./crud-element";
 import DeleteModal from "./delete-element";
 import EditModal from "./edit-element";
-import {SearchIcon, ChevronDownIcon } from "./table-icons";
 
+import { CiSearch } from "react-icons/ci";
+import { IoIosArrowDown } from "react-icons/io";
 interface Elemento {
   id: number;
   name: string;
@@ -104,7 +105,7 @@ export default function App() {
           isClearable
           className="w-full sm:max-w-[44%]"
           placeholder="Buscar por Nombre..."
-          startContent={<SearchIcon />}
+          startContent={<CiSearch />}
           value={filterValue}
           onClear={() => setFilterValue("")}
           onValueChange={setFilterValue}
@@ -112,7 +113,7 @@ export default function App() {
         <div className="flex gap-3">
           <Dropdown>
             <DropdownTrigger className="hidden sm:flex">
-              <Button endContent={<ChevronDownIcon />} variant="flat">
+              <Button endContent={<IoIosArrowDown  />} variant="flat">
                 Columnas
               </Button>
             </DropdownTrigger>

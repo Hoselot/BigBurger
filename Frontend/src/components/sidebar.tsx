@@ -2,8 +2,8 @@
 import Image from "./logo";
 
 import { cn } from "../utils/utils"
-import { CiLogout } from "react-icons/ci";
-import { PiCaretLineLeftThin, PiHamburgerThin, PiNotepadThin,PiBreadThin, PiBoxArrowDownThin, PiMathOperationsThin } from "react-icons/pi";
+import { CiLogout, CiFries } from "react-icons/ci";
+import { PiBeerBottleThin ,PiCaretLineLeftThin, PiHamburgerThin, PiNotepadThin,PiBreadThin, PiBoxArrowDownThin, PiMathOperationsThin } from "react-icons/pi";
 
 import { Button } from "@heroui/button"
 import { Link } from "@heroui/link"
@@ -17,7 +17,9 @@ interface NavItem {
 
 const mainNav: NavItem[] = [
   { title: "Hamburguesas", icon: PiHamburgerThin, href: "BurgerPage" },
+  { title: "Papas Fritas", icon: CiFries, href: "BurgerPage" },
   { title: "Elementos", icon: PiBreadThin, href: "ElementPage" },
+  { title: "Bebidas", icon: PiBeerBottleThin, href: "ElementPage" },
   { title: "Stock", icon: PiBoxArrowDownThin, href: "#" },
   { title: "Pedidos", icon: PiNotepadThin, badge: "20+", href: "#" },
   { title: "Finanzas", icon: PiMathOperationsThin, href: "#" },

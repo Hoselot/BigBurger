@@ -62,7 +62,7 @@ export default function DefaultLayout({
               <div className="flex justify-center md:justify-start space-x-4">
                
                 <a
-                  href="https://instagram.com"
+                  href="https://www.instagram.com/biggburgerr?igsh=dm01NnpjOHh4MjBs"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-gray-700 hover:text-gray-900"

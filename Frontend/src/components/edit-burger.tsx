@@ -1,4 +1,5 @@
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@heroui/table";
+import { Input} from "@heroui/input"
 
 import {
     Modal,
@@ -26,15 +27,21 @@ import {
                   <>
                     <ModalHeader className="flex gap-1">Hamburguesa <Button isIconOnly color="default" variant="light"><PiPencilSimpleLine/></Button></ModalHeader>
                     <ModalBody>
+                      <div className="flex">
                       <div className="flex ">
                       <img className="w-80" src="https://th.bing.com/th/id/OIP.xpHtN8nOMEDD69KJLoiHDAHaHa?rs=1&pid=ImgDetMain" alt="" />
                       <Button isIconOnly color="default" variant="light"><PiPencilSimpleLine/></Button>
                       </div>
-                      <div className="flex">
+                      <div className="ml-12">
+                        <div className="flex">
+
                         <h1>Descripcion</h1> <Button isIconOnly color="default" variant="light"><PiPencilSimpleLine/></Button>
+                        </div>
                         
-                      </div>
                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aspernatur ex unde, inventore animi nam quo eius ratione accusamus neque sapiente, optio ad recusandae quod officiis sequi error deleniti ipsum vero!</p>
+                      </div>
+
+                      </div>
                         <div className="flex">
 
                         <h1>Ingredientes</h1>
@@ -51,35 +58,42 @@ import {
                         </Dropdown>
                         </div>
                         <Table aria-label="Example static collection table">
-                          <TableHeader>
-                            <TableColumn>Elementos</TableColumn>
-                            <TableColumn>Cantidad</TableColumn>
-                            <TableColumn>Precio</TableColumn>
-                            
-                          </TableHeader>
-                          <TableBody>
-                            <TableRow key="1">
-                              <TableCell>Tony Reichert</TableCell>
-                              <TableCell>CEO</TableCell>
-                              <TableCell>Active</TableCell>
-                            </TableRow>
-                            <TableRow key="2">
-                              <TableCell>Zoey Lang</TableCell>
-                              <TableCell>Technical Lead</TableCell>
-                              <TableCell>Paused</TableCell>
-                            </TableRow>
-                            <TableRow key="3">
-                              <TableCell>Jane Fisher</TableCell>
-                              <TableCell>Senior Developer</TableCell>
-                              <TableCell>Active</TableCell>
-                            </TableRow>
-                            <TableRow key="4">
-                              <TableCell>William Howard</TableCell>
-                              <TableCell>Community Manager</TableCell>
-                              <TableCell>Vacation</TableCell>
-                            </TableRow>
-                          </TableBody>
-                        </Table>
+      <TableHeader>
+        <TableColumn>Elementos</TableColumn>
+        <TableColumn>Cantidad</TableColumn>
+        <TableColumn>Precio</TableColumn>
+      </TableHeader>
+      <TableBody>
+        <TableRow key="1">
+          <TableCell>Tony Reichert</TableCell>
+          <TableCell>
+            <Input type="number" defaultValue="1" min="0" />
+          </TableCell>
+          <TableCell>Active</TableCell>
+        </TableRow>
+        <TableRow key="2">
+          <TableCell>Zoey Lang</TableCell>
+          <TableCell>
+            <Input type="number" defaultValue="2" min="0" />
+          </TableCell>
+          <TableCell>Paused</TableCell>
+        </TableRow>
+        <TableRow key="3">
+          <TableCell>Jane Fisher</TableCell>
+          <TableCell>
+            <Input type="number" defaultValue="3" min="0" />
+          </TableCell>
+          <TableCell>Active</TableCell>
+        </TableRow>
+        <TableRow key="4">
+          <TableCell>William Howard</TableCell>
+          <TableCell>
+            <Input type="number" defaultValue="4" min="0" />
+          </TableCell>
+          <TableCell>Vacation</TableCell>
+        </TableRow>
+      </TableBody>
+    </Table>
                         
                         <h1>Costo: $99990</h1>
                         <div className="flex">
