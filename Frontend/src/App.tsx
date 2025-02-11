@@ -3,7 +3,7 @@ import { useNavigate, Route, Routes } from 'react-router-dom';
 import { isTokenExpired } from "./utils/token-functions";
 import IndexPage from "@/pages/index";
 import DocsPage from "@/pages/docs";
-import PricingPage from "@/pages/pricing";
+import IndividualBurgerPage from "@/pages/individual-product-page";
 
 import ElementPage from "@/pages/element-page";
 
@@ -26,7 +26,7 @@ function App() {
     <Routes>
       <Route element={<IndexPage />} path="/" />
       <Route element={<DocsPage />} path="/docs" />
-      <Route element={<PricingPage />} path="/pricing" />
+      <Route element={<IndividualBurgerPage />} path="/IndividualBurgerPage/:id" />
       <Route element={<ElementPage />} path="/ElementPage" />
       <Route element={<BurgerPage />} path="/BurgerPage" />
       <Route element={<LocationPicker />} path="/LocationPicker" />

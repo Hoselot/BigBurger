@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { Card, CardBody, CardFooter } from "@heroui/card";
 import { Image } from "@heroui/image";
-
+import { useNavigate } from "react-router-dom";
 export default function App() {
+  const navigate = useNavigate();
   const [burgers, setBurgers] = useState<
     { id: number; name: string; price: number; pictureUrl: string }[]
   >([]);
@@ -32,7 +33,8 @@ export default function App() {
           key={burger.id}
           className="box-border bg-[rgb(255,255,255)] border-2 border-white shadow-[12px_17px_51px_rgba(0,0,0,0.22)] backdrop-blur-[6px] rounded-[17px] text-center cursor-pointer transition-all duration-500 flex items-center justify-center select-none font-bold text-black hover:border-black hover:scale-105 active:scale-95 active:rotate-[1.7deg]"
           isPressable
-          onPress={() => console.log(`Hamburguesa seleccionada: ${burger.name}`)}
+          // onPress={() => console.log(`Hamburguesa seleccionada: ${burger.name}`)}
+          onPress={() => navigate(`/IndividualBurgerPage/${burger.id}`, { state: { burger } })}
         >
           <CardBody className="overflow-hidden p-0">
             <Image
