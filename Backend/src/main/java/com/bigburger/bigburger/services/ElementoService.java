@@ -2,12 +2,8 @@ package com.bigburger.bigburger.services;
 
 import com.bigburger.bigburger.exeptions.BurgerNotFoundException;
 import com.bigburger.bigburger.exeptions.ElementoNotFoundException;
-import com.bigburger.bigburger.models.BurgerElementoModel;
-import com.bigburger.bigburger.models.BurgerModel;
-import com.bigburger.bigburger.models.ElementoModel;
-import com.bigburger.bigburger.repository.IBurgerElementoRepository;
-import com.bigburger.bigburger.repository.IBurgerRepository;
-import com.bigburger.bigburger.repository.IElementoRepository;
+import com.bigburger.bigburger.models.*;
+import com.bigburger.bigburger.repository.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +17,10 @@ public class ElementoService {
     @Autowired
     private IElementoRepository elementoRepository;
     @Autowired
+    private IPapasRepository papasRepository;
+    @Autowired
+    private IPapasElementoRepository papasElementoRepository;
+    @Autowired
     private IBurgerRepository burgerRepository;
     @Autowired
     private IBurgerElementoRepository burgerElementoRepository;
@@ -32,6 +32,14 @@ public class ElementoService {
     @Transactional
     public void eliminarElemento(Long id){
         List<BurgerElementoModel> elementoBurgers = burgerElementoRepository.findAllByElementoModelId(id);
+        List<PapasElementoModel> elementoPapas = papasElementoRepository.findAllByElementoModelId(id);
+        for(PapasElementoModel papasElementoModel:elementoPapas){
+            PapasModel papasModel = papasElementoModel.getPapasModel();
+            papasModel.setCosto(papasModel.getCosto().subtract(papasElementoModel.getElementoModel().getPrice()));
+            papasModel.setPrice(papasModel.getCosto());
+            papasModel.setPrice(papasModel.getPrice().add(papasModel.getGanancia()));
+            papasRepository.save(papasModel);
+        }
         for(BurgerElementoModel burgerElementoModel:elementoBurgers){
            BurgerModel burgerModel = burgerElementoModel.getBurgerModel();
            burgerModel.setCosto(burgerModel.getCosto().subtract(burgerElementoModel.getElementoModel().getPrice()));
@@ -39,6 +47,7 @@ public class ElementoService {
            burgerModel.setPrice(burgerModel.getPrice().add(burgerModel.getGanancia()));
            burgerRepository.save(burgerModel);
         }
+        papasElementoRepository.deleteByElementoModelId(id);
         burgerElementoRepository.deleteByElementoModelId(id);
         elementoRepository.deleteById(id);
     }
@@ -70,6 +79,27 @@ public class ElementoService {
             // Actualizar el precio del elemento
             elementoModel.setPrice(elementoModelBody.getPrice());
             elementoRepository.save(elementoModel);
+
+            // Obtener las papas relacionadas con este elemento
+            List<PapasElementoModel> elementoPapas = papasElementoRepository.findAllByElementoModelId(idElemento);
+
+            // Ajustar los costos de cada una de las papas afectadas
+            for (PapasElementoModel papasElementoModel : elementoPapas) {
+                PapasModel papasModel = papasElementoModel.getPapasModel();
+
+                // Actualizar el costo de la burger basado en el nuevo precio
+                BigDecimal costoNuevoElemento = elementoModelBody.getPrice();
+                BigDecimal costoViejoElemento = precioAnterior;
+
+                // Restar el costo antiguo y sumar el costo nuevo
+                papasModel.setCosto(papasModel.getCosto().subtract(costoViejoElemento).add(costoNuevoElemento));
+
+                // Actualizar el precio final de la burger (costo + ganancia)
+                papasModel.setPrice(papasModel.getCosto().add(papasModel.getGanancia()));
+
+                // Guardar los cambios de la burger
+                papasRepository.save(papasModel);
+            }
 
             // Obtener las burgers relacionadas con este elemento
             List<BurgerElementoModel> elementoBurgers = burgerElementoRepository.findAllByElementoModelId(idElemento);

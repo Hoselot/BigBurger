@@ -3,6 +3,7 @@ package com.bigburger.bigburger.services;
 import com.bigburger.bigburger.dto.BurgerDto;
 import com.bigburger.bigburger.exeptions.BurgerNotFoundException;
 import com.bigburger.bigburger.exeptions.ElementoNotFoundException;
+import com.bigburger.bigburger.models.BebidaModel;
 import com.bigburger.bigburger.models.BurgerElementoModel;
 import com.bigburger.bigburger.models.BurgerModel;
 import com.bigburger.bigburger.models.ElementoModel;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -53,6 +55,12 @@ public class BurgerService {
     }
 
     public BurgerModel crearHamburguesa(BurgerModel burgerModel){
+        Optional<BurgerModel> burgerExistente = burgerRepository.findBurgerByName(burgerModel.getName());
+
+        if (burgerExistente.isPresent()) {
+            throw new IllegalArgumentException("Ya existe una hamburguesa con el nombre: " + burgerModel.getName());
+        }
+
         burgerModel.setGanancia(BigDecimal.valueOf(0));
         burgerModel.setPrice(BigDecimal.valueOf(0));
         burgerModel.setCosto(BigDecimal.valueOf(0));
