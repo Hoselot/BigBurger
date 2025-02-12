@@ -1,32 +1,20 @@
 "use client"
-import Image from "./logo";
-
+import { useLocation } from "react-router-dom";
 import { cn } from "../utils/utils"
-import { CiLogout, CiFries } from "react-icons/ci";
-import { PiBeerBottleThin ,PiCaretLineLeftThin, PiHamburgerThin, PiNotepadThin,PiBreadThin, PiBoxArrowDownThin, PiMathOperationsThin } from "react-icons/pi";
-
 import { Button } from "@heroui/button"
 import { Link } from "@heroui/link"
+import { Listbox, ListboxItem} from "@heroui/listbox";
+import Image from "./logo";
+import { CiLogout, CiFries, CiDeliveryTruck } from "react-icons/ci";
+import { PiBeerBottleThin ,PiCaretLineLeftThin, PiHamburgerThin, PiNotepadThin,PiBreadThin, PiBoxArrowDownThin, PiMathOperationsThin } from "react-icons/pi";
 
-interface NavItem {
-  title: string
-  icon: React.ElementType
-  badge?: string
-  href: string
-}
 
-const mainNav: NavItem[] = [
-  { title: "Hamburguesas", icon: PiHamburgerThin, href: "BurgerPage" },
-  { title: "Papas Fritas", icon: CiFries, href: "BurgerPage" },
-  { title: "Elementos", icon: PiBreadThin, href: "ElementPage" },
-  { title: "Bebidas", icon: PiBeerBottleThin, href: "ElementPage" },
-  { title: "Stock", icon: PiBoxArrowDownThin, href: "#" },
-  { title: "Pedidos", icon: PiNotepadThin, badge: "20+", href: "#" },
-  { title: "Finanzas", icon: PiMathOperationsThin, href: "#" },
-  
-]
+
+
 
 export function Sidebar({ collapsed, setCollapsed }: { collapsed: boolean; setCollapsed: React.Dispatch<React.SetStateAction<boolean>> }) {
+  const location = useLocation(); // Obtiene la URL actual
+  const iconClasses = "text-3xl  pointer-events-none flex-shrink-0";
   return (
     <div
       className={cn(
@@ -34,7 +22,7 @@ export function Sidebar({ collapsed, setCollapsed }: { collapsed: boolean; setCo
         collapsed ? 'w-[90px]' : 'w-[240px]'
       )}
     >
-      <div className="flex h-14 items-center border-b border-navy-700 px-3">
+      <div className="flex h-14  border-b border-navy-700 px-3">
         <div className={cn('flex items-center gap-2', collapsed ? 'justify-center' : 'justify-between')}>
           {!collapsed && (
             <div>
@@ -44,10 +32,12 @@ export function Sidebar({ collapsed, setCollapsed }: { collapsed: boolean; setCo
             </div>
           )}
           <Button
+            isIconOnly 
+            aria-label="Arrow"
             variant="ghost"
             size="sm"
             className="w-2"
-            onClick={() => setCollapsed(!collapsed)}
+            onPress={() => setCollapsed(!collapsed)}
           >
             <PiCaretLineLeftThin
               className={cn('h-4 w-4 transition-transform', collapsed && 'rotate-180')}
@@ -56,49 +46,109 @@ export function Sidebar({ collapsed, setCollapsed }: { collapsed: boolean; setCo
         </div>
       </div>
 
-      <nav className="space-y-1">
-        {mainNav.map((item) => (
-          <a
-            key={item.title}
-            href={item.href}
+      <nav className="space-y-1 p-2">
+        <Listbox
+        
+          aria-label="Listbox menu with descriptions"
+          variant="flat"
+          className="w-full"
+        >
+          {[
+            {
+              key: "burgers",
+              href: "/BurgerPage",
+              label: "Hamburguesas",
+              description: "Gestión de Hamburguesas",
+              icon: <PiHamburgerThin className={iconClasses} />,
+            },
+            {
+              key: "fries",
+              href: "/#",
+              label: "Papas Fritas",
+              description: "Gestión de Papas Fritas",
+              icon: <CiFries className={iconClasses} />,
+            },
+            {
+              key: "elements",
+              href: "/ElementPage",
+              label: "Elementos",
+              description: "Gestión de Ingredientes",
+              icon: <PiBreadThin className={iconClasses} />,
+            },
+            {
+              key: "drinks",
+              href: "/DrinksPage",
+              label: "Bebidas",
+              description: "Gestión de Bebidas",
+              icon: <PiBeerBottleThin className={iconClasses} />,
+            },
+            {
+              key: "stock",
+              href: "/StockPage",
+              label: "Stock",
+              description: "Control de inventario",
+              icon: <PiBoxArrowDownThin className={iconClasses} />,
+            },
+            {
+              key: "pedidos",
+              href: "/#",
+              label: "Pedidos",
+              description: "Administración de pedidos",
+              icon: <PiNotepadThin className={iconClasses} />,
+            },
+            {
+              key: "finanzas",
+              href: "/#",
+              label: "Finanzas",
+              description: "Control financiero",
+              icon: <PiMathOperationsThin className={iconClasses} />,
+            },
+            {
+              key: "delivery",
+              href: "/#",
+              label: "Delivery",
+              description: "Gestión de Costos",
+              icon: <CiDeliveryTruck className={iconClasses} />,
+            },
+          ].map(({ key, href, label, description, icon }) => (
+            <ListboxItem
+            key={key}
+            href={href}
+            startContent={icon}
+            description={collapsed ? "" : description} // Oculta la descripción si está colapsado
             className={cn(
-              'flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-navy-100 transition-colors hover:bg-navy-800',
-              !collapsed ? 'justify-start' : 'justify-center'
+              "flex w-full transition-all duration-300",
+              location.pathname === href ? "bg-gray-200" : "",
+              collapsed ? "p-1 justify-center" : " p-3"
             )}
           >
-            <item.icon className="h-7 w-7 shrink-0" />
-            {!collapsed && (
-              <>
-                <span className="flex-1">{item.title}</span>
-                {item.badge && (
-                  <span className="rounded-full bg-navy-700 px-2 text-xs">{item.badge}</span>
-                )}
-              </>
-            )}
-          </a>
-        ))}
-      </nav>
+            {!collapsed && label}
+          </ListboxItem>
+          ))}
 
-      <div className="border-t border-navy-700 p-3">
-        <div
+        </Listbox>
+        <Listbox >
+        <ListboxItem
+         
+          key="logout"
+          
+          color="danger"
+          startContent={
+            <CiLogout className={cn(iconClasses )} />
+          }
           className={cn(
-            'flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-navy-100',
-            !collapsed ? 'justify-start' : 'justify-center'
+            "text-danger flex items-center transition-all duration-300",
+            
+            collapsed ? "justify-center p-1" : "p-3"
           )}
         >
-          
-          <Button
-  className={`flex items-center ${collapsed ? "justify-center" : "flex-1"}`}
-  color="danger"
-  startContent={<CiLogout className="h-6 w-6 shrink-0"/>}
-  variant="ghost"
-  size="sm"
-            
->
-  {!collapsed && <span>Cerrar Sesión</span>}
-</Button>
-        </div>
-      </div>
+          {!collapsed && "Cerrar Sesión"}
+        </ListboxItem>
+        </Listbox>
+        
+      </nav>
+    
+      
     </div>
   );
 }

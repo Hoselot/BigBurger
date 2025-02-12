@@ -12,6 +12,7 @@ import {
 } from "@heroui/modal";
 import { Button } from "@heroui/button";
 import { PiPlusBold } from "react-icons/pi";
+import {Textarea} from "@heroui/input";
 
 export default function App() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -148,13 +149,21 @@ export default function App() {
                     value={burgerData.name}
                     onChange={handleInputChange}
                   />
-                  <Input
+                  <Textarea 
+                    name="description"
+                    className=" w-full" 
+                    label="Descripción" 
+                    placeholder="Describe tu nueva Hamburguesa"
+                    value={burgerData.description}
+                    onChange={handleInputChange}
+                  />
+                  {/* <Input
                     label="Descripción"
                     name="description"
                     type="text"
                     value={burgerData.description}
                     onChange={handleInputChange}
-                  />
+                  /> */}
                   <div>
                     <Input
                       label="Imagen"
