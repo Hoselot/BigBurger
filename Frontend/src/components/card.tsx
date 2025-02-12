@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Card, CardBody, CardFooter } from "@heroui/card";
 import { Image } from "@heroui/image";
 import { useNavigate } from "react-router-dom";
+
+
 export default function App() {
   const navigate = useNavigate();
   const [burgers, setBurgers] = useState<
@@ -48,6 +50,7 @@ export default function App() {
             <b>{burger.name}</b>
             <p className="text-default-500">${burger.price.toFixed(2)}</p>
           </CardFooter>
+          
         </Card>
       ))}
     </div>

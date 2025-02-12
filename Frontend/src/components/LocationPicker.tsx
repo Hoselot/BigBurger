@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { URLBASE } from "../utils/VariablesAndMethods";
-
+import {Button} from "@heroui/button";
 const LocationPicker: React.FC = () => {
     const [selectedLocation, setSelectedLocation] = useState<{ lat: number; lng: number } | null>(null);
     const [googleMapsLink, setGoogleMapsLink] = useState<string | null>(null);
@@ -17,12 +17,25 @@ const LocationPicker: React.FC = () => {
         {
             name: "Zona 1",
             coordinates: [
-                [-32.93, -68.74], // Vértice 1
-                [-32.93, -68.73], // Vértice 2
-                [-32.935, -68.72], // Vértice 3 (punto adicional)
-                [-32.94, -68.73], // Vértice 4
-                [-32.94, -68.74], // Vértice 5
-                [-32.935, -68.75], // Vértice 6 (punto adicional)
+                [-32.89662346034667, -68.77789932456129],
+                [-32.901507581992554, -68.76025493164758],
+                [-32.904412077009404, -68.75685620987294],
+                [-32.90645026224326, -68.75248642473413],
+                [-32.914256627153534, -68.70055485011285],
+                [-32.91246615666039, -68.69878322757617],
+                [-32.91530992522329, -68.68735606325892],
+                [-32.92391987817451, -68.69469972995054],
+                [-32.921328465095876, -68.70410990782719],
+                [-32.93709191729003, -68.71372524817191],
+                [-32.93897651574459, -68.71658322112863],
+                [-32.94426233879463, -68.71907367570212],
+                [-32.94742020598245, -68.71979374869488],
+                [-32.92922935898916, -68.7961825564889],
+                
+                [-32.90853994812785, -68.783663018205]
+                
+        
+                
             ],
         },
         // Agrega más zonas según sea necesario
@@ -157,13 +170,13 @@ const LocationPicker: React.FC = () => {
 
     return (
         <div>
-            <div ref={mapContainerRef} style={{ height: '400px', width: '100%' }}></div>
-            <button onClick={getUserLocation} style={{ margin: '10px' }}>
+            <div ref={mapContainerRef} style={{ height: '800px', width: '100%' }}></div>
+            <Button onPressEnd={getUserLocation}>
                 Obtener Mi Ubicación
-            </button>
-            <button onClick={handleConfirmLocation} disabled={!selectedLocation}>
+            </Button>
+            <Button onPressEnd={handleConfirmLocation} disabled={!selectedLocation}>
                 Confirmar Ubicación
-            </button>
+            </Button>
             {googleMapsLink && (
                 <div>
                     <p>Enlace de Google Maps:</p>
