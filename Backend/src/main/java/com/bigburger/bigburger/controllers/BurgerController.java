@@ -35,6 +35,12 @@ public class BurgerController {
         return ResponseEntity.ok(burgerService.crearHamburguesa(burgerModel));
     }
 
+    @GetMapping("/listarHamburguesaAuth")
+    @PreAuthorize("hasAuthority('READ')")
+    public BurgerModel listarHamburguesaADMIN(@RequestParam Long id){
+        return burgerService.listarHamburguesaADMIN(id);
+    }
+
     @GetMapping("/listarHamburguesasAuth")
     @PreAuthorize("hasAuthority('READ')")
     public List<BurgerModel> listarHamburguesasADMIN(){

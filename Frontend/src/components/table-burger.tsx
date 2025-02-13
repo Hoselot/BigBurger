@@ -165,7 +165,7 @@ export default function App() {
                           <DetailModal burger={burger}/>
                         </Tooltip>
                         <Tooltip content="Editar">
-                          <EditModal />
+                          <EditModal burgerId={burger.id}/>
                         </Tooltip>
                         <Tooltip color="danger" content="Eliminar">
                           <DeleteModal burgerId={burger.id} />

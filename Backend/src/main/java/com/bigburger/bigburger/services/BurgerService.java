@@ -37,6 +37,9 @@ public class BurgerService {
         burgerModel.setPictureUrl(imageService.uploadImage(file));
         return burgerRepository.save(burgerModel);
     }
+    public BurgerModel listarHamburguesaADMIN(Long id){
+        return burgerRepository.findById(id).orElseThrow((() -> new BurgerNotFoundException("Hamburguesa no encontrada")));
+    }
 
     public List<BurgerModel> listarHamburguesasADMIN(){
         return burgerRepository.findAll();
@@ -72,6 +75,8 @@ public class BurgerService {
         burgerRepository.deleteById(id);
         return "Hamburguesa eliminada exitosamente";
     }
+
+    public BurgerModel actualizarNombre
 
     public BurgerModel actualizarHamburguesa(Long idBurger, BurgerModel burgerModelBody) {
         BurgerModel burgerModel = burgerRepository.findById(idBurger).orElseThrow((() -> new BurgerNotFoundException("Hamburguesa no encontrada")));
