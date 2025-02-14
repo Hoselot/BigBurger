@@ -10,12 +10,12 @@ export default function DefaultLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="relative flex flex-col h-screen">
+    <div className="relative flex flex-col w-full">
       <Navbar />
-      <main className="container mx-auto max-w-7xl px-6 flex-grow pt-16">
+      <main className="container mx-auto max-w-7xl px-6 flex-grow pt-20 w-full">
         {children}
       </main>
-      <footer className="w-full py-12 md:py-16 lg:py-20 bg-white">
+      <footer className="w-full py-12 md:py-16 lg:py-20">
       <div className="container mx-auto px-4 md:px-6">
         {/* Contenedor general */}
         <div className="flex flex-col md:flex-row justify-between items-center md:items-start">
@@ -76,7 +76,7 @@ export default function DefaultLayout({
         </div>
 
         {/* Copyright */}
-        <div className="mt-12 pt-8 border-t border-gray-200 flex justify-between">
+        <div className="mt-12 pt-8 border-t border-black flex justify-between">
           <p className="text-sm text-gray-600 ">
             Copyright © {new Date().getFullYear()}
           </p>
@@ -95,7 +95,7 @@ export default function DefaultLayout({
         </Link>
         </div>
       </div>
-    </footer>
+      </footer>
     </div>
   );
 }

@@ -13,6 +13,7 @@ import {
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@heroui/dropdown";
 import { PiPlusBold, PiPencilSimpleLine } from "react-icons/pi";
 import { Button } from "@heroui/button";
+import {Textarea} from "@heroui/input";
 
 interface Burger {
   id: number;
@@ -89,10 +90,14 @@ export default function EditModal({ burgerId }: EditModalProps) {
               ) : burger ? (
                 <>
                   <ModalHeader className="flex gap-1">
-                    {burger.name}
-                    <Button isIconOnly color="default" variant="light">
-                      <PiPencilSimpleLine />
-                    </Button>
+                  <Input
+                    label="Nombre"
+                    name="name"
+                    type="text"
+                    value={burger.name}
+                   
+                  />
+                    
                   </ModalHeader>
                   <ModalBody>
                     <div className="flex">
@@ -103,13 +108,16 @@ export default function EditModal({ burgerId }: EditModalProps) {
                         </Button>
                       </div>
                       <div className="ml-12">
-                        <div className="flex">
-                          <h1>Descripción</h1>
-                          <Button isIconOnly color="default" variant="light">
-                            <PiPencilSimpleLine />
-                          </Button>
-                        </div>
-                        <p>{burger.description}</p>
+                        
+                        <Textarea 
+                          name="description"
+                          className=" w-full" 
+                          label="Descripción" 
+                          placeholder="Describe tu nueva Hamburguesa"
+                          value={burger.description}
+                          
+                        />
+                        
                       </div>
                     </div>
                     <div className="flex">

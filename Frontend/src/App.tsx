@@ -4,7 +4,7 @@ import { isTokenExpired } from "./utils/token-functions";
 import IndexPage from "@/pages/index";
 import DocsPage from "@/pages/docs";
 import IndividualBurgerPage from "@/pages/individual-product-page";
-
+import PruebaTabla from "@/components/probartabla"
 import ElementPage from "@/pages/element-page";
 
 import BurgerPage from "@/pages/burger-page";
@@ -30,6 +30,7 @@ function App() {
       <Route element={<ElementPage />} path="/ElementPage" />
       <Route element={<BurgerPage />} path="/BurgerPage" />
       <Route element={<LocationPicker />} path="/LocationPicker" />
+      <Route element={<PruebaTabla />} path="/ppp" />
     </Routes>
   );
 }

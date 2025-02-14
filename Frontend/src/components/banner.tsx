@@ -5,15 +5,13 @@ export default function App() {
   <div className="flex sm:flex-row flex-col items-center justify-between bg-white-100 w-full h-auto p-4">
     {/* Izquierda: Título y subtítulo */}
     <div className="flex flex-col justify-center sm:w-1/2 w-full items-center mb-4 sm:mb-0">
-      <div className="inline-block max-w-lg text-center justify-center">
-        <span className={title()}>Make&nbsp;</span>
-        <span className={title({ color: "violet" })}>beautiful&nbsp;</span>
+      <div className="inline-block max-w-lg text-center justify-center text-white">
+        <span className={title()}>La hamburguesa perfecta &nbsp;</span>
+        <span className={title({ color: "blue" })}>sí&nbsp;</span>
+        <span className={title()}>existe &nbsp;</span>
         <br />
-        <span className={title()}>
-          websites regardless of your design experience.
-        </span>
         <div className={subtitle({ class: "mt-4" })}>
-          Beautiful, fast and modern React UI library.
+        Cada mordida, una explosión de sabor
         </div>
       </div>
     </div>

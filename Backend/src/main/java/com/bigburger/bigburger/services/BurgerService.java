@@ -76,7 +76,7 @@ public class BurgerService {
         return "Hamburguesa eliminada exitosamente";
     }
 
-    public BurgerModel actualizarNombre
+    
 
     public BurgerModel actualizarHamburguesa(Long idBurger, BurgerModel burgerModelBody) {
         BurgerModel burgerModel = burgerRepository.findById(idBurger).orElseThrow((() -> new BurgerNotFoundException("Hamburguesa no encontrada")));
