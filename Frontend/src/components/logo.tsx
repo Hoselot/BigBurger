@@ -8,7 +8,7 @@ export default function App() {
       <Image
         alt="BigBurger"
         src={Logo}
-        className="h-20 md:h-25 lg:h-30 w-auto" // Cambia el tamaño en diferentes pantallas
+        className="h-15 md:h-20 lg:h-25 w-auto" // Cambia el tamaño en diferentes pantallas
       />
 
       {/* Texto que se oculta en pantallas pequeñas */}

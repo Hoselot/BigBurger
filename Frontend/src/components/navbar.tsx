@@ -5,7 +5,7 @@ import { Button } from "@heroui/button";
 import {Tabs, Tab} from "@heroui/tabs";
 import Image from "./logo";
 import { useAuth } from "../utils/auth-context";
-import { PiHamburgerThin, PiNotepadThin,PiBreadThin, PiBoxArrowDownThin, PiMathOperationsThin } from "react-icons/pi";
+import { PiHamburgerThin, PiNotepadThin,PiBreadThin, PiBoxArrowDownThin, PiMathOperationsThin, PiBagThin } from "react-icons/pi";
 import { CiMenuBurger } from "react-icons/ci";
 import { AnimatePresence, motion } from "motion/react"
 export const Navbar = () => {
@@ -35,7 +35,7 @@ export const Navbar = () => {
     <nav
     className={`fixed top-0 left-0 w-full p-3 transition-transform duration-300 z-50 ${
       visible ? "translate-y-0" : "-translate-y-full"
-    } bg-white `}
+    } bg-red-700 `}
   >
     {/* Logo */}
     
@@ -62,11 +62,22 @@ export const Navbar = () => {
   </Tabs>
 </motion.div>
       <div className="hidden md:flex justify-center">
-
+      <motion.div
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className="hidden md:flex  items-center gap-5 bg-white rounded-xl px-2 mx-5">
+          <h1>
+            $0.00
+          </h1>
+          <Button isIconOnly variant="light" >
+          <PiBagThin className="size-7"/>
+          </Button>
+      </motion.div >
           {isLoggedIn ? (
             <Dropdown >
               <DropdownTrigger>
-                <Button color="primary" variant="shadow">
+                <Button color="default" variant="shadow">
                   Menú Admin
                 </Button>
               </DropdownTrigger>
@@ -114,16 +125,26 @@ export const Navbar = () => {
       animate={menuOpen ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
       exit={{ opacity: 0, y: -50, transition: { duration: 0.3 } }} // Aquí cambiamos la animación de salida
       transition={{ duration: 0.3 }}
-      className="absolute top-full left-0 w-full bg-white shadow-lg p-4 flex flex-col items-center space-y-4 md:hidden"
+      className="absolute top-full left-0 w-full bg-red-700 shadow-lg p-4 flex flex-col items-center space-y-4 md:hidden"
     >
-      <Tabs aria-label="Options" color="primary" variant="bordered" isVertical>
+      <Tabs aria-label="Options" variant="solid" radius="lg" size="lg" color="default" isVertical>
         <Tab key="burguers" title={<div className="flex items-center space-x-2"><PiHamburgerThin className='size-7'/><span>Hamburguesas</span></div>} />
         <Tab key="pedido" title={<div className="flex items-center space-x-2"><PiNotepadThin className='size-7'/><span>¿Cómo hacer un Pedido?</span></div>} />
       </Tabs>
+      <div
+        
+        className="md:flex flex items-center gap-5   bg-white rounded-xl px-2 mx-5">
+          <h1>
+            $0.00
+          </h1>
+          <Button isIconOnly variant="light" >
+          <PiBagThin className="size-7"/>
+          </Button>
+      </div>
       {isLoggedIn ? (
             <Dropdown >
               <DropdownTrigger>
-                <Button color="primary" variant="shadow">
+                <Button color="default" variant="shadow">
                   Menú Admin
                 </Button>
               </DropdownTrigger>

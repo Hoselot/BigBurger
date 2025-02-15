@@ -1,9 +1,10 @@
-import { Link } from "@heroui/link";
+
 
 import { Navbar } from "@/components/navbar";
 import { FaInstagram } from 'react-icons/fa';
 import BotonLogin from "../components/modal";
 import Image from "../components/logo";
+
 export default function DefaultLayout({
   children,
 }: {
@@ -12,10 +13,11 @@ export default function DefaultLayout({
   return (
     <div className="relative flex flex-col w-full">
       <Navbar />
-      <main className="container mx-auto max-w-7xl px-6 flex-grow pt-20 w-full">
+      
+      <main className="container mx-auto max-w-7xl px-6 flex-grow pt-20 mt-10 w-full">
         {children}
       </main>
-      <footer className="w-full py-12 md:py-16 lg:py-20">
+      <footer className="w-full py-5 md:py-10 lg:py-15">
       <div className="container mx-auto px-4 md:px-6">
         {/* Contenedor general */}
         <div className="flex flex-col md:flex-row justify-between items-center md:items-start">
@@ -76,7 +78,7 @@ export default function DefaultLayout({
         </div>
 
         {/* Copyright */}
-        <div className="mt-12 pt-8 border-t border-black flex justify-between">
+        <div className="mt-5 pt-5 border-t border-black flex justify-between">
           <p className="text-sm text-gray-600 ">
             Copyright © {new Date().getFullYear()}
           </p>
@@ -84,15 +86,7 @@ export default function DefaultLayout({
             <a className="hover:underline hover:text-black" href="#">Política de privacidad </a>
             <a className="hover:underline hover:text-black" href="#"> Defensa del Consumidor</a>
           </p>
-        <Link
-          isExternal
-          className="flex items-center gap-1 text-current"
-          href="https://heroui.com"
-          title="heroui.com homepage"
-        >
-          <span className="text-default-600">Powered by</span>
-          <p className="text-primary">HeroUI</p>
-        </Link>
+        
         </div>
       </div>
       </footer>
