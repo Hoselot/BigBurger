@@ -1,6 +1,7 @@
 package com.bigburger.bigburger.services;
 
 import com.bigburger.bigburger.dto.BurgerDto;
+import com.bigburger.bigburger.dto.ElementoDtoForEdit;
 import com.bigburger.bigburger.exeptions.BurgerNotFoundException;
 import com.bigburger.bigburger.exeptions.ElementoNotFoundException;
 import com.bigburger.bigburger.models.BebidaModel;
@@ -12,11 +13,13 @@ import com.bigburger.bigburger.repository.IBurgerRepository;
 import com.bigburger.bigburger.repository.IElementoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -76,18 +79,48 @@ public class BurgerService {
         return "Hamburguesa eliminada exitosamente";
     }
 
-    
+    public BurgerModel actualizarHamburguesa(Long idBurger, BurgerModel burgerModelBody, MultipartFile file,
+                                             List<ElementoDtoForEdit> elementosAgregados, List<ElementoDtoForEdit> elementosEliminados) {
 
-    public BurgerModel actualizarHamburguesa(Long idBurger, BurgerModel burgerModelBody) {
-        BurgerModel burgerModel = burgerRepository.findById(idBurger).orElseThrow((() -> new BurgerNotFoundException("Hamburguesa no encontrada")));
-        if(!burgerModelBody.getName().equals(burgerModel.getName())){
+        BurgerModel burgerModel = burgerRepository.findById(idBurger)
+                .orElseThrow(() -> new BurgerNotFoundException("Hamburguesa no encontrada"));
+
+        if (!Objects.equals(burgerModelBody.getName(), burgerModel.getName())) {
             burgerModel.setName(burgerModelBody.getName());
         }
-        if (!burgerModel.getDescription().equals(burgerModelBody.getDescription())){
+        if (!Objects.equals(burgerModelBody.getDescription(), burgerModel.getDescription())) {
             burgerModel.setDescription(burgerModelBody.getDescription());
         }
+        if (file != null) {
+            String newPictureUrl = imageService.uploadImage(file);
+            if (newPictureUrl != null && !newPictureUrl.isEmpty()) {
+                burgerModel.setPictureUrl(newPictureUrl);
+            }
+        }
+
+        if (burgerModelBody.getGanancia() != null && burgerModelBody.getGanancia().compareTo(BigDecimal.ZERO) > 0) {
+            asignarGananciaHamburguesa(idBurger, burgerModelBody.getGanancia());
+        }
+
+        if (!CollectionUtils.isEmpty(elementosAgregados)) {
+            for (ElementoDtoForEdit elementoDtoForEdit : elementosAgregados) {
+                for (int i = 0; i < elementoDtoForEdit.getCantidad(); i++) {
+                    agregarElementoBurger(idBurger, elementoDtoForEdit.getId());
+                }
+            }
+        }
+
+        if (!CollectionUtils.isEmpty(elementosEliminados)) {
+            for (ElementoDtoForEdit elementoDtoForEdit : elementosEliminados) {
+                for (int i = 0; i < elementoDtoForEdit.getCantidad(); i++) {
+                    eliminarElementoBurger(idBurger, elementoDtoForEdit.getId());
+                }
+            }
+        }
+
         return burgerRepository.save(burgerModel);
     }
+
 
     public BurgerElementoModel agregarElementoBurger(Long idBurger, Long idElemento){
         ElementoModel elementoModel = elementoRepository.findById(idElemento).orElseThrow(() -> new ElementoNotFoundException("Elemento no encontrado"));

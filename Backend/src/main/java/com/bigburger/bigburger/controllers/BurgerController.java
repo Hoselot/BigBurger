@@ -1,12 +1,15 @@
 package com.bigburger.bigburger.controllers;
 
 import com.bigburger.bigburger.dto.BurgerDto;
+import com.bigburger.bigburger.dto.ElementoDtoForEdit;
 import com.bigburger.bigburger.models.BurgerElementoModel;
 import com.bigburger.bigburger.models.BurgerModel;
 import com.bigburger.bigburger.models.ElementoModel;
 import com.bigburger.bigburger.services.BurgerService;
 import com.bigburger.bigburger.services.ImageService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -57,10 +60,16 @@ public class BurgerController {
     public String eliminarHamburguesa(@RequestParam Long id){
         return burgerService.eliminarHamburguesa(id);
     }
-    @PutMapping("/actualizarHamburguesa")
+    @PutMapping(value = "/actualizarHamburguesa/{idBurger}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     @PreAuthorize("hasAuthority('UPDATE')")
-    public ResponseEntity<BurgerModel> actualizarHamburguesa(@RequestParam Long idBurger,@RequestBody BurgerModel burgerModel){
-        return ResponseEntity.ok(burgerService.actualizarHamburguesa(idBurger,burgerModel));
+    public ResponseEntity<BurgerModel> actualizarHamburguesa(
+            @PathVariable Long idBurger,
+            @RequestPart("burgerModelBody") @Valid BurgerModel burgerModelBody,  // Objeto JSON
+            @RequestPart(value = "file", required = false) MultipartFile file,  // Archivo opcional
+            @RequestPart(value = "elementosAgregados", required = false) List<ElementoDtoForEdit> elementosAgregados,
+            @RequestPart(value = "elementosEliminados", required = false) List<ElementoDtoForEdit> elementosEliminados) {
+
+        return ResponseEntity.ok(burgerService.actualizarHamburguesa(idBurger, burgerModelBody, file, elementosAgregados, elementosEliminados));
     }
 
     @PostMapping("/agregarElementoBurger")

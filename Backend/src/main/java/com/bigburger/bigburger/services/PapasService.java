@@ -1,5 +1,6 @@
 package com.bigburger.bigburger.services;
 
+import com.bigburger.bigburger.dto.ElementoDtoForEdit;
 import com.bigburger.bigburger.dto.PapasDto;
 import com.bigburger.bigburger.exeptions.BurgerNotFoundException;
 import com.bigburger.bigburger.exeptions.ElementoNotFoundException;
@@ -9,9 +10,12 @@ import com.bigburger.bigburger.repository.IPapasElementoRepository;
 import com.bigburger.bigburger.repository.IPapasRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -24,8 +28,19 @@ public class PapasService {
     private IElementoRepository elementoRepository;
     @Autowired
     private IPapasElementoRepository papasElementoRepository;
+    @Autowired
+    private ImageService imageService;
 
 
+    public PapasModel cambiarImagenPapas(Long idPapas, MultipartFile file){
+        PapasModel papasModel = papasRepository.findById(idPapas).orElseThrow((() -> new BurgerNotFoundException("Papas no encontrada")));
+        papasModel.setPictureUrl(imageService.uploadImage(file));
+        return papasRepository.save(papasModel);
+    }
+
+    public PapasModel listarUnaPapasADMIN(Long id){
+        return papasRepository.findById(id).orElseThrow((() -> new BurgerNotFoundException("Papas no encontrada")));
+    }
 
     public List<PapasModel> listarPapasADMIN(){
         return papasRepository.findAll();
@@ -93,14 +108,45 @@ public class PapasService {
         return "Papas eliminadas exitosamente";
     }
 
-    public PapasModel actualizarPapas(Long idPapas, PapasModel papasModelBody) {
-        PapasModel papasModel = papasRepository.findById(idPapas).orElseThrow((() -> new BurgerNotFoundException("Papas no encontradas")));
-        if(!papasModelBody.getName().equals(papasModel.getName())){
+    public PapasModel actualizarPapas(Long idPapas, PapasModel papasModelBody, MultipartFile file,
+                                      List<ElementoDtoForEdit> elementosAgregados, List<ElementoDtoForEdit> elementosEliminados) {
+
+        PapasModel papasModel = papasRepository.findById(idPapas)
+                .orElseThrow(() -> new BurgerNotFoundException("Papas no encontradas"));
+
+        if (!Objects.equals(papasModelBody.getName(), papasModel.getName())) {
             papasModel.setName(papasModelBody.getName());
         }
-        if (!papasModel.getDescription().equals(papasModelBody.getDescription())){
+        if (!Objects.equals(papasModelBody.getDescription(), papasModel.getDescription())) {
             papasModel.setDescription(papasModelBody.getDescription());
         }
+        if (file != null) {
+            String newPictureUrl = imageService.uploadImage(file);
+            if (newPictureUrl != null && !newPictureUrl.isEmpty()) {
+                papasModel.setPictureUrl(newPictureUrl);
+            }
+        }
+
+        if (papasModelBody.getGanancia() != null && papasModelBody.getGanancia().compareTo(BigDecimal.ZERO) > 0) {
+            asignarGananciaPapas(idPapas, papasModelBody.getGanancia());
+        }
+
+        if (!CollectionUtils.isEmpty(elementosAgregados)) {
+            for (ElementoDtoForEdit elementoDtoForEdit : elementosAgregados) {
+                for (int i = 0; i < elementoDtoForEdit.getCantidad(); i++) {
+                    agregarElementoPapas(idPapas, elementoDtoForEdit.getId());
+                }
+            }
+        }
+
+        if (!CollectionUtils.isEmpty(elementosEliminados)) {
+            for (ElementoDtoForEdit elementoDtoForEdit : elementosEliminados) {
+                for (int i = 0; i < elementoDtoForEdit.getCantidad(); i++) {
+                    eliminarElementoPapas(idPapas, elementoDtoForEdit.getId());
+                }
+            }
+        }
+
         return papasRepository.save(papasModel);
     }
 

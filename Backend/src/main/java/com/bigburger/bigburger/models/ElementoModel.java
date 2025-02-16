@@ -22,4 +22,5 @@ public class ElementoModel {
 
     @Column(nullable = false, precision = 10, scale = 2)  // Configuración de precisión y escala
     private BigDecimal price;
+    
 }
