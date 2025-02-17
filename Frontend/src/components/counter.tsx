@@ -10,7 +10,7 @@ export default function Counter({ basePrice }: CounterProps) {
     const [count, setCount] = useState<number>(1);
 
     const handleChange = (delta: number) => {
-        setCount((prev) => Math.max(1, prev + delta)); // Evita valores menores a 1
+        setCount((prev) => Math.max(1, Math.min(5, prev + delta))); // Evita valores menores a 1
       };
      
   return (
@@ -24,11 +24,11 @@ export default function Counter({ basePrice }: CounterProps) {
                 
                 variant="bordered"
                 radius="lg"
-                length={1} 
-                value={count.toString()} // Convertimos el número a string
+                length={1} // Permitir hasta 2 dígitos
+                value={count.toString()} 
                 onChange={(e) => {
                     const target = e.target as HTMLInputElement; // Asegurar que es un input
-                    const value = Math.max(1, parseInt(target.value) || 1);
+                    const value = Math.min(5, Math.max(1, parseInt(target.value) || 1)); // Límite entre 1 y 9
                     setCount(value);
                 }}
             />
