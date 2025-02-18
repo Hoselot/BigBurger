@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Input } from "@heroui/input";
-import { URLBASE } from "../utils/VariablesAndMethods";
+import { URLBASE, useCreateSinIdFetch } from "../utils/VariablesAndMethods";
 import { Toaster, toast } from "sonner";
 import {
   Modal,
@@ -12,7 +12,7 @@ import {
 } from "@heroui/modal";
 import { Button } from "@heroui/button";
 import { PiPlusBold } from "react-icons/pi";
-import {Textarea} from "@heroui/input";
+import { Textarea } from "@heroui/input";
 
 export default function App() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -22,8 +22,8 @@ export default function App() {
     name: "",
     description: "",
   });
+  const { loading: creating, error: createError, crearObjeto } = useCreateSinIdFetch();
 
-  // Obtiene el token JWT de localStorage o sessionStorage
   const getToken = () => {
     return localStorage.getItem("token") || sessionStorage.getItem("token");
   };
@@ -46,55 +46,50 @@ export default function App() {
   };
 
   const handleCreateBurger = async () => {
-    const token = getToken();
-    if (!token) {
-      toast.error("No estás autenticado. Por favor, inicia sesión.");
-      return;
-    }
-
     try {
-      // Crear la hamburguesa (sin imagen)
-      const response = await fetch(URLBASE + "/burger/crearHamburguesa", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(burgerData),
-      });
+      // Crear la hamburguesa sin id
+      const createdBurger = await crearObjeto(
+        "/burger/crearHamburguesa", // endpoint
+        { 
+          name: burgerData.name, 
+          description: burgerData.description 
+        }, 
+        "Hamburguesa creada exitosamente!", 
+        "Error al crear la Hamburguesa", 
+        () => {} // Acción opcional de éxito
+      );
 
-      if (!response.ok) {
-        throw new Error("Error al crear la hamburguesa");
-      }
+      if (createdBurger) {
+        const { id } = createdBurger; // Obtenemos el ID del objeto creado
 
-      const createdBurger = await response.json(); // Recibimos el objeto creado desde el backend
+        // Si se seleccionó una imagen, subimos la imagen
+        if (selectedFile) {
+          const formData = new FormData();
+          formData.append("id", id.toString()); // Agregar la ID
+          formData.append("file", selectedFile); // Agregar la imagen
 
-      // Subir la imagen de la hamburguesa creada
-      if (selectedFile) {
-        const formData = new FormData();
-        formData.append("id", createdBurger.id); // Backend espera un ID de tipo Long
-        formData.append("file", selectedFile);
+          const imageResponse = await fetch(
+            URLBASE + "/burger/cambiarImagenHamburguesa",
+            {
+              method: "PUT",
+              headers: {
+                Authorization: `Bearer ${getToken()}`,
+              },
+              body: formData,
+            }
+          );
 
-        const imageResponse = await fetch(
-          URLBASE + "/burger/cambiarImagenHamburguesa",
-          {
-            method: "PUT",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-            body: formData,
+          if (!imageResponse.ok) {
+            throw new Error("Error al subir la imagen de la hamburguesa");
           }
-        );
 
-        if (!imageResponse.ok) {
-          throw new Error("Error al subir la imagen de la hamburguesa");
+          toast.success("Hamburguesa creada exitosamente con su imagen!");
+        } else {
+          toast.success("Hamburguesa creada exitosamente!");
         }
 
-        toast.success("Hamburguesa creada exitosamente con su imagen!");
-        setTimeout(() => window.location.reload(), 1500);
-      } else {
-        toast.success("Hamburguesa creada exitosamente!");
-        setTimeout(() => window.location.reload(), 1500);
+        // Recargamos la página después de crear
+        setTimeout(() => window.location.reload(), 0);
       }
     } catch (error) {
       console.error(error);
@@ -102,7 +97,6 @@ export default function App() {
     }
   };
 
-  // Reinicia los estados del formulario
   const resetForm = () => {
     setBurgerData({
       name: "",
@@ -157,13 +151,6 @@ export default function App() {
                     value={burgerData.description}
                     onChange={handleInputChange}
                   />
-                  {/* <Input
-                    label="Descripción"
-                    name="description"
-                    type="text"
-                    value={burgerData.description}
-                    onChange={handleInputChange}
-                  /> */}
                   <div>
                     <Input
                       label="Imagen"

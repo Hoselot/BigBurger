@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useNavigate, Route, Routes } from 'react-router-dom';
+import { useNavigate, Route, Routes, matchPath} from 'react-router-dom';
 import { isTokenExpired } from "./utils/token-functions";
 import IndexPage from "@/pages/index";
 import DocsPage from "@/pages/docs";
@@ -12,16 +12,25 @@ import LocationPicker from './components/LocationPicker';
 
 function App() {
   const navigate = useNavigate();
+  const publicRoutes = ["/", "/IndividualBurgerPage/:id"];
 
   useEffect(() => {
     const token = localStorage.getItem("token") || sessionStorage.getItem("token");
 
+    // Verificar si la ruta actual está dentro de las públicas
+    const isPublicRoute = publicRoutes.some(route =>
+      matchPath(route, location.pathname)
+    );
+
     if (!token || isTokenExpired(token)) {
       localStorage.removeItem("token");
       sessionStorage.removeItem("token");
-      navigate("/");
+
+      if (!isPublicRoute) {
+        navigate("/");
+      }
     }
-  }, [navigate]);
+  }, [navigate, location]);
   return (
     <Routes>
       <Route element={<IndexPage />} path="/" />

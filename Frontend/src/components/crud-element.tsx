@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Input } from "@heroui/input";
-import { URLBASE, getToken } from "../utils/VariablesAndMethods";
-import { Toaster, toast } from "sonner";
+import {useCreateSinIdFetch } from "../utils/VariablesAndMethods";
+import { Toaster} from "sonner";
 import {
   Modal,
   ModalContent,
@@ -19,7 +19,8 @@ export default function CrudElemento() {
     name: "",
     price: "",
   });
-
+  const { loading: creating, error: createError, crearObjeto } = useCreateSinIdFetch();
+  
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setElementoData((prevData) => ({
@@ -29,36 +30,16 @@ export default function CrudElemento() {
   };
 
   const handleCreateElemento = async () => {
-    const token = getToken();
-    if (!token) {
-      alert("No estás autenticado. Por favor, inicia sesión.");
-      return;
-    }
-
-    try {
-      const response = await fetch(`${URLBASE}/elemento/crearElemento`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          name: elementoData.name,
-          price: parseFloat(elementoData.price),
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Error al crear el elemento");
-      }
-
-      toast.success("Elemento creado exitosamente!");
-      setTimeout(() => window.location.reload(), 1500);
-    } catch (error) {
-      console.error(error);
-      toast.error("Error al crear un nuevo elemento");
-      
-    }
+    await crearObjeto(
+      "/elemento/crearElemento", // endpoint
+      { 
+        name: elementoData.name, 
+        price: parseFloat(elementoData.price) 
+      }, 
+      "Elemento creado exitosamente!", 
+      "Error al crear el elemento", 
+      () => setTimeout(() => window.location.reload(), 0) // Acción en éxito
+    );
   };
 
   const resetForm = () => {

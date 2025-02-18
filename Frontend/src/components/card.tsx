@@ -2,31 +2,36 @@ import { useEffect, useState } from "react";
 import { Card, CardBody, CardFooter } from "@heroui/card";
 import { Image } from "@heroui/image";
 import { useNavigate } from "react-router-dom";
-
+import { URLBASE, useFindListFetchNoAuth} from "../utils/VariablesAndMethods";
 
 export default function App() {
   const navigate = useNavigate();
+  const { loading, error, encontrarListaObjetos } = useFindListFetchNoAuth<{
+    id: number;
+    name: string;
+    price: number;
+    pictureUrl: string;
+  }>();
+  
   const [burgers, setBurgers] = useState<
     { id: number; name: string; price: number; pictureUrl: string }[]
   >([]);
-
+  
   useEffect(() => {
     const fetchBurgers = async () => {
-      try {
-        const response = await fetch("http://localhost:8080/burger/listarHamburguesas");
-        if (!response.ok) {
-          throw new Error("Error al obtener las hamburguesas.");
-        }
-        const data = await response.json();
-        setBurgers(data);
-      } catch (error) {
-        console.error(error);
-        alert("No se pudieron cargar las hamburguesas.");
+      const result = await encontrarListaObjetos(
+        "/burger/listarHamburguesas",
+        "Hamburguesas cargadas correctamente",
+        "Error al obtener las hamburguesas."
+      );
+      if (result) {
+        setBurgers(result);
       }
     };
-
+  
     fetchBurgers();
   }, []);
+  
 
   return (
     <div className="gap-10 grid grid-cols-2 sm:grid-cols-5">
@@ -42,7 +47,7 @@ export default function App() {
             <Image
               alt={burger.name}
               className="w-full object-cover h-[100px] sm:h-[250px] rounded-none"
-              src={burger.pictureUrl || "https://via.placeholder.com/150"}
+              src={burger.pictureUrl}
               width="100%"
             />
           </CardBody>

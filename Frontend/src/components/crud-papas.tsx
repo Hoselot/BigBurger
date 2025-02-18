@@ -18,7 +18,7 @@ export default function App() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [burgerData, setBurgerData] = useState({
+  const [papasData, setBurgerData] = useState({
     name: "",
     description: "",
   });
@@ -55,7 +55,7 @@ export default function App() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(burgerData),
+        body: JSON.stringify(papasData),
       });
 
       if (!response.ok) {
@@ -85,10 +85,10 @@ export default function App() {
           throw new Error("Error al subir la imagen de la hamburguesa");
         }
 
-        toast.success("Hamburguesa creada exitosamente con su imagen!");
+        toast.success("Papas creada exitosamente con su imagen!");
         setTimeout(() => window.location.reload(), 1500);
       } else {
-        toast.success("Hamburguesa creada exitosamente!");
+        toast.success("Papas creada exitosamente!");
         setTimeout(() => window.location.reload(), 1500);
       }
     } catch (error) {

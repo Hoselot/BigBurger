@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { URLBASE , getToken} from "../utils/VariablesAndMethods";
+import { URLBASE, getToken } from "../utils/VariablesAndMethods";
 import {
   Table,
   TableHeader,
@@ -87,7 +87,7 @@ export default function App() {
   }, []);
 
   const filteredElementos = elementos.filter((elemento) =>
-  elemento.name.toLowerCase().includes(filterValue.toLowerCase())
+    elemento.name.toLowerCase().includes(filterValue.toLowerCase())
   );
 
   const paginatedElementos = filteredElementos.slice(
@@ -113,7 +113,7 @@ export default function App() {
         <div className="flex gap-3">
           <Dropdown>
             <DropdownTrigger className="hidden sm:flex">
-              <Button endContent={<IoIosArrowDown  />} variant="flat">
+              <Button endContent={<IoIosArrowDown />} variant="flat">
                 Columnas
               </Button>
             </DropdownTrigger>
@@ -125,8 +125,8 @@ export default function App() {
               onSelectionChange={setVisibleColumns}
             >
               {columns.map((col) => (
-  <DropdownItem key={col.uid}>{col.name}</DropdownItem>
-))}
+                <DropdownItem key={col.uid}>{col.name}</DropdownItem>
+              ))}
             </DropdownMenu>
           </Dropdown>
           <ModalElemento />
@@ -134,38 +134,38 @@ export default function App() {
       </div>
       <Table>
         <TableHeader>
-                  {columns
-                    .filter((col) => isColumnVisible(col.uid))
-                    .map((col) => (
-                      <TableColumn key={col.uid}>{col.name}</TableColumn>
-                    ))}
-                </TableHeader>
-                <TableBody>
-                {paginatedElementos.map((elemento) => (
-                            <TableRow key={elemento.id}>
-                              {columns
-                                .filter((col) => isColumnVisible(col.uid))
-                                .map((col) => (
-                                  <TableCell key={col.uid}>
-                                    { col.uid === "actions" ? (
-                                      <div className="flex">
-                                        
-                                        <Tooltip content="Editar">
-                                          <EditModal />
-                                        </Tooltip>
-                                        <Tooltip color="danger" content="Eliminar">
-                                        <DeleteModal elementoId={elemento.id} />
-                                        </Tooltip>
-                                      </div>
-                                    ) : (
-                                      elemento[col.uid as keyof Elemento]
-                                    )}
-                                  </TableCell>
-                                ))}
-                            </TableRow>
-                          ))}
-                        </TableBody>
-        
+          {columns
+            .filter((col) => isColumnVisible(col.uid))
+            .map((col) => (
+              <TableColumn key={col.uid}>{col.name}</TableColumn>
+            ))}
+        </TableHeader>
+        <TableBody>
+          {paginatedElementos.map((elemento) => (
+            <TableRow key={elemento.id}>
+              {columns
+                .filter((col) => isColumnVisible(col.uid))
+                .map((col) => (
+                  <TableCell key={col.uid}>
+                    {col.uid === "actions" ? (
+                      <div className="flex">
+
+                        <Tooltip content="Editar">
+                          <EditModal />
+                        </Tooltip>
+                        <Tooltip color="danger" content="Eliminar">
+                          <DeleteModal elementoId={elemento.id} />
+                        </Tooltip>
+                      </div>
+                    ) : (
+                      elemento[col.uid as keyof Elemento]
+                    )}
+                  </TableCell>
+                ))}
+            </TableRow>
+          ))}
+        </TableBody>
+
 
       </Table>
       <Pagination

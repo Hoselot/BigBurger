@@ -9,37 +9,21 @@ import {
 import { Button } from "@heroui/button";
 import { AiOutlineDelete } from "react-icons/ai";
 import { useState } from "react";
-import { URLBASE , getToken} from "../utils/VariablesAndMethods";
+import {useDeleteFetch} from "../utils/VariablesAndMethods";
 
 export default function App({ elementoId }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [loading, setLoading] = useState(false);
+  const { loading, error, eliminarObjeto } = useDeleteFetch();
 
   const eliminarElemento = async () => {
-    setLoading(true);
-    try {
-      const token = getToken();
-      const response = await fetch(`${URLBASE}/elemento/eliminarElemento?id=${elementoId}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`, // Si usas token JWT para autorización
-        },
-      });
-      if (response.ok) {
-        // Aquí puedes manejar lo que sucede cuando la eliminación es exitosa
-        console.log("Elemento eliminado");
-      } else {
-        // Manejo de error
-        console.error("Hubo un problema al eliminar el elemento");
-      }
-    } catch (error) {
-      console.error("Error al realizar la solicitud:", error);
-    } finally {
-      setLoading(false);
-      onOpenChange(false); // Cierra el modal
-    }
-  };
+    eliminarObjeto(
+   "/elemento/eliminarElemento",
+   elementoId, // ID del objeto a eliminar
+   "Elemento eliminado exitosamente",
+   "Hubo un problema al eliminar el elemento",
+   () => window.location.reload() // Recargar la página tras eliminar
+ );
+};
 
   return (
     <>
