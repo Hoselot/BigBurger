@@ -11,10 +11,10 @@ export default function DefaultLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="relative flex flex-col w-full">
+    <div className="relative flex flex-col w-full ">
       <Navbar />
       
-      <main className="container mx-auto max-w-7xl px-6 flex-grow pt-20 mt-10 w-full">
+      <main className="w-full mx-auto px-0 flex-grow pt-16">
         {children}
       </main>
       <footer className="w-full py-5 md:py-10 lg:py-15">

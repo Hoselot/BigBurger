@@ -7,9 +7,11 @@ import {Tabs, Tab} from "@heroui/tabs";
 export default function IndexPage() {
   return (
     <DefaultLayout>
-      <section className="w-full">
+      <section className="w-full p-5 bg-gray-900">
         <Banner/>
+        
       </section>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100"><g fill="#111827"><path d="M0 100V0h1000v4L0 100z"></path><path d="M0 100V0h1000v24L0 100z" opacity=".5"></path><path d="M0 100V0h1000v44L0 100z" opacity=".4"></path><path d="M0 100V0h1000v64L0 100z" opacity=".4"></path><path d="M0 100V0h1000v84L0 100z" opacity=".2"></path></g></svg>
       <section className="mt-5">
       <span className={title()}>
   Mirá nuestras <span className="bg-yellow-400 px-2 rounded">Hamburguesas</span>&nbsp;
@@ -33,7 +35,7 @@ export default function IndexPage() {
       
 
       </section>
-      <section>
+      <section className="my-10">
         <Card/>
       </section>
     </DefaultLayout>
