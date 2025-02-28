@@ -6,7 +6,7 @@ import DocsPage from "@/pages/docs";
 import IndividualBurgerPage from "@/pages/individual-product-page";
 import PruebaTabla from "@/components/probartabla"
 import ElementPage from "@/pages/element-page";
-
+import PapasPage from "@/pages/papas-page";
 import BurgerPage from "@/pages/burger-page";
 import LocationPicker from './components/LocationPicker';
 
@@ -37,6 +37,7 @@ function App() {
       <Route element={<DocsPage />} path="/docs" />
       <Route element={<IndividualBurgerPage />} path="/IndividualBurgerPage/:id" />
       <Route element={<ElementPage />} path="/ElementPage" />
+      <Route element={<PapasPage />} path="/PapasPage" />
       <Route element={<BurgerPage />} path="/BurgerPage" />
       <Route element={<LocationPicker />} path="/LocationPicker" />
       <Route element={<PruebaTabla />} path="/ppp" />

@@ -19,14 +19,14 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "@heroui/dropdown";
-import ModalBurguer from "./crud-burger";
-import DeleteModal from "./delete-burger";
-import DetailModal from "./details-burger";
-import EditModal from "./edit-burger";
+import ModalPapas from "./crud-papas";
+import DeleteModal from "./delete-papas";
+import DetailModal from "./details-papas";
+import EditModal from "./edit-papas";
 
 import { IoIosArrowDown } from "react-icons/io";
 import { CiSearch } from "react-icons/ci";
-interface Burger {
+interface papas {
   id: number;
   name: string;
   description: string;
@@ -48,7 +48,7 @@ export const columns = [
 ];
 
 export default function App() {
-  const [burgers, setBurgers] = useState<Burger[]>([]);
+  const [papas, setPapas] = useState<Papas[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [filterValue, setFilterValue] = useState("");
@@ -64,7 +64,7 @@ export default function App() {
   };
 
   useEffect(() => {
-    const fetchBurgers = async () => {
+    const fetchPapas = async () => {
       try {
         const token = getToken();
         if (!token) {
@@ -72,7 +72,7 @@ export default function App() {
           return;
         }
         const response = await fetch(
-          URLBASE + "/burger/listarHamburguesasAuth",
+          URLBASE + "/papas/listarPapasAuth",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -81,23 +81,23 @@ export default function App() {
         );
 
         if (!response.ok) {
-          throw new Error("Error al obtener las hamburguesas");
+          throw new Error("Error al obtener las Papas");
         }
 
-        const data: Burger[] = await response.json();
-        setBurgers(data);
+        const data: Papas[] = await response.json();
+        setPapas(data);
       } catch (error) {
-        setError("No se pudieron cargar las hamburguesas");
+        setError("No se pudieron cargar las Papas");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchBurgers();
+    fetchPapas();
   }, []);
 
-  const filteredBurgers = burgers.filter((burger) =>
-    burger.name.toLowerCase().includes(filterValue.toLowerCase())
+  const filteredBurgers = papas.filter((papas) =>
+    papas.name.toLowerCase().includes(filterValue.toLowerCase())
   );
 
   const paginatedBurgers = filteredBurgers.slice(
@@ -105,7 +105,7 @@ export default function App() {
     page * rowsPerPage
   );
 
-  if (loading) return <p>Cargando hamburguesas...</p>;
+  if (loading) return <p>Cargando Papas...</p>;
   if (error) return <p>{error}</p>;
 
   return (
@@ -139,7 +139,7 @@ export default function App() {
               ))}
             </DropdownMenu>
           </Dropdown>
-          <ModalBurguer />
+          <ModalPapas />
         </div>
       </div>
       <Table>
@@ -151,28 +151,28 @@ export default function App() {
             ))}
         </TableHeader>
         <TableBody>
-          {paginatedBurgers.map((burger) => (
-            <TableRow key={burger.id}>
+          {paginatedBurgers.map((papas) => (
+            <TableRow key={papas.id}>
               {columns
                 .filter((col) => isColumnVisible(col.uid))
                 .map((col) => (
                   <TableCell key={col.uid}>
                     {col.uid === "image" ? (
-                      <img src={burger.pictureUrl} alt={burger.name} width="50" />
+                      <img src={papas.pictureUrl} alt={papas.name} width="50" />
                     ) : col.uid === "actions" ? (
                       <div className="flex">
                         <Tooltip content="Detalles" color="success">
-                          <DetailModal burger={burger}/>
+                          <DetailModal papas={papas}/>
                         </Tooltip>
                         <Tooltip content="Editar">
-                          <EditModal burgerId={burger.id}/>
+                          <EditModal papasId={papas.id}/>
                         </Tooltip>
                         <Tooltip color="danger" content="Eliminar">
-                          <DeleteModal burgerId={burger.id} />
+                          <DeleteModal papasId={papas.id} />
                         </Tooltip>
                       </div>
                     ) : (
-                      burger[col.uid as keyof Burger]
+                      papas[col.uid as keyof Papas]
                     )}
                   </TableCell>
                 ))}

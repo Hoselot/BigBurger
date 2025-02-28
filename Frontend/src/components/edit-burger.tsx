@@ -17,6 +17,7 @@ import { PiPlus, PiMinus } from "react-icons/pi";
 import { Button } from "@heroui/button";
 import { Textarea } from "@heroui/input";
 import { Pagination } from "@heroui/pagination";
+
 interface Elemento {
   id: number;
   name: string;

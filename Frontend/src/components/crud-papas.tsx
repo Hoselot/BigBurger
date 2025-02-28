@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Input } from "@heroui/input";
-import { URLBASE, getToken } from "../utils/VariablesAndMethods";
+import { URLBASE, useCreateSinIdFetch } from "../utils/VariablesAndMethods";
 import { Toaster, toast } from "sonner";
 import {
   Modal,
@@ -12,7 +12,7 @@ import {
 } from "@heroui/modal";
 import { Button } from "@heroui/button";
 import { PiPlusBold } from "react-icons/pi";
-import {Textarea} from "@heroui/input";
+import { Textarea } from "@heroui/input";
 
 export default function App() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -22,6 +22,11 @@ export default function App() {
     name: "",
     description: "",
   });
+  const { loading: creating, error: createError, crearObjeto } = useCreateSinIdFetch();
+
+  const getToken = () => {
+    return localStorage.getItem("token") || sessionStorage.getItem("token");
+  };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -41,63 +46,57 @@ export default function App() {
   };
 
   const handleCreateBurger = async () => {
-    const token = getToken();
-    if (!token) {
-      toast.error("No estás autenticado. Por favor, inicia sesión.");
-      return;
-    }
-
     try {
-      // Crear la hamburguesa (sin imagen)
-      const response = await fetch(URLBASE + "/burger/crearHamburguesa", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(papasData),
-      });
+      // Crear las Papas sin id
+      const createdBurger = await crearObjeto(
+        "/papas/crearPapas", // endpoint
+        { 
+          name: papasData.name, 
+          description: papasData.description 
+        }, 
+        "Papas creadas exitosamente!", 
+        "Error al crear las Papas", 
+        () => {} // Acción opcional de éxito
+      );
 
-      if (!response.ok) {
-        throw new Error("Error al crear la hamburguesa");
-      }
+      if (createdBurger) {
+        const { id } = createdBurger; // Obtenemos el ID del objeto creado
 
-      const createdBurger = await response.json(); // Recibimos el objeto creado desde el backend
+        // Si se seleccionó una imagen, subimos la imagen
+        if (selectedFile) {
+          const formData = new FormData();
+          formData.append("id", id.toString()); // Agregar la ID
+          formData.append("file", selectedFile); // Agregar la imagen
 
-      // Subir la imagen de la hamburguesa creada
-      if (selectedFile) {
-        const formData = new FormData();
-        formData.append("id", createdBurger.id); // Backend espera un ID de tipo Long
-        formData.append("file", selectedFile);
+          const imageResponse = await fetch(
+            URLBASE + "/papas/cambiarImagenPapas",
+            {
+              method: "PUT",
+              headers: {
+                Authorization: `Bearer ${getToken()}`,
+              },
+              body: formData,
+            }
+          );
 
-        const imageResponse = await fetch(
-          URLBASE + "/burger/cambiarImagenHamburguesa",
-          {
-            method: "PUT",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-            body: formData,
+          if (!imageResponse.ok) {
+            throw new Error("Error al subir la imagen de las papas");
           }
-        );
 
-        if (!imageResponse.ok) {
-          throw new Error("Error al subir la imagen de la hamburguesa");
+          toast.success("Papas creadas exitosamente con su imagen!");
+        } else {
+          toast.success("Papas creadas exitosamente!");
         }
 
-        toast.success("Papas creada exitosamente con su imagen!");
-        setTimeout(() => window.location.reload(), 1500);
-      } else {
-        toast.success("Papas creada exitosamente!");
-        setTimeout(() => window.location.reload(), 1500);
+        // Recargamos la página después de crear
+        setTimeout(() => window.location.reload(), 0);
       }
     } catch (error) {
       console.error(error);
-      toast.error("Hubo un error al crear la hamburguesa.");
+      toast.error("Hubo un error al crear las Papas.");
     }
   };
 
-  // Reinicia los estados del formulario
   const resetForm = () => {
     setBurgerData({
       name: "",
@@ -117,7 +116,7 @@ export default function App() {
         endContent={<PiPlusBold className="h-5 w-5" />}
         onPress={onOpen}
       >
-        Crear Hamburguesa
+        Crear Papas
       </Button>
 
       <Modal
@@ -133,7 +132,7 @@ export default function App() {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Crear Hamburguesa
+                Crear Papas
               </ModalHeader>
               <ModalBody>
                 <div className="flex flex-col w-full gap-4">
@@ -141,24 +140,17 @@ export default function App() {
                     label="Nombre"
                     name="name"
                     type="text"
-                    value={burgerData.name}
+                    value={papasData.name}
                     onChange={handleInputChange}
                   />
                   <Textarea 
                     name="description"
                     className=" w-full" 
                     label="Descripción" 
-                    placeholder="Describe tu nueva Hamburguesa"
-                    value={burgerData.description}
+                    placeholder="Describe tus nuevas Papas"
+                    value={papasData.description}
                     onChange={handleInputChange}
                   />
-                  {/* <Input
-                    label="Descripción"
-                    name="description"
-                    type="text"
-                    value={burgerData.description}
-                    onChange={handleInputChange}
-                  /> */}
                   <div>
                     <Input
                       label="Imagen"

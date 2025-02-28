@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@heroui/table";
 import { Input } from "@heroui/input";
 import { URLBASE, getToken } from "../utils/VariablesAndMethods";
@@ -12,8 +12,10 @@ import {
 } from "@heroui/modal";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@heroui/dropdown";
 import { PiPlusBold, PiPencilSimpleLine } from "react-icons/pi";
+import { PiPlus, PiMinus } from "react-icons/pi";
 import { Button } from "@heroui/button";
 import { Textarea } from "@heroui/input";
+import { Pagination } from "@heroui/pagination";
 
 interface Elemento {
   id: number;
@@ -21,7 +23,7 @@ interface Elemento {
   price: number;
 }
 
-interface BurgerElemento {
+interface PapasElemento {
   elementoModel: Elemento;
 }
 
@@ -33,7 +35,7 @@ interface ProcessedElemento {
   cantidad: number;
 }
 
-interface Burger {
+interface Papas {
   id: number;
   name: string;
   pictureUrl: string;
@@ -45,47 +47,69 @@ interface Burger {
 }
 
 interface EditModalProps {
-  burgerId: number;
+  papasId: number;
 }
 
-export default function EditModal({ burgerId }: EditModalProps) {
+export default function EditModal({ papasId }: EditModalProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [burger, setBurger] = useState<Burger | null>(null);
+  const [papas, setPapas] = useState<Papas | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [elementos, setElementos] = useState<Elemento[]>([]);
-  const [burgerElements, setBurgerElements] = useState<ProcessedElemento[]>([]);
-  const [initialBurgerElements, setInitialBurgerElements] = useState<ProcessedElemento[]>([]);
+  const [papasElements, setPapasElements] = useState<ProcessedElemento[]>([]);
+  const [initialPapasElements, setInitialPapasElements] = useState<ProcessedElemento[]>([]);
   const [newFile, setNewFile] = useState<File | null>(null);
+  const [newImageUrl, setNewImageUrl] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
+  const rowsPerPage = 4;
+  const formatCurrency = (value) =>
+    new Intl.NumberFormat('us-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+      useGrouping: true,
+    }).format(value);
+  const pages = Math.ceil(papasElements.length / rowsPerPage);
 
+  const items = useMemo(() => {
+    const start = (page - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+    return papasElements.slice(start, end);
+  }, [page, papasElements]);
 
-  const totalCost = burgerElements.reduce((acc, el) => acc + (el.price ?? 0), 0);
-  // Al abrir el modal se cargan todos los datos
+  const totalCost = papasElements.reduce((acc, el) => acc + (el.price ?? 0), 0);
+
   useEffect(() => {
     if (isOpen) {
-      fetchBurger();
+      fetchPapas();
       fetchElementos();
-      fetchBurgerElements();
+      fetchPapasElements();
     }
   }, [isOpen]);
 
   useEffect(() => {
-    if (burgerId) {
-      fetchBurgerElements();
+    if (papasId) {
+      fetchPapasElements();
     }
-  }, [burgerId]);
+  }, [papasId]);
 
   useEffect(() => {
-    if (burger) {
-      const totalCost = burgerElements.reduce((acc, el) => acc + el.price, 0);
-      setBurger({ ...burger, costo: totalCost });
-    }
-  }, [burgerElements]);
+    if (papas) {
+      const totalCost = papasElements.reduce((acc, el) => acc + el.price, 0);
+      setPapas((prevPapas) => {
+        if (!prevPapas) return null;
 
-  const fetchBurgerElements = async () => {
+        const updatedCosto = totalCost;
+        const updatedPrice = updatedCosto + (prevPapas.ganancia ?? 0);
+
+        return { ...prevPapas, costo: updatedCosto, price: updatedPrice };
+      });
+    }
+  }, [papasElements, papas?.ganancia]);
+
+  const fetchPapasElements = async () => {
     const token = getToken();
     try {
-      const response = await fetch(`${URLBASE}/burger/listarElementosBurger?idBurger=${burgerId}`, {
+      const response = await fetch(`${URLBASE}/papas/listarElementosPapas?idPapas=${papasId}`, {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${token}`,
@@ -94,12 +118,11 @@ export default function EditModal({ burgerId }: EditModalProps) {
       });
 
       if (!response.ok) {
-        throw new Error("Error al obtener los elementos de la hamburguesa.");
+        throw new Error("Error al obtener los elementos de las papas.");
       }
 
-      const data: BurgerElemento[] = await response.json();
+      const data: PapasElemento[] = await response.json();
 
-      // Procesar los elementos para eliminar duplicados y contar cantidades
       const elementosMap = new Map<number, ProcessedElemento>();
 
       data.forEach(({ elementoModel }) => {
@@ -118,11 +141,9 @@ export default function EditModal({ burgerId }: EditModalProps) {
         }
       });
 
-
       const processed = Array.from(elementosMap.values());
-      setBurgerElements(processed);
-      // Clonamos el array para tener una referencia de los elementos iniciales
-      setInitialBurgerElements(JSON.parse(JSON.stringify(processed)));
+      setPapasElements(processed);
+      setInitialPapasElements(JSON.parse(JSON.stringify(processed)));
     } catch (err: any) {
       console.error(err);
     }
@@ -152,12 +173,12 @@ export default function EditModal({ burgerId }: EditModalProps) {
     }
   };
 
-  const fetchBurger = async () => {
+  const fetchPapas = async () => {
     setLoading(true);
     setError(null);
     const token = getToken();
     try {
-      const response = await fetch(`${URLBASE}/burger/listarHamburguesaAuth?id=${burgerId}`, {
+      const response = await fetch(`${URLBASE}/papas/listarUnaPapasADMIN?id=${papasId}`, {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${token}`,
@@ -166,11 +187,11 @@ export default function EditModal({ burgerId }: EditModalProps) {
       });
 
       if (!response.ok) {
-        throw new Error("Error al obtener los datos de la hamburguesa.");
+        throw new Error("Error al obtener los datos de las papas.");
       }
 
       const data = await response.json();
-      setBurger(data);
+      setPapas(data);
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -178,52 +199,61 @@ export default function EditModal({ burgerId }: EditModalProps) {
     }
   };
 
-  // Manejador para actualizar campos de la hamburguesa (nombre, descripción, ganancia)
-  const handleBurgerChange = (field: string, value: any) => {
-    if (burger) {
-      setBurger({ ...burger, [field]: value });
+  const handlePapasChange = (field: string, value: any) => {
+    if (papas) {
+      setPapas((prevPapas) => {
+        if (!prevPapas) return null;
+
+        const updatedPapas = { ...prevPapas, [field]: value };
+
+        if (field === "ganancia") {
+          updatedPapas.price = prevPapas.costo + Number(value);
+        }
+
+        return updatedPapas;
+      });
     }
   };
 
-  // Manejador para cambios en el archivo (foto)
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      setNewFile(e.target.files[0]);
+      const file = e.target.files[0];
+      setNewFile(file);
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setNewImageUrl(reader.result as string);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
-  // Manejador para actualizar la cantidad y el precio unitario de un elemento
-  const handleBurgerElementChange = (id: number, field: "cantidad", value: number) => {
-    // Si el valor es menor a 1 o no es un número, lo forzamos a 1
-    if (isNaN(value) || value < 1) {
-      value = 1;
-    }
-    setBurgerElements((prev) =>
-      prev.map((el) => {
-        if (el.id === id) {
-          const updated = { ...el, cantidad: value };
-          // Aseguramos que priceUnit tenga un valor numérico
-          updated.price = updated.cantidad * (updated.priceUnit ?? 0);
-          return updated;
-        }
-        return el;
-      })
+  const handlePapasElementChange = (id: number, field: "cantidad", value: number) => {
+    setPapasElements((prev) =>
+      prev
+        .map((el) => {
+          if (el.id === id) {
+            const updated = { ...el, cantidad: value };
+            updated.price = updated.cantidad * (updated.priceUnit ?? 0);
+            return updated;
+          }
+          return el;
+        })
+        .filter((el) => el.cantidad > 0)
     );
   };
 
-
-  // Calcula las diferencias entre los elementos iniciales y los modificados
   const computeElementosDifferences = () => {
     let elementosAgregados: { id: number; cantidad: number }[] = [];
     let elementosEliminados: { id: number; cantidad: number }[] = [];
 
     const initialMap = new Map<number, number>();
-    initialBurgerElements.forEach((el) => {
+    initialPapasElements.forEach((el) => {
       initialMap.set(el.id, el.cantidad);
     });
 
     const updatedMap = new Map<number, number>();
-    burgerElements.forEach((el) => {
+    papasElements.forEach((el) => {
       updatedMap.set(el.id, el.cantidad);
     });
 
@@ -245,31 +275,26 @@ export default function EditModal({ burgerId }: EditModalProps) {
     return { elementosAgregados, elementosEliminados };
   };
 
-  // Se ejecuta al presionar "Guardar". Se arma el FormData y se envía el PUT al backend.
   const handleSave = async (onClose: () => void) => {
-    if (!burger) return;
+    if (!papas) return;
     const token = getToken();
     const formData = new FormData();
 
-    // Construimos el objeto burgerModelBody con los campos editados
-    const burgerModelBody = {
-      name: burger.name,
-      description: burger.description,
-      ganancia: burger.ganancia,
+    const papasModelBody = {
+      name: papas.name,
+      description: papas.description,
+      ganancia: papas.ganancia,
     };
 
-    // Envolvemos el JSON en un Blob para que se envíe como application/json
     formData.append(
-      "burgerModelBody",
-      new Blob([JSON.stringify(burgerModelBody)], { type: "application/json" })
+      "papasModelBody",
+      new Blob([JSON.stringify(papasModelBody)], { type: "application/json" })
     );
 
-    // Si se seleccionó un nuevo archivo, lo agregamos
     if (newFile) {
       formData.append("file", newFile);
     }
 
-    // Calculamos las diferencias en los elementos
     const { elementosAgregados, elementosEliminados } = computeElementosDifferences();
     formData.append(
       "elementosAgregados",
@@ -281,21 +306,20 @@ export default function EditModal({ burgerId }: EditModalProps) {
     );
 
     try {
-      const response = await fetch(`${URLBASE}/burger/actualizarHamburguesa/${burgerId}`, {
+      const response = await fetch(`${URLBASE}/papas/actualizarPapas/${papasId}`, {
         method: "PUT",
         headers: {
           "Authorization": `Bearer ${token}`,
-          // No se especifica Content-Type al usar FormData
         },
         body: formData,
       });
       if (!response.ok) {
-        throw new Error("Error al actualizar la hamburguesa.");
+        throw new Error("Error al actualizar las papas.");
       }
       const data = await response.json();
-      // Se actualiza el estado con la respuesta (opcional)
-      setBurger(data);
-      onClose(); // Se cierra el modal al finalizar la operación
+      setPapas(data);
+      onClose();
+      window.location.reload();
     } catch (err: any) {
       setError(err.message);
       console.error(err);
@@ -307,7 +331,7 @@ export default function EditModal({ burgerId }: EditModalProps) {
       <Button isIconOnly color="default" variant="light" onPress={onOpen}>
         <PiPencilSimpleLine />
       </Button>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="3xl">
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="xl">
         <ModalContent>
           {(onClose) => (
             <>
@@ -319,135 +343,176 @@ export default function EditModal({ burgerId }: EditModalProps) {
                 <ModalBody>
                   <p>{error}</p>
                 </ModalBody>
-              ) : burger ? (
+              ) : papas ? (
                 <>
                   <ModalHeader className="flex gap-1">
-                    <Input
-                      label="Nombre"
-                      name="name"
-                      type="text"
-                      value={burger.name}
-                      onChange={(e) => handleBurgerChange("name", e.target.value)}
-                    />
+                    <h1>Editá tus Papas</h1>
                   </ModalHeader>
                   <ModalBody>
                     <div className="flex">
-                      <div className="flex flex-col">
-                        <img className="w-80" src={burger.pictureUrl} alt={burger.name} />
-                        <input type="file" onChange={handleFileChange} />
-                        <Button isIconOnly color="default" variant="light">
-
+                      <div className="flex flex-col relative">
+                        <img
+                          className="w-80 h-60 rounded-xl"
+                          src={newImageUrl || papas.pictureUrl}
+                          alt={papas.name}
+                        />
+                        <Button
+                          className="absolute top-0 right-0 m-2 cursor-pointer"
+                          color="warning"
+                          variant="solid"
+                          size="sm"
+                          isIconOnly
+                        >
+                          <input
+                            type="file"
+                            onChange={handleFileChange}
+                            className="absolute inset-0 opacity-0"
+                          />
+                          <PiPencilSimpleLine className="size-5 text-white" />
                         </Button>
                       </div>
-                      <div className="ml-12">
+                      <div className="ml-5 gap-5 flex flex-col">
+                        <Input
+                          label="Nombre"
+                          name="name"
+                          type="text"
+                          value={papas.name}
+                          onChange={(e) => handlePapasChange("name", e.target.value)}
+                        />
                         <Textarea
                           name="description"
                           className="w-full"
                           label="Descripción"
-                          placeholder="Describe tu nueva Hamburguesa"
-                          value={burger.description}
-                          onChange={(e) => handleBurgerChange("description", e.target.value)}
+                          placeholder="Describe tus nuevas Papas"
+                          value={papas.description}
+                          onChange={(e) => handlePapasChange("description", e.target.value)}
                         />
-                        <Input
-                          label="Ganancia"
-                          name="ganancia"
-                          type="number"
-                          value={burger.ganancia}
-                          onChange={(e) =>
-                            handleBurgerChange("ganancia", parseFloat(e.target.value))
-                          }
-                        />
+                        <div className="flex items-center mb-0">
+                          <Dropdown>
+                            <DropdownTrigger>
+                              <Button variant="bordered">
+                                <PiPlusBold /> Añadir Elemento
+                              </Button>
+                            </DropdownTrigger>
+                            <DropdownMenu
+                              aria-label="Lista de elementos"
+                              className="max-h-60 overflow-y-auto"
+                              style={{ maxHeight: "240px", overflowY: "auto" }}
+                            >
+                              {loading ? (
+                                <DropdownItem key="loading" isDisabled>
+                                  Cargando...
+                                </DropdownItem>
+                              ) : error ? (
+                                <DropdownItem key="error" isDisabled>
+                                  Error: {error}
+                                </DropdownItem>
+                              ) : elementos.length > 0 ? (
+                                elementos.map((elemento) => (
+                                  <DropdownItem
+                                    key={elemento.id}
+                                    onPress={() => {
+                                      const found = papasElements.find((el) => el.id === elemento.id);
+                                      if (found) {
+                                        handlePapasElementChange(elemento.id, "cantidad", found.cantidad + 1);
+                                      } else {
+                                        setPapasElements((prev) => [
+                                          ...prev,
+                                          {
+                                            id: elemento.id,
+                                            name: elemento.name,
+                                            priceUnit: elemento.price,
+                                            price: elemento.price,
+                                            cantidad: 1,
+                                          },
+                                        ]);
+                                      }
+                                    }}
+                                  >
+                                    {elemento.name}
+                                  </DropdownItem>
+                                ))
+                              ) : (
+                                <DropdownItem key="empty" isDisabled>
+                                  No hay elementos disponibles.
+                                </DropdownItem>
+                              )}
+                            </DropdownMenu>
+                          </Dropdown>
+                        </div>
                       </div>
                     </div>
-                    <div className="flex">
-                      <h1>Ingredientes</h1>
-                      <Dropdown>
-                        <DropdownTrigger>
-                          <Button isIconOnly variant="bordered">
-                            <PiPlusBold />
-                          </Button>
-                        </DropdownTrigger>
-                        <DropdownMenu
-                          aria-label="Lista de elementos"
-                          className="max-h-60 overflow-y-auto"
-                          style={{ maxHeight: "240px", overflowY: "auto" }}
-                        >
-                          {loading ? (
-                            <DropdownItem key="loading" disabled>
-                              Cargando...
-                            </DropdownItem>
-                          ) : error ? (
-                            <DropdownItem key="error" disabled>
-                              Error: {error}
-                            </DropdownItem>
-                          ) : elementos.length > 0 ? (
-                            elementos.map((elemento) => (
-                              <DropdownItem
-                                key={elemento.id}
-                                onPress={() => {
-                                  // Si el elemento ya existe, incrementamos la cantidad
-                                  const found = burgerElements.find((el) => el.id === elemento.id);
-                                  if (found) {
-                                    handleBurgerElementChange(elemento.id, "cantidad", found.cantidad + 1);
-                                  } else {
-                                    setBurgerElements((prev) => [
-                                      ...prev,
-                                      {
-                                        id: elemento.id,
-                                        name: elemento.name,
-                                        priceUnit: elemento.price,
-                                        price: elemento.price,
-                                        cantidad: 1,
-                                      },
-                                    ]);
-                                  }
-                                }}
-                              >
-                                {elemento.name}
-                              </DropdownItem>
-                            ))
-                          ) : (
-                            <DropdownItem key="empty" disabled>
-                              No hay elementos disponibles.
-                            </DropdownItem>
-                          )}
-                        </DropdownMenu>
-                      </Dropdown>
-                    </div>
-                    <Table aria-label="Elementos de la hamburguesa">
+                    <Table
+                      aria-label="Elementos de las papas"
+                      bottomContent={
+                        <div className="flex w-full justify-center">
+                          <Pagination
+                            isCompact
+                            showControls
+                            showShadow
+                            color="default"
+                            page={page}
+                            total={pages}
+                            onChange={setPage}
+                          />
+                        </div>
+                      }
+                    >
                       <TableHeader>
                         <TableColumn>Elemento</TableColumn>
                         <TableColumn>Cantidad</TableColumn>
                         <TableColumn>Precio Total</TableColumn>
                       </TableHeader>
                       <TableBody>
-                        {burgerElements.map((elemento) => (
+                        {items.map((elemento) => (
                           <TableRow key={elemento.id}>
                             <TableCell>{elemento.name}</TableCell>
                             <TableCell>
-                              <Input
-                                type="number"
-                                min={1}
-                                value={elemento.cantidad}
-                                onChange={(e) =>
-                                  handleBurgerElementChange(
-                                    elemento.id,
-                                    "cantidad",
-                                    parseInt(e.target.value)
-                                  )
-                                }
-                              />
+                              <div className="flex items-center">
+                                <Button
+                                  radius="lg"
+                                  size="sm"
+                                  isIconOnly
+                                  onPress={() => handlePapasElementChange(elemento.id, "cantidad", elemento.cantidad - 1)}
+                                >
+                                  <PiMinus className="size-4" />
+                                </Button>
+                                <span className="mx-2">{elemento.cantidad}</span>
+                                <Button
+                                  radius="lg"
+                                  size="sm"
+                                  isIconOnly
+                                  onPress={() => handlePapasElementChange(elemento.id, "cantidad", Math.min(10, elemento.cantidad + 1))}
+                                >
+                                  <PiPlus className="size-4" />
+                                </Button>
+                              </div>
                             </TableCell>
                             <TableCell>${elemento.price.toFixed(2)}</TableCell>
                           </TableRow>
                         ))}
                       </TableBody>
                     </Table>
-                    <h1>Costo: ${totalCost.toFixed(2)}</h1>
-                    <div className="flex">
-                      <h1>Ganancia: ${burger.ganancia}</h1>
+                    <div className="flex items-center justify-between">
+                      <div className="flex">
+                        <Input
+                          label="Ganancia"
+                          name="ganancia"
+                          type="text"
+                          value={`$ ${papas.ganancia.toLocaleString("en-US")}`}
+                          onChange={(e) => {
+                            const rawValue = e.target.value.replace(/[^0-9]/g, "");
+                            let numericValue = parseFloat(rawValue) || 1;
+                            numericValue = Math.max(1, Math.min(20000, numericValue));
+                            handlePapasChange("ganancia", numericValue);
+                          }}
+                        />
+                      </div>
+                      <h1>Costo: ${formatCurrency(papas?.costo)}</h1>
                     </div>
-                    <h1>Precio: ${burger.price}</h1>
+                    <div className="flex justify-center">
+                      <p>Precio: ${formatCurrency(papas?.price)}</p>
+                    </div>
                   </ModalBody>
                   <ModalFooter>
                     <Button color="primary" variant="light" onPress={onClose}>
@@ -460,7 +525,7 @@ export default function EditModal({ burgerId }: EditModalProps) {
                 </>
               ) : (
                 <ModalBody>
-                  <p>No se encontraron datos de la hamburguesa.</p>
+                  <p>No se encontraron datos de las papas.</p>
                 </ModalBody>
               )}
             </>

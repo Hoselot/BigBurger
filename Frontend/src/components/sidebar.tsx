@@ -63,7 +63,7 @@ export function Sidebar({ collapsed, setCollapsed }: { collapsed: boolean; setCo
             },
             {
               key: "fries",
-              href: "/#",
+              href: "/papaspage",
               label: "Papas Fritas",
               description: "Gestión de Papas Fritas",
               icon: <CiFries className={iconClasses} />,

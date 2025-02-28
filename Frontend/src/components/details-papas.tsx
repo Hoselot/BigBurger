@@ -9,7 +9,7 @@ import {
 import { Button } from "@heroui/button";
 import { PiEye } from "react-icons/pi";
 
-interface Burger {
+interface Papas {
   id: number;
   name: string;
   pictureUrl: string;
@@ -20,10 +20,10 @@ interface Burger {
 }
 
 interface DetailModalProps {
-  burger: Burger;
+  papas: Papas;
 }
 
-export default function DetailModal({ burger }: DetailModalProps) {
+export default function DetailModal({ papas }: DetailModalProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (
@@ -35,19 +35,19 @@ export default function DetailModal({ burger }: DetailModalProps) {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">{burger.name}</ModalHeader>
+              <ModalHeader className="flex flex-col gap-1">{papas.name}</ModalHeader>
               <ModalBody>
-                <img src={burger.pictureUrl} alt={burger.name} width="100%" />
+                <img src={papas.pictureUrl} alt={papas.name} width="100%" />
                 <h1>Descripción</h1>
-                <p>{burger.description}</p>
+                <p>{papas.description}</p>
                 <h1>Ingredientes</h1>
                 <ul>
-                  {burger.ingredients?.map((ingredient, index) => (
+                  {papas.ingredients?.map((ingredient, index) => (
                     <li key={index}>{ingredient}</li>
                   )) || <li>No hay ingredientes disponibles</li>}
                 </ul>
 
-                <h1>Precio: ${burger.price}</h1>
+                <h1>Precio: ${papas.price}</h1>
               </ModalBody>
               <ModalFooter>
                 <Button color="primary" variant="light" onPress={onClose}>
