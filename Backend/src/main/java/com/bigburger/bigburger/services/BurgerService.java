@@ -85,10 +85,9 @@ public class BurgerService {
         BurgerModel burgerModel = burgerRepository.findById(idBurger)
                 .orElseThrow(() -> new BurgerNotFoundException("Hamburguesa no encontrada"));
 
-            if(burgerRepository.findBurgerByName(burgerModelBody.getName()).isPresent()){
-                throw new IllegalArgumentException("Ya existe una hamburguesa con el nombre: " + burgerModelBody.getName());
-            }
+        if (!Objects.equals(burgerModelBody.getName(), burgerModel.getName())) {
             burgerModel.setName(burgerModelBody.getName());
+        }
         if (!Objects.equals(burgerModelBody.getDescription(), burgerModel.getDescription())) {
             burgerModel.setDescription(burgerModelBody.getDescription());
         }
