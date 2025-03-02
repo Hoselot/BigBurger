@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ElementoService {
@@ -26,6 +27,16 @@ public class ElementoService {
     private IBurgerElementoRepository burgerElementoRepository;
 
     public ElementoModel crearElemento(ElementoModel elementoModel){
+
+        if (elementoModel.getName() == null || elementoModel.getName().trim().isEmpty()) {
+            throw new IllegalArgumentException("El nombre del elemento no puede estar vacío.");
+        }
+
+        Optional<ElementoModel> elementoExistente = elementoRepository.findElementoByName(elementoModel.getName());
+        if (elementoExistente.isPresent()) {
+            throw new IllegalArgumentException("Ya existe un elemento con el nombre: " + elementoModel.getName());
+        }
+
         return elementoRepository.save(elementoModel);
     }
 
@@ -55,73 +66,60 @@ public class ElementoService {
     public List<ElementoModel> listarElementos(){
         return elementoRepository.findAll();
     }
-    public ElementoModel actualizarNombreElemento(Long idElemento, String nombreNuevo){
-        ElementoModel elementoModel = elementoRepository.findById(idElemento)
-                .orElseThrow(() -> new ElementoNotFoundException("Elemento no encontrado"));
-        // Actualizar el nombre si es diferente
-        if (!elementoModel.getName().equals(nombreNuevo)) {
-            elementoModel.setName(nombreNuevo);
+
+    public ElementoModel traerUnElemento(Long idElemento){
+        return elementoRepository.findById(idElemento).orElseThrow(() -> new BurgerNotFoundException("Elemento no encontrado"));
+    }
+    public ElementoModel actualizarNombreElemento(ElementoModel elementoModel, ElementoModel elementoModelBody) {
+        String nuevoNombre = elementoModelBody.getName();
+        // Verificar que el nuevo nombre no sea null y no sea solo espacios en blanco
+        if (nuevoNombre != null && !nuevoNombre.trim().isEmpty() && !nuevoNombre.equals(elementoModel.getName())) {
+            elementoModel.setName(nuevoNombre);
         }
         return elementoRepository.save(elementoModel);
     }
-    public ElementoModel actualizarPrecioElemento(Long idElemento, ElementoModel elementoModelBody) {
-        // Buscar el elemento por ID
-        ElementoModel elementoModel = elementoRepository.findById(idElemento)
-                .orElseThrow(() -> new ElementoNotFoundException("Elemento no encontrado"));
 
-
-
-        // Si el precio cambia, actualizar y ajustar las burgers relacionadas
-        if (elementoModel.getPrice().compareTo(elementoModelBody.getPrice()) != 0) {
+    public ElementoModel actualizarPrecioElemento(ElementoModel elementoModel, ElementoModel elementoModelBody) {
+        BigDecimal nuevoPrecio = elementoModelBody.getPrice();
+        // Verificar que el nuevo precio no sea null, sea mayor o igual a 0 y diferente del actual
+        if (nuevoPrecio != null && nuevoPrecio.compareTo(BigDecimal.ZERO) >= 0 && elementoModel.getPrice().compareTo(nuevoPrecio) != 0) {
             // Guardar el precio anterior
             BigDecimal precioAnterior = elementoModel.getPrice();
-
             // Actualizar el precio del elemento
-            elementoModel.setPrice(elementoModelBody.getPrice());
+            elementoModel.setPrice(nuevoPrecio);
             elementoRepository.save(elementoModel);
 
-            // Obtener las papas relacionadas con este elemento
-            List<PapasElementoModel> elementoPapas = papasElementoRepository.findAllByElementoModelId(idElemento);
-
-            // Ajustar los costos de cada una de las papas afectadas
+            // Ajuste de las papas relacionadas
+            List<PapasElementoModel> elementoPapas = papasElementoRepository.findAllByElementoModelId(elementoModel.getId());
             for (PapasElementoModel papasElementoModel : elementoPapas) {
                 PapasModel papasModel = papasElementoModel.getPapasModel();
-
-                // Actualizar el costo de la burger basado en el nuevo precio
-                BigDecimal costoNuevoElemento = elementoModelBody.getPrice();
-                BigDecimal costoViejoElemento = precioAnterior;
-
                 // Restar el costo antiguo y sumar el costo nuevo
-                papasModel.setCosto(papasModel.getCosto().subtract(costoViejoElemento).add(costoNuevoElemento));
-
+                papasModel.setCosto(papasModel.getCosto().subtract(precioAnterior).add(nuevoPrecio));
                 // Actualizar el precio final de la burger (costo + ganancia)
                 papasModel.setPrice(papasModel.getCosto().add(papasModel.getGanancia()));
-
-                // Guardar los cambios de la burger
                 papasRepository.save(papasModel);
             }
 
-            // Obtener las burgers relacionadas con este elemento
-            List<BurgerElementoModel> elementoBurgers = burgerElementoRepository.findAllByElementoModelId(idElemento);
-
-            // Ajustar los costos de cada burger afectada
+            // Ajuste de las burgers relacionadas
+            List<BurgerElementoModel> elementoBurgers = burgerElementoRepository.findAllByElementoModelId(elementoModel.getId());
             for (BurgerElementoModel burgerElementoModel : elementoBurgers) {
                 BurgerModel burgerModel = burgerElementoModel.getBurgerModel();
-
-                // Actualizar el costo de la burger basado en el nuevo precio
-                BigDecimal costoNuevoElemento = elementoModelBody.getPrice();
-                BigDecimal costoViejoElemento = precioAnterior;
-
                 // Restar el costo antiguo y sumar el costo nuevo
-                burgerModel.setCosto(burgerModel.getCosto().subtract(costoViejoElemento).add(costoNuevoElemento));
-
+                burgerModel.setCosto(burgerModel.getCosto().subtract(precioAnterior).add(nuevoPrecio));
                 // Actualizar el precio final de la burger (costo + ganancia)
                 burgerModel.setPrice(burgerModel.getCosto().add(burgerModel.getGanancia()));
-
-                // Guardar los cambios de la burger
                 burgerRepository.save(burgerModel);
             }
         }
+        return elementoModel;
+    }
+
+    public ElementoModel actualizarElemento(Long idElemento, ElementoModel elementoModelBody) {
+        ElementoModel elementoModel = elementoRepository.findById(idElemento)
+                .orElseThrow(() -> new BurgerNotFoundException("Elemento no encontrado"));
+
+        elementoModel = this.actualizarNombreElemento(elementoModel, elementoModelBody);
+        elementoModel = this.actualizarPrecioElemento(elementoModel, elementoModelBody);
 
         return elementoModel;
     }

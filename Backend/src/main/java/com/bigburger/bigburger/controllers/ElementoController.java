@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -35,14 +36,28 @@ public class ElementoController {
         return elementoService.listarElementos();
     }
 
-    @PutMapping("/actualizarPrecioElemento")
-    @PreAuthorize("hasAuthority('UPDATE')")
-    public ResponseEntity<ElementoModel> actualizarPrecioElemento(@RequestParam Long idElemento, @RequestBody ElementoModel elementoModel){
-        return ResponseEntity.ok(elementoService.actualizarPrecioElemento(idElemento,elementoModel));
+    @GetMapping("/traerUnElemento")
+    @PreAuthorize("hasAuthority('READ')")
+    public ElementoModel traerUnElemento(@RequestParam Long id){
+        return elementoService.traerUnElemento(id);
     }
-    @PutMapping("/actualizarNombreElemento")
+
+//    @PutMapping("/actualizarPrecioElemento")
+//    @PreAuthorize("hasAuthority('UPDATE')")
+//    public ResponseEntity<ElementoModel> actualizarPrecioElemento(@RequestParam Long idElemento, @RequestBody BigDecimal Precio){
+//        return ResponseEntity.ok(elementoService.actualizarPrecioElemento(idElemento,Precio));
+//    }
+
+//    @PutMapping("/actualizarNombreElemento")
+//    @PreAuthorize("hasAuthority('UPDATE')")
+//    public ResponseEntity<ElementoModel> actualizarNombreElemento(@RequestParam Long idElemento, @RequestParam String nombreNuevo){
+//        return ResponseEntity.ok(elementoService.actualizarNombreElemento(idElemento,nombreNuevo));
+//    }
+
+    @PutMapping("/actualizarElemento")
     @PreAuthorize("hasAuthority('UPDATE')")
-    public ResponseEntity<ElementoModel> actualizarNombreElemento(@RequestParam Long idElemento, @RequestParam String nombreNuevo){
-        return ResponseEntity.ok(elementoService.actualizarNombreElemento(idElemento,nombreNuevo));
+    public ResponseEntity<ElementoModel> actualizarElemento(@RequestParam Long idElemento, @RequestBody ElementoModel elementoModelBody){
+        return ResponseEntity.ok(elementoService.actualizarElemento(idElemento, elementoModelBody));
     }
+
 }

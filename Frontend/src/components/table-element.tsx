@@ -151,7 +151,7 @@ export default function App() {
                       <div className="flex">
 
                         <Tooltip content="Editar">
-                          <EditModal />
+                          <EditModal elementoId={elemento.id}/>
                         </Tooltip>
                         <Tooltip color="danger" content="Eliminar">
                           <DeleteModal elementoId={elemento.id} />

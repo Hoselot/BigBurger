@@ -4,10 +4,7 @@ import com.bigburger.bigburger.dto.BurgerDto;
 import com.bigburger.bigburger.dto.ElementoDtoForEdit;
 import com.bigburger.bigburger.exeptions.BurgerNotFoundException;
 import com.bigburger.bigburger.exeptions.ElementoNotFoundException;
-import com.bigburger.bigburger.models.BebidaModel;
-import com.bigburger.bigburger.models.BurgerElementoModel;
-import com.bigburger.bigburger.models.BurgerModel;
-import com.bigburger.bigburger.models.ElementoModel;
+import com.bigburger.bigburger.models.*;
 import com.bigburger.bigburger.repository.IBurgerElementoRepository;
 import com.bigburger.bigburger.repository.IBurgerRepository;
 import com.bigburger.bigburger.repository.IElementoRepository;
@@ -61,10 +58,14 @@ public class BurgerService {
     }
 
     public BurgerModel crearHamburguesa(BurgerModel burgerModel){
-        Optional<BurgerModel> burgerExistente = burgerRepository.findBurgerByName(burgerModel.getName());
 
-        if (burgerExistente.isPresent()) {
-            throw new IllegalArgumentException("Ya existe una hamburguesa con el nombre: " + burgerModel.getName());
+        if (burgerModel.getName() == null || burgerModel.getName().trim().isEmpty()) {
+            throw new IllegalArgumentException("El nombre de la hamburguesa no puede estar vacío.");
+        }
+
+        Optional<BurgerModel> hamburguesaExistente = burgerRepository.findBurgerByName(burgerModel.getName());
+        if (hamburguesaExistente.isPresent()) {
+            throw new IllegalArgumentException("Ya existen unas papas con el nombre: " + burgerModel.getName());
         }
 
         burgerModel.setGanancia(BigDecimal.valueOf(0));
@@ -85,7 +86,7 @@ public class BurgerService {
         BurgerModel burgerModel = burgerRepository.findById(idBurger)
                 .orElseThrow(() -> new BurgerNotFoundException("Hamburguesa no encontrada"));
 
-        if (!Objects.equals(burgerModelBody.getName(), burgerModel.getName())) {
+        if (burgerModelBody.getName() != null && !burgerModelBody.getName().trim().isEmpty() && !Objects.equals(burgerModelBody.getName(), burgerModel.getName())) {
             burgerModel.setName(burgerModelBody.getName());
         }
         if (!Objects.equals(burgerModelBody.getDescription(), burgerModel.getDescription())) {

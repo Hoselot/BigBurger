@@ -89,19 +89,24 @@ public class PapasService {
                 .collect(Collectors.toList());
     }
 
-    public PapasModel crearPapas(PapasModel papasModel){
-        Optional<PapasModel> papasExistentes = papasRepository.findPapasByName(papasModel.getName());
+    public PapasModel crearPapas(PapasModel papasModel) {
+        if (papasModel.getName() == null || papasModel.getName().trim().isEmpty()) {
+            throw new IllegalArgumentException("El nombre de las papas no puede estar vacío.");
+        }
 
+        Optional<PapasModel> papasExistentes = papasRepository.findPapasByName(papasModel.getName());
         if (papasExistentes.isPresent()) {
             throw new IllegalArgumentException("Ya existen unas papas con el nombre: " + papasModel.getName());
         }
 
-        papasModel.setGanancia(BigDecimal.valueOf(0));
-        papasModel.setPrice(BigDecimal.valueOf(0));
-        papasModel.setCosto(BigDecimal.valueOf(0));
+        papasModel.setGanancia(BigDecimal.ZERO);
+        papasModel.setPrice(BigDecimal.ZERO);
+        papasModel.setCosto(BigDecimal.ZERO);
         papasModel.setPrivada(false);
+
         return papasRepository.save(papasModel);
     }
+
 
     public String eliminarPapas(Long id){
         papasRepository.deleteById(id);
@@ -114,9 +119,10 @@ public class PapasService {
         PapasModel papasModel = papasRepository.findById(idPapas)
                 .orElseThrow(() -> new BurgerNotFoundException("Papas no encontradas"));
 
-        if (!Objects.equals(papasModelBody.getName(), papasModel.getName())) {
+        if (papasModelBody.getName() != null && !papasModelBody.getName().trim().isEmpty() && !Objects.equals(papasModelBody.getName(), papasModel.getName())) {
             papasModel.setName(papasModelBody.getName());
         }
+
         if (!Objects.equals(papasModelBody.getDescription(), papasModel.getDescription())) {
             papasModel.setDescription(papasModelBody.getDescription());
         }
