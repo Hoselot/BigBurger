@@ -8,6 +8,7 @@ import PruebaTabla from "@/components/probartabla"
 import ElementPage from "@/pages/element-page";
 import PapasPage from "@/pages/papas-page";
 import BurgerPage from "@/pages/burger-page";
+import DrinksPage from "@/pages/drink-page";
 import LocationPicker from './components/LocationPicker';
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
       <Route element={<DocsPage />} path="/docs" />
       <Route element={<IndividualBurgerPage />} path="/IndividualBurgerPage/:id" />
       <Route element={<ElementPage />} path="/ElementPage" />
+      <Route element={<DrinksPage />} path="/DrinksPage" />
       <Route element={<PapasPage />} path="/PapasPage" />
       <Route element={<BurgerPage />} path="/BurgerPage" />
       <Route element={<LocationPicker />} path="/LocationPicker" />

@@ -58,17 +58,16 @@ public class BebidaController {
         return bebidaService.eliminarBebida(id);
     }
 
-//    @PutMapping(value = "/actualizarBebida/{idBebida}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-//    @PreAuthorize("hasAuthority('UPDATE')")
-//    public ResponseEntity<BebidaModel> actualizarBebida(
-//            @PathVariable Long idBebida,
-//            @RequestPart("bebidaModelBody") @Valid BebidaModel bebidaModelBody,  // Objeto JSON
-//            @RequestPart(value = "file", required = false) MultipartFile file,  // Archivo opcional
-//            @RequestPart(value = "elementosAgregados", required = false) List<ElementoDtoForEdit> elementosAgregados,
-//            @RequestPart(value = "elementosEliminados", required = false) List<ElementoDtoForEdit> elementosEliminados) {
-//
-//        return ResponseEntity.ok(bebidaService.actualizarBebida(idBebida, bebidaModelBody, file, elementosAgregados, elementosEliminados));
-//    }
+    @PutMapping(value = "/actualizarBebida/{idBebida}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+    @PreAuthorize("hasAuthority('UPDATE')")
+    public ResponseEntity<BebidaModel> actualizarBebida(
+            @PathVariable Long idBebida,
+            @RequestPart("bebidaModelBody") @Valid BebidaModel bebidaModelBody,  // Objeto JSON
+            @RequestPart(value = "file", required = false) MultipartFile file  // Archivo opcional
+            ) {
+
+        return ResponseEntity.ok(bebidaService.actualizarBebida(idBebida, bebidaModelBody, file));
+    }
 
     @PutMapping("/asignarCostoBebida")
     @PreAuthorize("hasAuthority('UPDATE')")
