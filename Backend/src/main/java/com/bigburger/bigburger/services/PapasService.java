@@ -84,6 +84,7 @@ public class PapasService {
                 .map(papas -> new PapasDto(
                         papas.getId(),
                         papas.getName(),
+                        papas.getPictureUrl(),
                         papas.getPrice()
                 ))
                 .collect(Collectors.toList());

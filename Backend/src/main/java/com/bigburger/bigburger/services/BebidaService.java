@@ -80,6 +80,7 @@ public class BebidaService {
                 .map(bebida -> new BebidaDto(
                         bebida.getId(),
                         bebida.getName(),
+                        bebida.getPictureUrl(),
                         bebida.getPrice()
                 ))
                 .collect(Collectors.toList());

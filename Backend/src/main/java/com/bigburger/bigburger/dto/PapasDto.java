@@ -14,6 +14,7 @@ public class PapasDto {
 
     private Long id;
     private String name;
+    private String PictureUrl;
     private BigDecimal price;
 
 }
