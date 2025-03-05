@@ -52,6 +52,7 @@
     "react-router-dom": "6.23.0",
     "react-toastify": "^11.0.3",
     "sonner": "^1.7.4",
+    "swiper": "^11.2.5",
     "tailwind-variants": "0.1.20"
   },
   "devDependencies": {
