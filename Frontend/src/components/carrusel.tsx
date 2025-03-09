@@ -146,7 +146,7 @@ export default function CircularCarousel({ images, autoplaySpeed = 3000 }: Carou
 
   return (
     <div
-      className="w-full max-w-5xl mx-auto px-4 py-8"
+      className="w-full max-w-4xl mx-auto  z-0"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onMouseDown={handleDragStart}
@@ -157,16 +157,16 @@ export default function CircularCarousel({ images, autoplaySpeed = 3000 }: Carou
       onTouchMove={handleDragMove}
       onTouchEnd={handleDragEnd}
     >
-      <div className="relative h-[300px] sm:h-[400px] md:h-[500px] perspective-1000 overflow-hidden">
+      <div className="relative h-[300px] sm:h-[400px] md:h-[350px] perspective-1000 overflow-hidden ">
         {/* Large red circle background - significantly larger than the images */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] bg-red-600 rounded-full z-0 shadow-lg"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] h-[200px] sm:w-[400px] sm:h-[400px] md:w-[300px] md:h-[300px] bg-red-600 rounded-full z-0 shadow-lg"></div>
 
         <div className="absolute w-full h-full flex items-center justify-center transform-style-3d">
           {images.map((image, index) => (
             <div
               key={index}
               className={cn(
-                "absolute w-[200px] h-[200px] sm:w-[250px] sm:h-[250px] md:w-[300px] md:h-[300px] transition-all duration-500 ease-in-out",
+                "absolute w-[150px] h-[150px] sm:w-[200px] sm:h-[200px] md:w-[200px] md:h-[200px] transition-all duration-500 ease-in-out",
                 currentIndex === index ? "cursor-default" : "cursor-pointer",
               )}
               style={getSlideStyle(index)}
@@ -174,19 +174,20 @@ export default function CircularCarousel({ images, autoplaySpeed = 3000 }: Carou
             >
               <div className="relative w-full h-full rounded-full overflow-hidden">
               <img
-    src={image.src || "/placeholder.svg"}
-    alt={image.alt}
-    className="absolute inset-0 w-full h-full object-cover"
-    loading="lazy"
-  />
+                src={image.src || "/placeholder.svg"}
+                alt={image.alt}
+                className="absolute inset-0 w-full h-full max-w-full max-h-full object-contain"
+                loading="lazy"
+              />
               </div>
             </div>
           ))}
         </div>
+        
       </div>
 
       {/* Pagination dots */}
-      <div className="flex justify-center mt-4 gap-2">
+      <div className="flex justify-center gap-3">
         {images.map((_, index) => (
           <button
             key={index}
@@ -200,6 +201,7 @@ export default function CircularCarousel({ images, autoplaySpeed = 3000 }: Carou
         ))}
       </div>
     </div>
+    
   )
 }
 

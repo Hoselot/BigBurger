@@ -34,7 +34,7 @@ export default function App() {
   
 
   return (
-    <div className="gap-10 grid grid-cols-2 sm:grid-cols-5">
+    <div className="gap-10 grid grid-cols-2 sm:grid-cols-5 px-40">
       {burgers.map((burger) => (
         <Card
           key={burger.id}
@@ -43,7 +43,7 @@ export default function App() {
           // onPress={() => console.log(`Hamburguesa seleccionada: ${burger.name}`)}
           onPress={() => navigate(`/IndividualBurgerPage/${burger.id}`, { state: { burger } })}
         >
-          <CardBody className="overflow-hidden p-0">
+          <CardBody className="overflow-hidden p-">
             <Image
               alt={burger.name}
               className="w-full object-cover h-[100px] sm:h-[250px] rounded-none"
