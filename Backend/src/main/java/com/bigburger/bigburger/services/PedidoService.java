@@ -96,7 +96,7 @@ public class PedidoService {
 
         pedidoModel.setDetalles(detallePedido);
 
-        return pedidoRepository.save(pedidoModel);
+        return pedidoModel;
     }
 
     public List<PedidoModel> listarAllPedidos(){
