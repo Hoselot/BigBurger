@@ -30,17 +30,18 @@ const App: React.FC = () => {
     delivery: 0,
     items: [
       {
-        nombreHamburguesa: 'CheeseBurger',
-        nombrePapas: '',
-        nombreBebida: '',
-        cantidad: 1,
-      },
-      {
-        nombreHamburguesa: 'CheeseBurger',
-        nombrePapas: 'Papas comunes',
-        nombreBebida: 'Coca cola',
+        nombreHamburguesa: 'BIG BURGUER',
+        nombrePapas: 'Chedar big',
+        nombreBebida: 'coca',
         cantidad: 1,
       }
+      // ,
+      // {
+      //   nombreHamburguesa: 'CheeseBurger',
+      //   nombrePapas: 'Papas comunes',
+      //   nombreBebida: 'Coca cola',
+      //   cantidad: 1,
+      // }
     ],
   };
 

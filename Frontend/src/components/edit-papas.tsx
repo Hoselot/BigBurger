@@ -502,8 +502,8 @@ export default function EditModal({ papasId }: EditModalProps) {
                           value={`$ ${papas.ganancia.toLocaleString("en-US")}`}
                           onChange={(e) => {
                             const rawValue = e.target.value.replace(/[^0-9]/g, "");
-                            let numericValue = parseFloat(rawValue) || 1;
-                            numericValue = Math.max(1, Math.min(20000, numericValue));
+                            let numericValue = parseFloat(rawValue) || 0;
+                            numericValue = Math.max(0, Math.min(20000, numericValue));
                             handlePapasChange("ganancia", numericValue);
                           }}
                         />

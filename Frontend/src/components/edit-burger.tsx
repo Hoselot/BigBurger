@@ -551,10 +551,10 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                           value={`$ ${burger.ganancia.toLocaleString("en-US")}`} // Formatea con símbolo y separadores
                           onChange={(e) => {
                             const rawValue = e.target.value.replace(/[^0-9]/g, ""); // Elimina caracteres no numéricos
-                            let numericValue = parseFloat(rawValue) || 1; // Asigna 1 si no es un valor válido
+                            let numericValue = parseFloat(rawValue) || 0; // Asigna 1 si no es un valor válido
 
-                            // Asegúrate de que el valor esté entre 1 y 20,000
-                            numericValue = Math.max(1, Math.min(20000, numericValue));
+                            // Asegúrate de que el valor esté entre 0 y 20,000
+                            numericValue = Math.max(0, Math.min(20000, numericValue));
 
                             handleBurgerChange("ganancia", numericValue); // Actualiza el estado con el nuevo valor
                           }}
