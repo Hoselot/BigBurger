@@ -14,10 +14,11 @@ import PagoPendiente from "./pages/PagoPendiente";
 import MPCheckOut from "./pages/checkout"
 import DrinksPage from "@/pages/drink-page";
 import LocationPicker from './components/LocationPicker';
+import CarritoPage from './pages/carrito-page';
 
 function App() {
   const navigate = useNavigate();
-  const publicRoutes = ["/", "/IndividualBurgerPage/:id", "/mp-checkout","/pago-exitoso","/pago-fallido","/pago-pendiente" ];
+  const publicRoutes = ["/", "/IndividualBurgerPage/:id", "/mp-checkout","/pago-exitoso","/pago-fallido","/pago-pendiente","/carrito" ];
 
   useEffect(() => {
     const token = localStorage.getItem("token") || sessionStorage.getItem("token");
@@ -51,6 +52,7 @@ function App() {
       <Route element={<PagoFallido />} path="/pago-fallido"  />
       <Route element={<PagoPendiente />} path="/pago-pendiente"  />
       <Route element={<MPCheckOut />} path="/mp-checkout"  />
+      <Route element={<CarritoPage />} path="/carrito"  />
     </Routes>
   );
 }

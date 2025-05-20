@@ -8,6 +8,7 @@ import { useAuth } from "../utils/auth-context";
 import { PiHamburgerThin, PiNotepadThin,PiBreadThin, PiBoxArrowDownThin, PiMathOperationsThin, PiBagThin } from "react-icons/pi";
 import { CiMenuBurger } from "react-icons/ci";
 import { AnimatePresence, motion } from "motion/react"
+import useTotalCarrito from "@/hooks/useTotalCarrito";
 export const Navbar = () => {
   // Stilos del Navbar
   const [visible, setVisible] = useState(true);
@@ -30,7 +31,7 @@ export const Navbar = () => {
 // verificacion de logueo
   const { isLoggedIn } = useAuth(); // Se asume que useAuth está correctamente tipado
   // menu
- 
+  const total = useTotalCarrito();
   return (
     <nav
     className={`fixed top-0 left-0 w-full p-3 transition-transform duration-300 z-50 ${
@@ -78,11 +79,15 @@ export const Navbar = () => {
       transition={{ duration: 0.5, delay: 0.2 }}
       className="flex items-center bg-white rounded-xl px-2"
     >
-      <h1>$0.00</h1>
+      <h1>${total.toFixed(2)}</h1>
+      <Link href="/carrito" color="foreground">
       <Button isIconOnly variant="light">
         <PiBagThin className="size-7"/>
       </Button>
+      
+      </Link>
     </motion.div>
+    
 
     {isLoggedIn && (
       <Dropdown>

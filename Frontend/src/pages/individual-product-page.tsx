@@ -15,7 +15,8 @@ export default function BurgerPage() {
   const [selectedPapas, setSelectedPapas] = useState(null);
   const [selectedBebida, setSelectedBebida] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
-
+// Nuevo estado para la cantidad
+const [cantidad, setCantidad] = useState(1);
   // Asigna el precio base de la hamburguesa
   useEffect(() => {
     if (state?.burger) {
@@ -70,9 +71,36 @@ export default function BurgerPage() {
               className="w-100 h-96 object-cover rounded-lg shadow-lg"
             />
             {/* El contador mantiene la cantidad de hamburguesas */}
-            <Counter basePrice={totalPrice.toFixed(2)} />
+            
+            <Counter basePrice={totalPrice.toFixed(2)} onChange={setCantidad} />
             <div className="flex justify-start w-full">
-              <Button className="bg-gray-900 text-white w-full">Agregar al Carrito</Button>
+            <Button
+  className="bg-gray-900 text-white w-full"
+  onClick={() => {
+    if (!name || cantidad <= 0) {
+      alert("Debe seleccionar una hamburguesa válida y una cantidad mayor a 0.");
+      return;
+    }
+  
+    const nuevoItem = {
+      nombreHamburguesa: name,
+      nombrePapas: selectedPapas?.name || null,
+      nombreBebida: selectedBebida?.name || null,
+      cantidad,
+      imagen: pictureUrl,
+      precioTotal: totalPrice * cantidad,
+    };
+  
+    const carritoStr = localStorage.getItem("carrito");
+    const carrito = carritoStr ? JSON.parse(carritoStr) : [];
+    carrito.push(nuevoItem);
+    localStorage.setItem("carrito", JSON.stringify(carrito));
+  
+    alert("Producto agregado al carrito");
+  }}
+>
+  Agregar al Carrito
+</Button>
             </div>
           </div>
 
