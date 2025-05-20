@@ -1,6 +1,6 @@
 
 import DefaultLayout from "@/layouts/default-admin";
-import  TableCrud  from "@/components/table-burger";
+import  TableCrud  from "@/components/table-bebidas";
 export default function DocsPage() {
   return (
     <DefaultLayout>

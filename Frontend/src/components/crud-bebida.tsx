@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Input } from "@heroui/input";
-import { URLBASE } from "../utils/VariablesAndMethods";
+import { URLBASE, useCreateSinIdFetch } from "../utils/VariablesAndMethods";
 import { Toaster, toast } from "sonner";
 import {
   Modal,
@@ -12,7 +12,7 @@ import {
 } from "@heroui/modal";
 import { Button } from "@heroui/button";
 import { PiPlusBold } from "react-icons/pi";
-
+import { Textarea } from "@heroui/input";
 
 export default function App() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -21,7 +21,7 @@ export default function App() {
   const [bebidaData, setBebidaData] = useState({
     name: ""
   });
-  
+  const { loading: creating, error: createError, crearObjeto } = useCreateSinIdFetch();
 
   const getToken = () => {
     return localStorage.getItem("token") || sessionStorage.getItem("token");
