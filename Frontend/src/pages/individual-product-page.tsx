@@ -61,8 +61,8 @@ const [cantidad, setCantidad] = useState(1);
 
   return (
     <DefaultLayout>
-      <section className="flex flex-col items-center justify-center gap-8 px-6 py-10 md:py-16 w-full">
-        <div className="w-full flex justify-center gap-10">
+      <section className="flex flex-col items-center justify-center gap-8 px-6 py-10 md:py-16 w-full ">
+        <div className=" flex justify-center gap-10  ">
           {/* Imagen del Producto y Contador */}
           <div>
             <img

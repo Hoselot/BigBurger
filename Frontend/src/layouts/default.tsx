@@ -11,7 +11,7 @@ export default function DefaultLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="relative flex flex-col w-full ">
+    <div className="min-h-screen flex flex-col">
       <Navbar />
       
       <main className="w-full mx-auto px-0 flex-grow pt-16">
