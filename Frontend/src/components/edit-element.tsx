@@ -30,6 +30,7 @@ export default function EditElemento({ elementoId }) {
           "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json",
         },
+        credentials: "include"
       });
       if (!response.ok) {
         throw new Error("Error al obtener el elemento");
@@ -73,6 +74,7 @@ export default function EditElemento({ elementoId }) {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(elemento),
+          credentials: "include"
         }
       );
       if (!response.ok) {

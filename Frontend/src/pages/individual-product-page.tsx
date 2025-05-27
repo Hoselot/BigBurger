@@ -28,12 +28,16 @@ const [cantidad, setCantidad] = useState(1);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const resBebidas = await fetch(`${URLBASE}/bebida/listarBebida`);
+        const resBebidas = await fetch(`${URLBASE}/bebida/listarBebida`, {
+          credentials: "include"
+        });
         if (!resBebidas.ok) throw new Error("Error al obtener bebidas");
         const dataBebidas = await resBebidas.json();
         setBebidas(dataBebidas);
-
-        const resPapas = await fetch(`${URLBASE}/papas/listarPapas`);
+  
+        const resPapas = await fetch(`${URLBASE}/papas/listarPapas`, {
+          credentials: "include"
+        });
         if (!resPapas.ok) throw new Error("Error al obtener papas");
         const dataPapas = await resPapas.json();
         setPapas(dataPapas);
@@ -41,9 +45,10 @@ const [cantidad, setCantidad] = useState(1);
         console.error("Error cargando datos:", error);
       }
     };
-
+  
     fetchData();
   }, []);
+  
 
   // Actualiza el precio total cuando se selecciona un acompañamiento o bebida
   useEffect(() => {

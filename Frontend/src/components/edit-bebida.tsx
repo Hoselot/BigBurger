@@ -52,6 +52,7 @@ export default function EditBebida({ bebidaId }: { bebidaId: number }) {
             "Authorization": `Bearer ${token}`,
             "Content-Type": "application/json",
           },
+          credentials: "include"
         }
       );
       if (!response.ok) {
@@ -136,6 +137,7 @@ export default function EditBebida({ bebidaId }: { bebidaId: number }) {
             "Authorization": `Bearer ${token}`,
           },
           body: formData,
+          credentials: "include"
         }
       );
       if (!response.ok) {

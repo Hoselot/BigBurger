@@ -74,6 +74,7 @@ export default function App() {
           headers: {
             Authorization: `Bearer ${token}`,
           },
+          credentials: "include"
         });
 
         if (!response.ok) {

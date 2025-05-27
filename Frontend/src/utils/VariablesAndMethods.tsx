@@ -84,6 +84,7 @@ export function useFindListFetchNoAuth<T>(): FindListResults<T> {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include"
       });
 
       if (response.ok) {
@@ -129,6 +130,7 @@ export function useFindListFetch<T>(): FindListResults<T> {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`, // Si usas token JWT
         },
+        credentials: "include"
       });
 
       if (response.ok) {
@@ -177,6 +179,7 @@ export function useCreateSinIdFetch(): createResult {
           "Authorization": `Bearer ${token}`, // Si usas token JWT
         },
         body: JSON.stringify(data), // Convertimos el objeto en JSON
+        credentials: "include"
       });
 
       if (response.ok) {
@@ -220,9 +223,9 @@ export function useDeleteFetch(): DeleteResult {
       const response = await fetch(`${URLBASE}${endpoint}?id=${id}`, {
         method: "DELETE",
         headers: {
-          "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`, // Si usas token JWT
         },
+        credentials: "include"
       });
 
       if (response.ok) {

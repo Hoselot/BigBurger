@@ -76,6 +76,10 @@ public class BurgerService {
     }
 
     public String eliminarHamburguesa(Long id){
+        List<BurgerElementoModel> burgerElementoModelList = burgerElementoRepository.findAllByBurgerModelId(id);
+        for(BurgerElementoModel burgerElementoModel : burgerElementoModelList){
+            burgerElementoRepository.delete(burgerElementoModel);
+        }
         burgerRepository.deleteById(id);
         return "Hamburguesa eliminada exitosamente";
     }

@@ -62,7 +62,6 @@ public class ElementoService {
         burgerElementoRepository.deleteByElementoModelId(id);
         elementoRepository.deleteById(id);
     }
-
     public List<ElementoModel> listarElementos(){
         return elementoRepository.findAll();
     }

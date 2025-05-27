@@ -115,6 +115,7 @@ export default function EditModal({ papasId }: EditModalProps) {
           "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json",
         },
+        credentials: "include"
       });
 
       if (!response.ok) {
@@ -160,6 +161,7 @@ export default function EditModal({ papasId }: EditModalProps) {
           "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json",
         },
+        credentials: "include"
       });
       if (!response.ok) {
         throw new Error("Error al obtener los elementos");
@@ -184,6 +186,7 @@ export default function EditModal({ papasId }: EditModalProps) {
           "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json",
         },
+        credentials: "include"
       });
 
       if (!response.ok) {
@@ -312,6 +315,7 @@ export default function EditModal({ papasId }: EditModalProps) {
           "Authorization": `Bearer ${token}`,
         },
         body: formData,
+        credentials: "include"
       });
       if (!response.ok) {
         throw new Error("Error al actualizar las papas.");

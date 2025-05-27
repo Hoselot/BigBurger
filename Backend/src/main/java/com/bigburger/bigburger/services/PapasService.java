@@ -110,6 +110,10 @@ public class PapasService {
 
 
     public String eliminarPapas(Long id){
+        List<PapasElementoModel> papasElementoModelList = papasElementoRepository.findAllByPapasModelId(id);
+        for(PapasElementoModel papasElementoModel : papasElementoModelList){
+            papasElementoRepository.delete(papasElementoModel);
+        }
         papasRepository.deleteById(id);
         return "Papas eliminadas exitosamente";
     }

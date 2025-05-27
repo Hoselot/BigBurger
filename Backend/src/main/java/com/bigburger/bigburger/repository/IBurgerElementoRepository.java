@@ -12,4 +12,5 @@ public interface IBurgerElementoRepository extends JpaRepository<BurgerElementoM
     List<BurgerElementoModel> findAllByElementoModelId(Long id);
     List<BurgerElementoModel> findAllByBurgerModelId(Long id);
     List<BurgerElementoModel> findAllByBurgerModelIdAndElementoModelId(Long idBurger,Long idElemento);
+    void deleteAllByBurgerModelId(Long id);
 }

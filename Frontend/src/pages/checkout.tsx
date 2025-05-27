@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { initMercadoPago, Wallet } from '@mercadopago/sdk-react';
+import { URLBASE } from '@/utils/VariablesAndMethods';
 
 // Inicializa el SDK de Mercado Pago con tu clave pública
 initMercadoPago('APP_USR-cf987a0e-118d-4e72-b2c9-d164701323f0');
@@ -50,7 +51,7 @@ const App: React.FC = () => {
   // Función para crear el pedido y obtener el preferenceId
   const handleCompra = async () => {
     try {
-      const url = `http://localhost:8080/compra/crearPedido?nombre=${encodeURIComponent(
+      const url = `${URLBASE}/compra/crearPedido?nombre=${encodeURIComponent(
         pedido.nombre
       )}&apellido=${encodeURIComponent(pedido.apellido)}&telefono=${encodeURIComponent(
         pedido.telefono
@@ -64,6 +65,7 @@ const App: React.FC = () => {
         },
         // Se envía el array de items en el body
         body: JSON.stringify(pedido.items),
+        credentials: "include"
       });
 
       if (!response.ok) {

@@ -74,6 +74,7 @@ export default function App() {
                 Authorization: `Bearer ${getToken()}`,
               },
               body: formData,
+              credentials: "include"
             }
           );
 

@@ -64,9 +64,11 @@ export default function App() {
   };
 
   useEffect(() => {
+    
     const fetchBurgers = async () => {
       try {
         const token = getToken();
+        console.log("TOKEN:", token);
         if (!token) {
           alert("No estás autenticado. Por favor, inicia sesión.");
           return;
@@ -74,13 +76,17 @@ export default function App() {
         const response = await fetch(
           URLBASE + "/burger/listarHamburguesasAuth",
           {
+            method: "GET",
             headers: {
               Authorization: `Bearer ${token}`,
             },
+            credentials: "include"
           }
         );
 
         if (!response.ok) {
+            const errorText = await response.text();
+  console.error("Error de respuesta:", response.status, errorText);
           throw new Error("Error al obtener las hamburguesas");
         }
 

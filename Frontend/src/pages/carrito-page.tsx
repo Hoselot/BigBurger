@@ -4,6 +4,7 @@ import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter,useDisclosure,
 import { Input } from "@heroui/input";
 import { Button } from "@heroui/button";
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
+import { URLBASE } from "@/utils/VariablesAndMethods";
 
 // Inicializa el SDK de Mercado Pago con tu clave pública
 initMercadoPago("APP_USR-cf987a0e-118d-4e72-b2c9-d164701323f0");
@@ -47,7 +48,7 @@ type ItemCarrito = {
         const cliente = JSON.parse(sessionStorage.getItem("cliente") || "{}");
         const carrito = JSON.parse(localStorage.getItem("carrito") || "[]");
       
-        const url = `http://localhost:8080/compra/crearPedido?nombre=${encodeURIComponent(
+        const url = `${URLBASE}/compra/crearPedido?nombre=${encodeURIComponent(
           cliente.nombre
         )}&apellido=${encodeURIComponent(cliente.apellido)}&telefono=${encodeURIComponent(
           cliente.telefono
@@ -60,6 +61,7 @@ type ItemCarrito = {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(carrito),
+          credentials: "include"
         });
       
         if (!response.ok) return alert("Error al crear el pedido");
