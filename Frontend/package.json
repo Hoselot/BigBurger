@@ -37,6 +37,7 @@
     "@heroui/theme": "2.4.5",
     "@heroui/tooltip": "^2.2.8",
     "@heroui/user": "^2.2.7",
+    "@iconify/react": "^6.0.0",
     "@material-tailwind/react": "^2.1.10",
     "@mercadopago/sdk-react": "^1.0.3",
     "@react-aria/visually-hidden": "3.8.12",

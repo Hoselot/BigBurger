@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate, Route, Routes, matchPath } from 'react-router-dom';
 import { isTokenExpired } from "./utils/token-functions";
 import IndexPage from "@/pages/index";
+import IntructionsPage from "@/pages/purchase-instructions-page";
 import DocsPage from "@/pages/docs";
 import IndividualBurgerPage from "@/pages/individual-product-page";
 import PruebaTabla from "@/components/probartabla"
@@ -18,7 +19,7 @@ import CarritoPage from './pages/carrito-page';
 
 function App() {
   const navigate = useNavigate();
-  const publicRoutes = ["/", "/IndividualBurgerPage/:id", "/mp-checkout","/pago-exitoso","/pago-fallido","/pago-pendiente","/carrito" ];
+  const publicRoutes = ["/", "/IndividualBurgerPage/:id", "/mp-checkout","/pago-exitoso","/pago-fallido","/pago-pendiente","/carrito","/purchase-instructions-page" ];
 
   useEffect(() => {
     const token = localStorage.getItem("token") || sessionStorage.getItem("token");
@@ -53,6 +54,8 @@ function App() {
       <Route element={<PagoPendiente />} path="/pago-pendiente"  />
       <Route element={<MPCheckOut />} path="/mp-checkout"  />
       <Route element={<CarritoPage />} path="/carrito"  />
+      <Route element={<IntructionsPage />} path="/purchase-instructions-page" />
+      
     </Routes>
   );
 }

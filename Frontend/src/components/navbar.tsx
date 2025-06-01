@@ -1,3 +1,10 @@
+import { useNavigate, useLocation } from "react-router-dom";
+
+
+
+
+
+
 import { useState, useEffect } from "react";
 import { Link } from "@heroui/link";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@heroui/dropdown";
@@ -9,11 +16,25 @@ import { PiHamburgerThin, PiNotepadThin,PiBreadThin, PiBoxArrowDownThin, PiMathO
 import { CiMenuBurger } from "react-icons/ci";
 import { AnimatePresence, motion } from "motion/react"
 import useTotalCarrito from "@/hooks/useTotalCarrito";
+
+
+
+
+
+
 export const Navbar = () => {
+// Menu Principal
+const location = useLocation();
+const navigate = useNavigate();
+const currentPath = location.pathname;
+
+
+
+
   // Stilos del Navbar
   const [visible, setVisible] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
-  
+ 
   let lastScrollY = 0;
   useEffect(() => {
     const handleScroll = () => {
@@ -60,15 +81,24 @@ export const Navbar = () => {
     className="hidden md:flex justify-center"
   >
     <Tabs
-      aria-label="Options"
-      variant="solid"
-      radius="lg"
-      size="lg"
-      color="default"
-    >
-      <Tab key="Hamburguesas" title={<div className="flex items-center space-x-2"><PiHamburgerThin className='size-7'/><span>Hamburguesas</span></div>} />
-      <Tab key="Pedidos" title={<div className="flex items-center space-x-2"><PiNotepadThin className='size-7'/><span>¿Cómo hacer un Pedido?</span></div>} />
-    </Tabs>
+  aria-label="Options"
+  selectedKey={
+    currentPath === "/purchase-instructions-page"
+      ? "Pedidos"
+      : "Hamburguesas"
+  }
+  onSelectionChange={(key) => {
+    if (key === "Hamburguesas") navigate("/");
+    else if (key === "Pedidos") navigate("/purchase-instructions-page");
+  }}
+  variant="solid"
+  radius="lg"
+  size="lg"
+  color="default"
+>
+  <Tab key="Hamburguesas" title={<div className="flex items-center space-x-2"><PiHamburgerThin className='size-7'/><span>Hamburguesas</span></div>} />
+  <Tab key="Pedidos" title={<div className="flex items-center space-x-2"><PiNotepadThin className='size-7'/><span>¿Cómo hacer un Pedido?</span></div>} />
+</Tabs>
   </motion.div>
 
   {/* Carrito + Menú Admin (espaciado adecuado) */}
