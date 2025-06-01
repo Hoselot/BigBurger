@@ -18,6 +18,20 @@ import LocationPicker from './components/LocationPicker';
 import CarritoPage from './pages/carrito-page';
 
 function App() {
+  //  Aplicar el tema (oscuro o claro) guardado al cargar la app
+        useEffect(() => {
+          const storedTheme = localStorage.getItem("theme");
+
+          if (storedTheme) {
+            document.documentElement.classList.toggle("dark", storedTheme === "dark");
+          } else {
+            // Usa el modo preferido del sistema
+            const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+            document.documentElement.classList.toggle("dark", prefersDark);
+          }
+        }, []);
+
+
   const navigate = useNavigate();
   const publicRoutes = ["/", "/IndividualBurgerPage/:id", "/mp-checkout","/pago-exitoso","/pago-fallido","/pago-pendiente","/carrito","/purchase-instructions-page" ];
 

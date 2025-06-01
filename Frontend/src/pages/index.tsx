@@ -4,7 +4,18 @@ import Banner from "@/components/banner";
 import  Buscador  from "@/components/search";
 import { title} from "@/components/primitives";
 import {Tabs, Tab} from "@heroui/tabs";
+import { Button } from "@heroui/button";
+
+const toggleDarkMode = () => {
+  const html = document.documentElement;
+  const isDark = html.classList.toggle("dark");
+
+  // Guardamos la preferencia
+  localStorage.setItem("theme", isDark ? "dark" : "light");
+};
+
 export default function IndexPage() {
+  
   return (
     <DefaultLayout>
       <section className="w-full  bg-gray-900">
@@ -29,12 +40,17 @@ export default function IndexPage() {
       </Tabs>
 
       </div>
+
     </div>
  
 
       
 
       </section>
+      <Button onClick={toggleDarkMode}>
+        Toggle Dark Mode
+      </Button>
+
       <section className="my-10">
         <Card/>
       </section>
