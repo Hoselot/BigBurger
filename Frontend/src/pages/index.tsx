@@ -1,5 +1,6 @@
 import DefaultLayout from "@/layouts/default";
 import Card from "@/components/card";
+import Card2 from "@/components/card2";
 import Banner from "@/components/banner";
 import  Buscador  from "@/components/search";
 import { title} from "@/components/primitives";
@@ -52,8 +53,10 @@ export default function IndexPage() {
       </Button>
 
       <section className="my-10">
+      <Card2/>
         <Card/>
       </section>
+      
     </DefaultLayout>
   );
 }
