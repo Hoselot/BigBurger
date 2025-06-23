@@ -4,25 +4,31 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 
 
-
+import React from "react";
 import { useState, useEffect } from "react";
 import { Link } from "@heroui/link";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@heroui/dropdown";
 import { Button } from "@heroui/button";
 import {Tabs, Tab} from "@heroui/tabs";
 import Image from "./logo";
+import  SearchModal  from "@/components/search";
 import { useAuth } from "../utils/auth-context";
 import { PiHamburgerThin, PiNotepadThin,PiBreadThin, PiBoxArrowDownThin, PiMathOperationsThin, PiBagThin } from "react-icons/pi";
 import { CiMenuBurger } from "react-icons/ci";
 import { AnimatePresence, motion } from "motion/react"
 import useTotalCarrito from "@/hooks/useTotalCarrito";
 
-
+import { Icon } from "@iconify/react";
 
 
 
 
 export const Navbar = () => {
+  const [isOpen, setIsOpen] = React.useState(false);
+
+  const handleOpen = () => setIsOpen(true);
+  const handleClose = () => setIsOpen(false);
+
 // Menu Principal
 const location = useLocation();
 const navigate = useNavigate();
@@ -74,12 +80,14 @@ const currentPath = location.pathname;
   </motion.div>
 
   {/* Tabs (solo en pantallas grandes) */}
+  
   <motion.div
-    initial={{ opacity: 0, y: -50 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.5, delay: 0.2 }}
-    className="hidden md:flex justify-center"
-  >
+  initial={{ opacity: 0, y: -50 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.5, delay: 0.2 }}
+  className="hidden md:flex justify-center "
+>
+  
     <Tabs
   aria-label="Options"
   selectedKey={
@@ -99,16 +107,32 @@ const currentPath = location.pathname;
   <Tab key="Hamburguesas" title={<div className="flex items-center space-x-2"><PiHamburgerThin className='size-7'/><span>Hamburguesas</span></div>} />
   <Tab key="Pedidos" title={<div className="flex items-center space-x-2"><PiNotepadThin className='size-7'/><span>¿Cómo hacer un Pedido?</span></div>} />
 </Tabs>
+<div className="d">
+
+      
+</div>
   </motion.div>
 
   {/* Carrito + Menú Admin (espaciado adecuado) */}
   <div className="hidden md:flex items-center gap-5">
+    <Button
+      isIconOnly
+        variant="flat"
+        color="default"
+        startContent={<Icon icon="lucide:search" />}
+        onPress={handleOpen}
+        className="text-sm font-medium bg-white"
+      >
+        
+      </Button>
+      <SearchModal isOpen={isOpen} onClose={handleClose} />
     <motion.div
       initial={{ opacity: 0, y: -50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.2 }}
       className="flex items-center bg-white rounded-xl px-2"
     >
+      
       <h1>${total.toFixed(2)}</h1>
       <Link href="/carrito" color="foreground">
       <Button isIconOnly variant="light">

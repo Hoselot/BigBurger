@@ -2,7 +2,7 @@ import DefaultLayout from "@/layouts/default";
 import Card from "@/components/card";
 import Card2 from "@/components/card2";
 import Banner from "@/components/banner";
-import  Buscador  from "@/components/search";
+
 import { title} from "@/components/primitives";
 import {Tabs, Tab} from "@heroui/tabs";
 import { Button } from "@heroui/button";
@@ -29,20 +29,8 @@ export default function IndexPage() {
         Mirá nuestras <span className="bg-yellow-400 px-2 rounded">Hamburguesas</span>&nbsp;
       </span>
 
-      <div className="flex justify-between items-center">
-      <Buscador/>
-      <div>
-      <h1 className="text-sm">Filtrá</h1>
-      <Tabs aria-label="Options">
-        <Tab key="photos" title="Carne"></Tab>
-        <Tab key="music" title="Pollo"></Tab>
-        <Tab key="asdads" title="Pescado"></Tab>
-        <Tab key="masdas" title="Vegetariano"></Tab>
-      </Tabs>
-
-      </div>
-
-    </div>
+      
+    
  
 
       
