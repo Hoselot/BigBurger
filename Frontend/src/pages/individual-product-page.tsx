@@ -5,6 +5,7 @@ import Counter from "@/components/counter";
 import { Select, SelectItem } from "@heroui/select";
 import { useEffect, useState } from "react";
 import { URLBASE } from "@/utils/VariablesAndMethods";
+import { Toaster, toast } from "sonner";
 
 export default function BurgerPage() {
   const { state } = useLocation();
@@ -65,8 +66,13 @@ const [cantidad, setCantidad] = useState(1);
   const { name, pictureUrl, description } = state.burger;
 
   return (
+    
     <DefaultLayout>
+        {/* Toaster global para las alertas */}
+      <Toaster position="bottom-center" className="z-50" />     
+
       <section className="flex flex-col items-center justify-center gap-8 px-6 py-10 md:py-16 w-full ">
+        
         <div className=" flex justify-center gap-10  ">
           {/* Imagen del Producto y Contador */}
           <div>
@@ -98,10 +104,26 @@ const [cantidad, setCantidad] = useState(1);
   
     const carritoStr = localStorage.getItem("carrito");
     const carrito = carritoStr ? JSON.parse(carritoStr) : [];
-    carrito.push(nuevoItem);
+    // Buscamos si ya existe uno igual
+const indexExistente = carrito.findIndex(item =>
+  item.nombreHamburguesa === nuevoItem.nombreHamburguesa &&
+  item.nombrePapas === nuevoItem.nombrePapas &&
+  item.nombreBebida === nuevoItem.nombreBebida
+);
+
+if (indexExistente !== -1) {
+  // Ya existe → sumamos cantidad y actualizamos precio
+  carrito[indexExistente].cantidad += nuevoItem.cantidad;
+  carrito[indexExistente].precioTotal += nuevoItem.precioTotal;
+} else {
+  // No existe → lo agregamos normalmente
+  carrito.push(nuevoItem);
+}
     localStorage.setItem("carrito", JSON.stringify(carrito));
-  
-    alert("Producto agregado al carrito");
+    window.dispatchEvent(new Event("carritoActualizado"));
+    toast.success("Producto agregado al carrito");
+    
+    
   }}
 >
   Agregar al Carrito

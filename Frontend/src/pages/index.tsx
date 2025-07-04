@@ -42,7 +42,7 @@ export default function IndexPage() {
 
       <section className="my-10">
       <Card2/>
-        <Card/>
+        {/* <Card/> */}
       </section>
       
     </DefaultLayout>

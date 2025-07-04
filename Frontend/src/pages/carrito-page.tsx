@@ -101,6 +101,7 @@ useEffect(() => {
       nuevoCarrito.splice(index, 1);
       setCarrito(nuevoCarrito);
       localStorage.setItem("carrito", JSON.stringify(nuevoCarrito));
+      window.dispatchEvent(new Event("carritoActualizado"));
     };
   
     if (carrito.length === 0) {

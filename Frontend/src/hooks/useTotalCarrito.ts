@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 export default function useTotalCarrito() {
   const [total, setTotal] = useState(0);
 
-  useEffect(() => {
+  const calcularTotal = () => {
     const carritoStr = localStorage.getItem("carrito");
     if (carritoStr) {
       try {
@@ -15,7 +15,20 @@ export default function useTotalCarrito() {
       } catch (err) {
         console.error("Error al calcular total del carrito:", err);
       }
+    } else {
+      setTotal(0); // si no hay carrito, poner en 0
     }
+  };
+
+  useEffect(() => {
+    calcularTotal(); // al montar
+
+    // Escuchamos el evento personalizado
+    window.addEventListener("carritoActualizado", calcularTotal);
+
+    return () => {
+      window.removeEventListener("carritoActualizado", calcularTotal);
+    };
   }, []);
 
   return total;
