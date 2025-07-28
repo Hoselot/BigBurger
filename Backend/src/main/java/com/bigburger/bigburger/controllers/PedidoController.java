@@ -30,4 +30,10 @@ public class PedidoController {
     public ResponseEntity<List<PedidoModel>> listarAllPedidos(){
         return ResponseEntity.ok(pedidoService.listarAllPedidos());
     }
+
+    @DeleteMapping("/eliminarPedido")
+    @PreAuthorize("hasAuthority('DELETE')")
+    public ResponseEntity<String> eliminarPedido(@RequestParam Long id){
+        return ResponseEntity.ok(pedidoService.borrarPedidoPorId(id));
+    }
 }

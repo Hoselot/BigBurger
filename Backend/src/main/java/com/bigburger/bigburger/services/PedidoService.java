@@ -24,6 +24,10 @@ public class PedidoService {
     private IBebidaRepository bebidaRepository;
     @Autowired
     private PedidoRepository pedidoRepository;
+    @Autowired
+    private IPedidoPendienteRepository pedidoPendienteRepository;
+    @Autowired
+    private IDetallePedidoPendienteRepository detallePedidoPendienteRepository;
 
     public PedidoModel crearPedido(String nombre, String apellido, String telefono, String gmail,
                                    BigDecimal delivery, List<DetallePedidoModel> detallePedido) {
@@ -101,6 +105,22 @@ public class PedidoService {
 
     public List<PedidoModel> listarAllPedidos(){
         return pedidoRepository.findAll();
+    }
+
+    public String borrarPedidoPorId(Long id){
+        PedidoModel pedidoModel = pedidoRepository.findById(id).orElseThrow((() -> new BurgerNotFoundException("Pedido no encontrado")));
+        for(DetallePedidoModel detallePedidoModel : pedidoModel.getDetalles()){
+            detallePedidoRepository.deleteById(detallePedidoModel.getId());
+        }
+        pedidoRepository.deleteById(pedidoModel.getId());
+        return "Pedido eliminado";
+    }
+    public void borrarPedidoMPPendientePorExternalReference(String externalReference){
+        PedidoPendienteModel pedidoPendienteModel = pedidoPendienteRepository.findPedidoPendienteModelByExternalReference(externalReference).orElseThrow((() -> new BurgerNotFoundException("Pedido no encontrado")));
+        for(DetallePedidoPendienteModel detallePedidoPendienteModel : pedidoPendienteModel.getDetalles()){
+            detallePedidoPendienteRepository.deleteById(detallePedidoPendienteModel.getId());
+        }
+        pedidoPendienteRepository.deleteById(pedidoPendienteModel.getId());
     }
 
 

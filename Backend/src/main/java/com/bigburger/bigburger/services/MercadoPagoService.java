@@ -9,11 +9,14 @@ import com.mercadopago.resources.preference.Preference;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,7 +25,7 @@ public class MercadoPagoService {
     @Value("${mercadopago.access.token}") // Obtiene el Access Token desde application.properties
     private String accessToken;
 
-    public String crearPreferenciaDePago(String nombre, String apellido, String telefono, String gmail, PedidoModel pedidoModel) throws Exception {
+    public String crearPreferenciaDePago(String nombre, String apellido, String telefono, String gmail, PedidoModel pedidoModel, String externalReference) throws Exception {
         try {
             // 1️⃣ Configura Mercado Pago con el Access Token
             MercadoPagoConfig.setAccessToken(accessToken);
@@ -69,6 +72,9 @@ public class MercadoPagoService {
             List<PreferencePaymentTypeRequest> excludedPaymentTypes = new ArrayList<>();
             excludedPaymentTypes.add(PreferencePaymentTypeRequest.builder().id("ticket").build());
 
+
+
+
             PreferencePaymentMethodsRequest paymentMethod = PreferencePaymentMethodsRequest.builder()
                     .excludedPaymentMethods(excludedPaymentMethods)
                     .excludedPaymentTypes(excludedPaymentTypes)
@@ -90,6 +96,7 @@ public class MercadoPagoService {
                     .backUrls(backUrls)    // Agrega las URLs de redirección
                     .payer(payerRequest)
                     .paymentMethods(paymentMethod)
+                    .externalReference(String.valueOf(externalReference)) // ✅ Aquí se agrega
                     //.autoReturn("approved") // Si el pago es aprobado, vuelve automáticamente
                     .build();
 

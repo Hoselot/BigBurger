@@ -31,18 +31,30 @@ public class JwtTokenValidator extends OncePerRequestFilter {
     protected void doFilterInternal(@NonNull HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
-        String jwtToken = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if(jwtToken != null){
-            jwtToken = jwtToken.substring(7);
-            DecodedJWT decodedJWT = jwtUtil.validateToken(jwtToken);
-            String username= jwtUtil.extractSubjet(decodedJWT);
-            String stringAuthorities = jwtUtil.getSpecificClaim(decodedJWT,"authorities").asString();
-            Collection<? extends GrantedAuthority> authorities = AuthorityUtils.commaSeparatedStringToAuthorityList(stringAuthorities);
-            SecurityContext context = SecurityContextHolder.getContext();
-            Authentication authentication = new UsernamePasswordAuthenticationToken(username,null, authorities);
-            context.setAuthentication(authentication);
-            SecurityContextHolder.setContext(context);
+
+
+        String path = request.getRequestURI();
+
+        // 🚨 Omitir validación JWT si es el webhook de Mercado Pago
+        if (path.equals("/webhook/mercadopago")) {
+            filterChain.doFilter(request, response);
+            return;
         }
+        String jwtToken = request.getHeader(HttpHeaders.AUTHORIZATION);
+        if (jwtToken != null && jwtToken.startsWith("Bearer ")) {
+            jwtToken = jwtToken.substring(7); // Quita el "Bearer "
+            DecodedJWT decodedJWT = jwtUtil.validateToken(jwtToken);
+            String username = jwtUtil.extractSubjet(decodedJWT);
+            String stringAuthorities = jwtUtil.getSpecificClaim(decodedJWT, "authorities").asString();
+
+            Collection<? extends GrantedAuthority> authorities =
+                    AuthorityUtils.commaSeparatedStringToAuthorityList(stringAuthorities);
+
+            SecurityContext context = SecurityContextHolder.getContext();
+            Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, authorities);
+            context.setAuthentication(authentication);
+        }
+
         filterChain.doFilter(request,response);
     }
 }

@@ -18,6 +18,6 @@ public class CompraController {
     @PostMapping("/crearPedido")
     public String crearPedido(@RequestParam String nombre, @RequestParam String apellido, @RequestParam String telefono, @RequestParam String gmail,
                                                    @RequestParam BigDecimal delivery, @RequestBody List<DetallePedidoModel> detallePedido) throws Exception{
-        return compraService.RealizarCompra(nombre,apellido,telefono,gmail,delivery,detallePedido);
+        return compraService.RealizarCompraMP(nombre,apellido,telefono,gmail,delivery,detallePedido);
     }
 }
