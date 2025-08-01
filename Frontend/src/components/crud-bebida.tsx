@@ -12,7 +12,7 @@ import {
 } from "@heroui/modal";
 import { Button } from "@heroui/button";
 import { PiPlusBold } from "react-icons/pi";
-import { Textarea } from "@heroui/input";
+
 
 export default function App() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -21,7 +21,7 @@ export default function App() {
   const [bebidaData, setBebidaData] = useState({
     name: ""
   });
-  const { loading: creating, error: createError, crearObjeto } = useCreateSinIdFetch();
+  const {  crearObjeto } = useCreateSinIdFetch();
 
   const getToken = () => {
     return localStorage.getItem("token") || sessionStorage.getItem("token");
@@ -123,7 +123,7 @@ export default function App() {
           if (!isOpen) {
             resetForm(); // Limpia los campos cuando el modal se cierra
           }
-          onOpenChange(isOpen);
+          onOpenChange();
         }}
       >
         <ModalContent>

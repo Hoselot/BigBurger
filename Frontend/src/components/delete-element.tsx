@@ -8,12 +8,14 @@ import {
 } from "@heroui/modal";
 import { Button } from "@heroui/button";
 import { AiOutlineDelete } from "react-icons/ai";
-import { useState } from "react";
-import {useDeleteFetch} from "../utils/VariablesAndMethods";
 
-export default function App({ elementoId }) {
+import {useDeleteFetch} from "../utils/VariablesAndMethods";
+type Props = {
+  elementoId: string | number;
+};
+export default function App({ elementoId }: Props) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const { loading, error, eliminarObjeto } = useDeleteFetch();
+  const { loading,  eliminarObjeto } = useDeleteFetch();
 
   const eliminarElemento = async () => {
     eliminarObjeto(

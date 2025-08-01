@@ -19,7 +19,7 @@ export default function CrudElemento() {
     name: "",
     price: "",
   });
-  const { loading: creating, error: createError, crearObjeto } = useCreateSinIdFetch();
+  const {  crearObjeto } = useCreateSinIdFetch();
   
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -63,7 +63,7 @@ export default function CrudElemento() {
           if (!isOpen) {
             resetForm();
           }
-          onOpenChange(isOpen);
+          onOpenChange();
         }}
       >
         <ModalContent>

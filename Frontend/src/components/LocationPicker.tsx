@@ -6,7 +6,7 @@ import {Button} from "@heroui/button";
 const LocationPicker: React.FC = () => {
     const [selectedLocation, setSelectedLocation] = useState<{ lat: number; lng: number } | null>(null);
     const [googleMapsLink, setGoogleMapsLink] = useState<string | null>(null);
-    const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
+   const [, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
     
     const mapContainerRef = useRef<HTMLDivElement | null>(null); // Referencia al contenedor del mapa
     const mapRef = useRef<L.Map | null>(null); // Referencia al mapa

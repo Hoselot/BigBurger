@@ -211,7 +211,7 @@ export default function EditBebida({ bebidaId }: { bebidaId: number }) {
                           label="Ganancia"
                           name="ganancia"
                           type="number"
-                          value={bebida.ganancia}
+                          value={bebida.ganancia.toString()}
                           onChange={(e) =>
                             handleChange("ganancia", parseFloat(e.target.value))
                           }
@@ -220,7 +220,7 @@ export default function EditBebida({ bebidaId }: { bebidaId: number }) {
                           label="Costo"
                           name="costo"
                           type="number"
-                          value={bebida.costo}
+                          value={bebida.costo.toString()}
                           onChange={(e) =>
                             handleChange("costo", parseFloat(e.target.value))
                           }

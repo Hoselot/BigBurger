@@ -62,7 +62,7 @@ export default function EditModal({ papasId }: EditModalProps) {
   const [newImageUrl, setNewImageUrl] = useState<string | null>(null);
   const [page, setPage] = useState(1);
   const rowsPerPage = 4;
-  const formatCurrency = (value) =>
+  const formatCurrency = (value: number) =>
     new Intl.NumberFormat('us-US', {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
@@ -76,7 +76,7 @@ export default function EditModal({ papasId }: EditModalProps) {
     return papasElements.slice(start, end);
   }, [page, papasElements]);
 
-  const totalCost = papasElements.reduce((acc, el) => acc + (el.price ?? 0), 0);
+  // const totalCost = papasElements.reduce((acc, el) => acc + (el.price ?? 0), 0);
 
   useEffect(() => {
     if (isOpen) {
@@ -231,7 +231,7 @@ export default function EditModal({ papasId }: EditModalProps) {
     }
   };
 
-  const handlePapasElementChange = (id: number, field: "cantidad", value: number) => {
+  const handlePapasElementChange = (id: number, _field: "cantidad", value: number) => {
     setPapasElements((prev) =>
       prev
         .map((el) => {

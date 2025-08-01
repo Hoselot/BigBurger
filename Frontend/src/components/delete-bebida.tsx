@@ -10,10 +10,13 @@ import { Button } from "@heroui/button";
 import { AiOutlineDelete } from "react-icons/ai";
 import { useDeleteFetch } from "../utils/VariablesAndMethods";
 import { Toaster } from "sonner";
+type Props = {
+  bebidaId: string | number;
+};
 
-export default function App({ bebidaId }) {
+export default function App({ bebidaId }:Props) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const { loading, error, eliminarObjeto } = useDeleteFetch();
+  const { loading, eliminarObjeto } = useDeleteFetch();
 
   const eliminarBebida = async () => {
     eliminarObjeto(

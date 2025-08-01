@@ -22,7 +22,7 @@ export default function App() {
     name: "",
     description: "",
   });
-  const { loading: creating, error: createError, crearObjeto } = useCreateSinIdFetch();
+  const {  crearObjeto } = useCreateSinIdFetch();
 
   const getToken = () => {
     return localStorage.getItem("token") || sessionStorage.getItem("token");
@@ -126,7 +126,7 @@ export default function App() {
           if (!isOpen) {
             resetForm(); // Limpia los campos cuando el modal se cierra
           }
-          onOpenChange(isOpen);
+          onOpenChange();
         }}
       >
         <ModalContent>

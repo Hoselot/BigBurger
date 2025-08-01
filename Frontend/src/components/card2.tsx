@@ -90,7 +90,7 @@ export default function App() {
                 variant="solid" 
                 radius="full"
                 className="bg-gray-100 text-gray-800 w-full hover:bg-gray-900 hover:text-white"
-                endContent={<Icon icon="lucide:plus" size={16} />}
+                endContent={<Icon icon="lucide:plus" className="w-4 h-4" />}
                 onPress={() => navigate(`/IndividualBurgerPage/${burger.id}`, { state: { burger } })}
               >
                 Ver Más

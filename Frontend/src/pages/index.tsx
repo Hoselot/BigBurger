@@ -1,10 +1,10 @@
 import DefaultLayout from "@/layouts/default";
-import Card from "@/components/card";
+
 import Card2 from "@/components/card2";
 import Banner from "@/components/banner";
 
 import { title} from "@/components/primitives";
-import {Tabs, Tab} from "@heroui/tabs";
+
 import { Button } from "@heroui/button";
 
 const toggleDarkMode = () => {

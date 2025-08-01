@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { toast } from "react-toastify";
 import React from "react";
 
 
-export const URLBASE = "https://bigburger.loophole.site";
+export const URLBASE = "https://bigburger2.loophole.site";
 
 interface createResult {
   loading: boolean;
@@ -17,17 +17,17 @@ interface createResult {
   ) => Promise<{ id: number; data: any } | void>; // Aquí devolvemos un objeto con id y data
 }
 
-interface findOneResult {
-  loading: boolean;
-  error: string | null;
-  encontrarObjeto: (
-    endpoint: string,
-    id: string | number,
-    mensajeExito: string,
-    mensajeError: string,
-    onSuccess?: () => void
-  ) => Promise<{ id: number; data: any } | void>; // Aquí devolvemos un objeto con id y data;
-}
+// interface findOneResult {
+//   loading: boolean;
+//   error: string | null;
+//   encontrarObjeto: (
+//     endpoint: string,
+//     id: string | number,
+//     mensajeExito: string,
+//     mensajeError: string,
+//     onSuccess?: () => void
+//   ) => Promise<{ id: number; data: any } | void>; 
+// }
 
 interface FindListResults<T> {
   loading: boolean;

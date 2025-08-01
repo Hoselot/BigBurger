@@ -1,4 +1,4 @@
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import DefaultLayout from "@/layouts/default";
 import { Button } from "@heroui/button";
 import Counter from "@/components/counter";
@@ -9,12 +9,25 @@ import { Toaster, toast } from "sonner";
 
 export default function BurgerPage() {
   const { state } = useLocation();
-  const { id } = useParams();
+  // const { id } = useParams();
+type Acompanamiento = {
+  id: number;
+  name: string;
+  price: number;
+  pictureUrl: string;
+};
 
-  const [bebidas, setBebidas] = useState([]);
-  const [papas, setPapas] = useState([]);
-  const [selectedPapas, setSelectedPapas] = useState(null);
-  const [selectedBebida, setSelectedBebida] = useState(null);
+type Bebida = {
+  id: number;
+  name: string;
+  price: number;
+  pictureUrl: string;
+};
+
+  const [bebidas, setBebidas] = useState<Bebida[]>([]);
+const [papas, setPapas] = useState<Acompanamiento[]>([]);
+const [selectedPapas, setSelectedPapas] = useState<Acompanamiento | null>(null);
+const [selectedBebida, setSelectedBebida] = useState<Bebida | null>(null);
   const [totalPrice, setTotalPrice] = useState(0);
 // Nuevo estado para la cantidad
 const [cantidad, setCantidad] = useState(1);
@@ -83,7 +96,7 @@ const [cantidad, setCantidad] = useState(1);
             />
             {/* El contador mantiene la cantidad de hamburguesas */}
             
-            <Counter basePrice={totalPrice.toFixed(2)} onChange={setCantidad} />
+           <Counter basePrice={Number(totalPrice.toFixed(2))} onChange={setCantidad} />
             <div className="flex justify-start w-full">
             <Button
   className="bg-gray-900 text-white w-full"
@@ -101,10 +114,18 @@ const [cantidad, setCantidad] = useState(1);
       imagen: pictureUrl,
       precioTotal: totalPrice * cantidad,
     };
-  
+  type CarritoItem = {
+  nombreHamburguesa: string;
+  nombrePapas: string | null;
+  nombreBebida: string | null;
+  cantidad: number;
+  imagen: string;
+  precioTotal: number;
+};
     const carritoStr = localStorage.getItem("carrito");
-    const carrito = carritoStr ? JSON.parse(carritoStr) : [];
+const carrito: CarritoItem[] = carritoStr ? JSON.parse(carritoStr) : [];
     // Buscamos si ya existe uno igual
+
 const indexExistente = carrito.findIndex(item =>
   item.nombreHamburguesa === nuevoItem.nombreHamburguesa &&
   item.nombrePapas === nuevoItem.nombrePapas &&
@@ -145,8 +166,10 @@ if (indexExistente !== -1) {
               selectionMode="single"
               variant="bordered"
               onSelectionChange={(keys) => {
-                if (keys.size > 0) {
-                  const selectedId = Number(Array.from(keys)[0]);
+                if (keys === "all") {
+                  setSelectedPapas(null);
+                } else if (keys.currentKey) {
+                  const selectedId = Number(keys.currentKey);
                   const selected = papas.find((p) => p.id === selectedId);
                   setSelectedPapas(selected || null);
                 } else {
@@ -176,14 +199,17 @@ if (indexExistente !== -1) {
               selectionMode="single"
               variant="bordered"
               onSelectionChange={(keys) => {
-                if (keys.size > 0) {
-                  const selectedId = Number(Array.from(keys)[0]);
+                if (keys === "all") {
+                  // En selección simple esto no debería pasar, pero por si acaso:
+                  setSelectedBebida(null);
+                } else if (keys.currentKey) {
+                  const selectedId = Number(keys.currentKey);
                   const selected = bebidas.find((b) => b.id === selectedId);
                   setSelectedBebida(selected || null);
                 } else {
                   setSelectedBebida(null);
                 }
-              }}
+              }}    
             >
               {(bebida) => (
                 <SelectItem key={bebida.id} textValue={bebida.name}>

@@ -34,6 +34,7 @@ interface Burger {
   costo: number;
   ganancia: number;
   pictureUrl: string;
+  ingredients: string[];
 }
 
 export const columns = [

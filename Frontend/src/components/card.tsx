@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { Card, CardBody, CardFooter } from "@heroui/card";
 import { Image } from "@heroui/image";
 import { useNavigate } from "react-router-dom";
-import { URLBASE, useFindListFetchNoAuth} from "../utils/VariablesAndMethods";
+import { useFindListFetchNoAuth} from "../utils/VariablesAndMethods";
 
 export default function App() {
   const navigate = useNavigate();
-  const { loading, error, encontrarListaObjetos } = useFindListFetchNoAuth<{
+  const { encontrarListaObjetos } = useFindListFetchNoAuth<{
     id: number;
     name: string;
     price: number;

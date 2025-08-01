@@ -28,7 +28,8 @@ type ItemCarrito = {
         const { isOpen, onOpen, onOpenChange } = useDisclosure();
         const [formData, setFormData] = useState({ nombre: "", apellido: "", email: "", telefono: "" });
         const [preferenceId, setPreferenceId] = useState<string | null>(null);
-        const [clienteValido, setClienteValido] = useState(false);
+        
+        
         const [carrito, setCarrito] = useState<ItemCarrito[]>([])
         const [, forceUpdate] = useState(0);
 
@@ -71,10 +72,7 @@ type ItemCarrito = {
       };
 
 
-useEffect(() => {
-  const datosCliente = sessionStorage.getItem("cliente");
-  if (datosCliente) setClienteValido(true);
-}, []);
+
 
 useEffect(() => {
     if (isOpen && modalStep.current === 1) {
@@ -87,7 +85,7 @@ useEffect(() => {
     useEffect(() => {
         const carritoStr = localStorage.getItem("carrito");
         if (carritoStr) {
-          const carritoParseado: ItemCarrito[] = JSON.parse(carritoStr).map((item) => ({
+          const carritoParseado: ItemCarrito[] = JSON.parse(carritoStr).map((item: ItemCarrito) => ({
             ...item,
             precioTotal: typeof item.precioTotal === "number"
               ? item.precioTotal
@@ -178,7 +176,7 @@ useEffect(() => {
           <Input label="Teléfono" value={formData.telefono} onChange={(e) => setFormData({ ...formData, telefono: e.target.value })} />
         </ModalBody>
         <ModalFooter>
-          <Button onClick={() => onOpenChange(false)} variant="light">Cancelar</Button>
+          <Button onClick={() => onOpenChange()} variant="light">Cancelar</Button>
           <Button onClick={handleContinuar}>Continuar</Button>
         </ModalFooter>
       </>

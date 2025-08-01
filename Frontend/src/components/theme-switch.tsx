@@ -4,7 +4,8 @@ import { SwitchProps, useSwitch } from "@heroui/switch";
 import clsx from "clsx";
 
 import { useTheme } from "@/hooks/use-theme";
-import { SunFilledIcon, MoonFilledIcon } from "@/components/icons";
+import { BsFillSunFill, BsMoon } from "react-icons/bs";
+
 
 export interface ThemeSwitchProps {
   className?: string;
@@ -74,9 +75,9 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({
         })}
       >
         {isSelected ? (
-          <MoonFilledIcon size={22} />
+          <BsMoon size={22} />
         ) : (
-          <SunFilledIcon size={22} />
+          < BsFillSunFill size={22} />
         )}
       </div>
     </Component>

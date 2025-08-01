@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { Modal, ModalContent } from "@heroui/modal";
 import { Input } from "@heroui/input";
 import { Icon } from "@iconify/react";
-import { Divider } from "@heroui/divider";
+
 import { useNavigate } from "react-router-dom";
 import { useFindListFetchNoAuth } from "../utils/VariablesAndMethods";
 import  NoPhoto  from "../assets/nophoto.png";

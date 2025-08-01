@@ -26,7 +26,7 @@ import EditModal from "./edit-papas";
 
 import { IoIosArrowDown } from "react-icons/io";
 import { CiSearch } from "react-icons/ci";
-interface papas {
+interface Papas {
   id: number;
   name: string;
   description: string;
@@ -34,6 +34,7 @@ interface papas {
   costo: number;
   ganancia: number;
   pictureUrl: string;
+  ingredients: string[];
 }
 
 export const columns = [

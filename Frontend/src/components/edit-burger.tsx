@@ -63,12 +63,12 @@ export default function EditModal({ burgerId }: EditModalProps) {
   const [newImageUrl, setNewImageUrl] = useState<string | null>(null);
   const [page, setPage] = useState(1);
   const rowsPerPage = 4;
-  const formatCurrency = (value) => 
-    new Intl.NumberFormat('us-US', { 
-      minimumFractionDigits: 2, 
-      maximumFractionDigits: 2, 
-      useGrouping: true 
-    }).format(value);
+ const formatCurrency = (value: number) =>
+  new Intl.NumberFormat("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+    useGrouping: true,
+  }).format(value);
   const pages = Math.ceil(burgerElements.length / rowsPerPage);
 
   const items = useMemo(() => {
@@ -78,7 +78,7 @@ export default function EditModal({ burgerId }: EditModalProps) {
   }, [page, burgerElements]);
 
 
-  const totalCost = burgerElements.reduce((acc, el) => acc + (el.price ?? 0), 0);
+  // const totalCost = burgerElements.reduce((acc, el) => acc + (el.price ?? 0), 0);
   // Al abrir el modal se cargan todos los datos
   useEffect(() => {
     if (isOpen) {
@@ -245,20 +245,24 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   }
 };
   // Manejador para actualizar la cantidad y el precio unitario de un elemento
-  const handleBurgerElementChange = (id: number, field: "cantidad", value: number) => {
-    setBurgerElements((prev) =>
-      prev
-        .map((el) => {
-          if (el.id === id) {
-            const updated = { ...el, cantidad: value };
-            updated.price = updated.cantidad * (updated.priceUnit ?? 0);
-            return updated;
-          }
-          return el;
-        })
-        .filter((el) => el.cantidad > 0) // 🔥 Filtra los elementos con cantidad 0
-    );
-  };
+  const handleBurgerElementChange = (
+  id: number,
+  field: "cantidad",
+  value: number
+) => {
+  setBurgerElements((prev) =>
+    prev
+      .map((el) => {
+        if (el.id === id) {
+          const updated = { ...el, [field]: value };
+          updated.price = (updated.cantidad ?? 0) * (updated.priceUnit ?? 0);
+          return updated;
+        }
+        return el;
+      })
+      .filter((el) => el.cantidad > 0)
+  );
+};
   
 
   // Calcula las diferencias entre los elementos iniciales y los modificados

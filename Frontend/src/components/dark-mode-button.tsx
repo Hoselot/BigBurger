@@ -1,6 +1,6 @@
 import {Switch} from "@heroui/switch";
 
-export const MoonIcon = (props) => {
+export const MoonIcon = (props: React.SVGProps<SVGSVGElement>) => {
   return (
     <svg
       aria-hidden="true"
@@ -19,7 +19,7 @@ export const MoonIcon = (props) => {
   );
 };
 
-export const SunIcon = (props) => {
+export const SunIcon = (props: React.SVGProps<SVGSVGElement>) => {
   return (
     <svg
       aria-hidden="true"
@@ -41,13 +41,13 @@ export const SunIcon = (props) => {
 export default function App() {
   return (
     <Switch
-      defaultSelected
-      color="success"
-      endContent={<MoonIcon />}
-      size="lg"
-      startContent={<SunIcon />}
-    >
-      Dark mode
-    </Switch>
+  defaultSelected
+  color="success"
+  size="lg"
+  startContent={<SunIcon className="w-5 h-5 text-yellow-500" />}
+  endContent={<MoonIcon className="w-5 h-5 text-gray-800 dark:text-white" />}
+>
+  Dark mode
+</Switch>
   );
 }
