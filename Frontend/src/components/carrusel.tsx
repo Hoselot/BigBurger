@@ -159,15 +159,15 @@ export default function CircularCarousel({ images, autoplaySpeed = 3000 }: Carou
     >
       <div className="relative h-[300px] sm:h-[400px] md:h-[350px] perspective-1000 overflow-hidden ">
         {/* Large red circle background - significantly larger than the images */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] h-[200px] sm:w-[400px] sm:h-[400px] md:w-[300px] md:h-[300px] bg-red-600 rounded-full z-0 shadow-lg"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] max-w-[300px] aspect-square bg-red-600 rounded-full z-0 shadow-lg"></div>
 
         <div className="absolute w-full h-full flex items-center justify-center transform-style-3d">
           {images.map((image, index) => (
             <div
               key={index}
               className={cn(
-                "absolute w-[150px] h-[150px] sm:w-[200px] sm:h-[200px] md:w-[200px] md:h-[200px] transition-all duration-500 ease-in-out",
-                currentIndex === index ? "cursor-default" : "cursor-pointer",
+                 "absolute aspect-square w-[30vw] max-w-[180px] sm:max-w-[200px] md:max-w-[220px] transition-all duration-500 ease-in-out",
+  currentIndex === index ? "cursor-default" : "cursor-pointer"
               )}
               style={getSlideStyle(index)}
               onClick={() => !isDragging && goToSlide(index)}
@@ -176,8 +176,9 @@ export default function CircularCarousel({ images, autoplaySpeed = 3000 }: Carou
               <img
                 src={image.src || "/placeholder.svg"}
                 alt={image.alt}
-                className="absolute inset-0 w-full h-full max-w-full max-h-full object-contain"
+                className="absolute inset-0 w-full h-full object-contain"
                 loading="lazy"
+                decoding="async"
               />
               </div>
             </div>
@@ -187,7 +188,7 @@ export default function CircularCarousel({ images, autoplaySpeed = 3000 }: Carou
       </div>
 
       {/* Pagination dots */}
-      <div className="flex justify-center gap-3">
+      <div className="flex justify-center gap-3 pb-12">
         {images.map((_, index) => (
           <button
             key={index}
